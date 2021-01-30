@@ -1,0 +1,28 @@
+﻿  Actor.cpp
+  Animation.cpp
+  Application.cpp
+  Command.cpp
+  CommandQueue.cpp
+  DataTables.cpp
+  Entity.cpp
+  GameState.cpp
+  JsonFrameParser.cpp
+  Main.cpp
+  MusicPlayer.cpp
+  PauseState.cpp
+  Player.cpp
+  ResourceHolder.cpp
+  SceneNode.cpp
+  SoundNode.cpp
+  SoundPlayer.cpp
+  SpriteNode.cpp
+  State.cpp
+  StateStack.cpp
+  Generating Code...
+  Compiling...
+  TextNode.cpp
+  Utility.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Project\GexEngine\Utility.cpp(16,28): warning C4305: 'initializing': truncation from 'double' to 'float'
+  World.cpp
+  Generating Code...
+sfml-window-d.lib(sfml-window-d-2.dll) : fatal error LNK1112: module machine type 'x86' conflicts with target machine type 'x64'
