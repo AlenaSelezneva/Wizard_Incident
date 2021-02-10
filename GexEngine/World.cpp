@@ -90,6 +90,7 @@ void World::loadTextures() {
 	//textures.load(TextureID::Hero2, "Media/Textures/Hero2.png");
 	textures.load(TextureID::Road, "Media/Textures/Road.png");
 	textures.load(TextureID::Eagle, "Media/Textures/Eagle.png");
+	textures.load(TextureID::Wall, "Media/Textures/wall2.png");
 }
 
 void World::buildScene() {
@@ -132,6 +133,9 @@ void World::buildScene() {
 	std::unique_ptr<SpriteNode> road(new SpriteNode(texture, textureRect));
 	road->setPosition(worldBounds.left / 2, worldBounds.top / 2);
 	sceneLayers[Floor]->attachChild(std::move(road));
+
+	std::unique_ptr<SpriteNode> wall(new SpriteNode(textures.get(TextureID::Wall)));
+	sceneLayers[Walls]->attachChild(std::move(wall));
 
 
 	std::unique_ptr<Actor> hero_(new Actor(Actor::Type::Hero, textures, fonts));

@@ -29,6 +29,8 @@ enum class MusicID
 
 enum class TextureID
 {
+	Wall,
+
 	Eagle,
 	Raptor,
 	Avenger,
