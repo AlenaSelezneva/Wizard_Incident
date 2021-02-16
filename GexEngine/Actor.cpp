@@ -84,6 +84,9 @@ sf::FloatRect Actor::getBoundingRect() const
 float Actor::getMaxSpeed() const
 {
 	//return TABLE.at(type_).speed;
+	if (type_ == Actor::Type::Hero)
+		return 100.f;
+
 	return 0.f;
 }
 

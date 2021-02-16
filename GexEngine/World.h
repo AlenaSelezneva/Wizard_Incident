@@ -9,6 +9,7 @@
 #include "Command.h"
 #include "SoundPlayer.h"
 #include "Actor.h"
+#include "WallLinesScheme.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -47,7 +48,7 @@ private:
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 	void					destroyEntitiesOutsideView();
 
-	void					adaptPlyerVelocity();
+	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
 	void					updateSounds();
 
@@ -55,6 +56,8 @@ private:
 
 	sf::FloatRect			getViewBounds() const;
 	sf::FloatRect			getBattlefieldBounds() const;
+
+	bool					heroIntersectsWithWall() const;
 
 private:
 	enum Layer
@@ -94,5 +97,6 @@ private:
 	float								scrollSpeed;
 
 	std::vector<SpawnPoint>				enemySpawnPoints;
+	WallLinesScheme						walls;
 
 };

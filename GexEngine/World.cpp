@@ -9,6 +9,7 @@ Alena Selezneva
 #include "SoundNode.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Shape.hpp>
 
 
 World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds)
@@ -23,7 +24,7 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	, commandQueue()
 	, worldBounds(0.f, 0.f, 1000.f, 600.f)
 	, spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f)
-
+	, walls()
 {
 	sceneTexture.create(target.getSize().x, target.getSize().y);
 	loadTextures();
@@ -84,6 +85,9 @@ void World::draw() {
 
 	target.setView(worldView);
 	target.draw(sceneGraph);
+
+	for (auto wall : walls.wallLines)
+		target.draw(wall);
 }
 
 void World::loadTextures() {
@@ -167,11 +171,40 @@ void World::addEnemy(Actor::Type type, float relX, float relY)
 	enemySpawnPoints.push_back(spawn);
 }
 
+bool World::heroIntersectsWithWall() const {
+	for (int i = 0; i < walls.wallsCount; ++i) {
+
+		//walls.wallLines[i].
+		//sf::Shape::Line line()
+
+
+		if (hero->getBoundingRect().intersects(walls.wallLines[i].getBounds()))
+			return true;
+	}
+	return false;
+}
+
 void World::handleCollisions()
 {
 	// get all colliding pairs
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
+
+
+	if (heroIntersectsWithWall()) {
+		hero->setPosition(hero->getPosition() - sf::Vector2f(hero->getVelocity().x / 3, hero->getVelocity().y / 3));
+	}
+
+	/*for (int i = 0; i < walls.wallsCount - 1; ++i) {
+		if (hero->getBoundingRect().intersects(walls.wallLines[0]))
+	}*/
+
+	/*if (hero->getBoundingRect().intersects(walls.wallLines.getBounds())) {
+		//hero->accelerate(-2 * hero->getVelocity().x, -2 * hero->getVelocity().y);
+		hero->setPosition(hero->getPosition() - hero->getVelocity());
+		//hero->setPosition(800, 400);
+	}*/
+
 	/*
 	for (auto pair : collisionPairs) {
 		if (matchesCategories(pair, Category::Hero, Category::Zombie)) {
