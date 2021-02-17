@@ -9,7 +9,8 @@
 #include "Command.h"
 #include "SoundPlayer.h"
 #include "Actor.h"
-#include "WallLinesScheme.h"
+#include "LevelsTilesSchema.h"
+#include "DataTables.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -57,8 +58,6 @@ private:
 	sf::FloatRect			getViewBounds() const;
 	sf::FloatRect			getBattlefieldBounds() const;
 
-	bool					heroIntersectsWithWall() const;
-
 private:
 	enum Layer
 	{
@@ -97,6 +96,7 @@ private:
 	float								scrollSpeed;
 
 	std::vector<SpawnPoint>				enemySpawnPoints;
-	WallLinesScheme						walls;
+	std::vector<std::vector<Tile::Type> > currentLevel;
+	std::map<Tile::Type, TileData>		tileData;
 
 };

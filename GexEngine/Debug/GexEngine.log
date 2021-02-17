@@ -1,2 +1,4 @@
 ﻿  World.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(145,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(146,21): warning C4018: '<': signed/unsigned mismatch
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

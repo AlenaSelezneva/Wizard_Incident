@@ -22,15 +22,19 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	, sceneGraph()
 	, sceneLayers()
 	, commandQueue()
-	, worldBounds(0.f, 0.f, 1000.f, 600.f)
+	, worldBounds(0.f, 0.f, 2000.f, 2000.f)
 	, spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f)
-	, walls()
 {
 	sceneTexture.create(target.getSize().x, target.getSize().y);
 	loadTextures();
-	buildScene();
+
 
 	worldView.setCenter(spawnPosition);
+
+	currentLevel = LevelsTilesSchema::getLevelLayout();
+	tileData = initializeTileData();
+
+	buildScene();
 }
 
 CommandQueue& World::getCommands()
@@ -68,7 +72,7 @@ void World::update(sf::Time dt) {
 
 	//sceneGraph.removeWrecks();
 
-	handleCollisions();
+	//handleCollisions();
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
@@ -86,15 +90,16 @@ void World::draw() {
 	target.setView(worldView);
 	target.draw(sceneGraph);
 
-	for (auto wall : walls.wallLines)
-		target.draw(wall);
 }
 
 void World::loadTextures() {
 	//textures.load(TextureID::Hero2, "Media/Textures/Hero2.png");
-	textures.load(TextureID::Road, "Media/Textures/Road.png");
+	//textures.load(TextureID::Road, "Media/Textures/Road.png");
 	textures.load(TextureID::Eagle, "Media/Textures/Eagle.png");
-	textures.load(TextureID::Wall, "Media/Textures/wall2.png");
+	//textures.load(TextureID::Wall, "Media/Textures/wall2.png");
+	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
+	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
+
 }
 
 void World::buildScene() {
@@ -103,8 +108,9 @@ void World::buildScene() {
 		Category::Type category;
 		switch (i) {
 		case Floor:
-		case Walls:
 			category = Category::Type::Background;
+		case Walls:
+			category = Category::Type::Wall;
 			break;
 		case PlayerLayer:
 		case SpellsLayer:
@@ -126,25 +132,53 @@ void World::buildScene() {
 
 
 	// prepare background texture
-	sf::Texture& texture = textures.get(TextureID::Road);
-	texture.setRepeated(true);
+	/*sf::Texture& texture = textures.get(TextureID::Road);
+	texture.setRepeated(true);*/
+	sf::Texture& floorTexture = textures.get(TextureID::Floor);
+	sf::Texture& wallTexture = textures.get(TextureID::Wall);
+
+	sf::IntRect floorRect(0, 0, (int)tileData[Tile::Type::Floor].width, (int)tileData[Tile::Type::Floor].height);
+	sf::IntRect wallRect(0, 0, (int)tileData[Tile::Type::Floor].width, (int)tileData[Tile::Type::Floor].height);
+
+	float tileSize = 50.f;
+
+	for (int i = 0; i < currentLevel.size(); ++i) {
+		for (int j = 0; j < currentLevel[0].size(); ++j) {
+
+			std::unique_ptr<SpriteNode> sprite;
+
+			switch (currentLevel[i][j])
+			{
+			case Tile::Type::Floor:
+				sprite = std::unique_ptr<SpriteNode>(new SpriteNode(floorTexture, floorRect));
+				break;
+			case Tile::Type::Wall:
+				sprite = std::unique_ptr<SpriteNode>(new SpriteNode(wallTexture, wallRect));
+				break;
+			default:
+				break;
+			}
+
+			sprite->setPosition(j * tileSize + 300.f, i * tileSize);
+			sceneLayers[Floor]->attachChild(std::move(sprite));
+		}
+	}
+
 
 	//float viewHeight = worldView.getSize().y;
 	sf::IntRect textureRect(worldBounds);
 	//textureRect.height += static_cast<int>(viewHeight);
 
 	// background spriteNode
-	std::unique_ptr<SpriteNode> road(new SpriteNode(texture, textureRect));
+	/*std::unique_ptr<SpriteNode> road(new SpriteNode(texture, textureRect));
 	road->setPosition(worldBounds.left / 2, worldBounds.top / 2);
-	sceneLayers[Floor]->attachChild(std::move(road));
+	sceneLayers[Floor]->attachChild(std::move(road));*/
 
-	std::unique_ptr<SpriteNode> wall(new SpriteNode(textures.get(TextureID::Wall)));
-	sceneLayers[Walls]->attachChild(std::move(wall));
 
 
 	std::unique_ptr<Actor> hero_(new Actor(Actor::Type::Hero, textures, fonts));
 	hero = hero_.get();
-	hero->setPosition(250.f, 250.f);
+	hero->setPosition(spawnPosition);
 	hero->setVelocity(0.f, 0.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
@@ -171,19 +205,6 @@ void World::addEnemy(Actor::Type type, float relX, float relY)
 	enemySpawnPoints.push_back(spawn);
 }
 
-bool World::heroIntersectsWithWall() const {
-	for (int i = 0; i < walls.wallsCount; ++i) {
-
-		//walls.wallLines[i].
-		//sf::Shape::Line line()
-
-
-		if (hero->getBoundingRect().intersects(walls.wallLines[i].getBounds()))
-			return true;
-	}
-	return false;
-}
-
 void World::handleCollisions()
 {
 	// get all colliding pairs
@@ -191,9 +212,9 @@ void World::handleCollisions()
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
 
 
-	if (heroIntersectsWithWall()) {
+	/*if (heroIntersectsWithWall()) {
 		hero->setPosition(hero->getPosition() - sf::Vector2f(hero->getVelocity().x / 3, hero->getVelocity().y / 3));
-	}
+	}*/
 
 	/*for (int i = 0; i < walls.wallsCount - 1; ++i) {
 		if (hero->getBoundingRect().intersects(walls.wallLines[0]))
@@ -275,11 +296,32 @@ void World::destroyEntitiesOutsideView()
 
 void World::adaptPlayerPosition()
 {
-	// worldView
+	const float borderDistance = 100.f;
+	const float scrollSpeed = 5.f;
 
-	/*sf::FloatRect viewBounds(worldView.getCenter() - worldView.getSize() / 2.f,
+	sf::FloatRect viewBounds(worldView.getCenter() - worldView.getSize() / 2.f,
 		worldView.getSize());
-	const float borderDistance = 40.f;
+
+	// worldView
+	/*if (hero->getPosition().x <= borderDistance)
+		worldView.move(-scrollSpeed, 0);
+	if (hero->getPosition().x + hero->getBoundingRect().width  >= worldView.getSize().x - borderDistance)
+		worldView.move(scrollSpeed, 0);
+	if (hero->getPosition().y <= borderDistance)
+		worldView.move(0, -scrollSpeed);
+	if (hero->getPosition().y + hero->getBoundingRect().height >= worldView.getSize().y - borderDistance)
+		worldView.move(0, scrollSpeed);*/
+
+	if (hero->getPosition().x <= viewBounds.left + borderDistance)
+		worldView.move(-scrollSpeed, 0);
+	if (hero->getPosition().x + hero->getBoundingRect().width >= viewBounds.left + viewBounds.width - borderDistance)
+		worldView.move(scrollSpeed, 0);
+	if (hero->getPosition().y <= viewBounds.top + borderDistance)
+		worldView.move(0, -scrollSpeed);
+	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
+		worldView.move(0, scrollSpeed);
+
+	/*const float borderDistance = 40.f;
 
 	sf::Vector2f position = playerAircraft->getPosition();
 	position.x = std::max(position.x, viewBounds.left + borderDistance);

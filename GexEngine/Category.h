@@ -10,6 +10,7 @@ namespace Category
 	{
 		None = 0,			// 000000000
 		Background		= 1 << 0,		// 000000001
+
 		TalkingNPC		= 1 << 1,
 		FightingNPC		= 1 << 2,
 		Hero			= 1 << 3,
@@ -19,6 +20,7 @@ namespace Category
 		BaseAttack		= 1 << 6,
 
 		Door			= 1 << 7,
+		Wall			= 1 << 8,
 
 		//ParticleSystem = 1 << 7,
 		//SoundEffect = 1 << 4,

@@ -129,7 +129,10 @@
     <ClInclude Include="ResourceHolder.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="WallLinesScheme.h">
+    <ClInclude Include="TileType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelsTilesSchema.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -218,7 +221,7 @@
     <ClCompile Include="ResourceHolder.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="WallLinesScheme.cpp">
+    <ClCompile Include="LevelsTilesSchema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

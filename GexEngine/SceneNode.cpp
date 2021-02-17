@@ -81,6 +81,9 @@ unsigned int SceneNode::getCategory() const {
 
 void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisionPairs)
 {
+	if (node.getCategory() == Category::Type::Background)
+		return;
+
 	checkNodeCollision(node, collisionPairs);
 
 	for (Ptr& child : node.children)
@@ -89,6 +92,9 @@ void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisionPa
 
 void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs)
 {
+	if (node.getCategory() == Category::Type::Background)
+		return;
+
 	if (this != &node && isColliding(*this, node) && !isDestroyed() && !node.isDestroyed())
 		collisionPairs.insert(std::minmax(this, &node));
 
