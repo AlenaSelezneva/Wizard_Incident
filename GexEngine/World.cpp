@@ -10,6 +10,7 @@ Alena Selezneva
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
+#include <iostream>
 
 
 World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds)
@@ -72,7 +73,8 @@ void World::update(sf::Time dt) {
 
 	//sceneGraph.removeWrecks();
 
-	//handleCollisions();
+	handleCollisions();
+	adaptPlayerPositionRelatingBlocks(dt, getCommands());
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
@@ -88,6 +90,12 @@ void World::updateSounds()
 void World::draw() {
 
 	target.setView(worldView);
+	for (auto t : walkOverTiles) {
+		target.draw(*t);
+	}
+	for (auto t : blockingTiles) {
+		target.draw(*t);
+	}
 	target.draw(sceneGraph);
 
 }
@@ -128,7 +136,8 @@ void World::buildScene() {
 		sceneGraph.attachChild(std::move(layer));
 	}
 
-
+	walkOverTiles = std::vector<SpriteNode*>();
+	blockingTiles = std::vector<SpriteNode*>();
 
 
 	// prepare background texture
@@ -138,29 +147,37 @@ void World::buildScene() {
 	sf::Texture& wallTexture = textures.get(TextureID::Wall);
 
 	sf::IntRect floorRect(0, 0, (int)tileData[Tile::Type::Floor].width, (int)tileData[Tile::Type::Floor].height);
-	sf::IntRect wallRect(0, 0, (int)tileData[Tile::Type::Floor].width, (int)tileData[Tile::Type::Floor].height);
+	sf::IntRect wallRect(0, 0, (int)tileData[Tile::Type::Wall].width, (int)tileData[Tile::Type::Wall].height);
 
 	float tileSize = 50.f;
 
 	for (int i = 0; i < currentLevel.size(); ++i) {
 		for (int j = 0; j < currentLevel[0].size(); ++j) {
 
-			std::unique_ptr<SpriteNode> sprite;
+			//std::unique_ptr<SpriteNode> sprite;
+			//SpriteNode sprite;
+
+			SpriteNode* sprite;
 
 			switch (currentLevel[i][j])
 			{
 			case Tile::Type::Floor:
-				sprite = std::unique_ptr<SpriteNode>(new SpriteNode(floorTexture, floorRect));
+				//sprite = std::unique_ptr<SpriteNode>(new SpriteNode(floorTexture, floorRect));
+				sprite = new SpriteNode(floorTexture, floorRect);
+				sprite->setPosition(j * tileSize, i * tileSize);
+				walkOverTiles.push_back(sprite);
 				break;
 			case Tile::Type::Wall:
-				sprite = std::unique_ptr<SpriteNode>(new SpriteNode(wallTexture, wallRect));
+				sprite = new SpriteNode(wallTexture, wallRect);
+				sprite->setPosition(j * tileSize , i * tileSize - tileData[Tile::Wall].height + tileSize);
+				blockingTiles.push_back(sprite);
 				break;
 			default:
 				break;
 			}
 
-			sprite->setPosition(j * tileSize + 300.f, i * tileSize);
-			sceneLayers[Floor]->attachChild(std::move(sprite));
+			//sprite->setPosition(j * tileSize + 300.f, i * tileSize);
+			//sceneLayers[Floor]->attachChild(std::move(sprite));
 		}
 	}
 
@@ -202,29 +219,17 @@ void World::addEnemy(Actor::Type type, float relX, float relY)
 {
 	// relative to spawn position
 	SpawnPoint spawn(type, spawnPosition.x + relX, spawnPosition.y - relY);
-	enemySpawnPoints.push_back(spawn);
 }
+
 
 void World::handleCollisions()
 {
+
+	//handleCollisionsWithTiles();
+
 	// get all colliding pairs
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
-
-
-	/*if (heroIntersectsWithWall()) {
-		hero->setPosition(hero->getPosition() - sf::Vector2f(hero->getVelocity().x / 3, hero->getVelocity().y / 3));
-	}*/
-
-	/*for (int i = 0; i < walls.wallsCount - 1; ++i) {
-		if (hero->getBoundingRect().intersects(walls.wallLines[0]))
-	}*/
-
-	/*if (hero->getBoundingRect().intersects(walls.wallLines.getBounds())) {
-		//hero->accelerate(-2 * hero->getVelocity().x, -2 * hero->getVelocity().y);
-		hero->setPosition(hero->getPosition() - hero->getVelocity());
-		//hero->setPosition(800, 400);
-	}*/
 
 	/*
 	for (auto pair : collisionPairs) {
@@ -303,15 +308,6 @@ void World::adaptPlayerPosition()
 		worldView.getSize());
 
 	// worldView
-	/*if (hero->getPosition().x <= borderDistance)
-		worldView.move(-scrollSpeed, 0);
-	if (hero->getPosition().x + hero->getBoundingRect().width  >= worldView.getSize().x - borderDistance)
-		worldView.move(scrollSpeed, 0);
-	if (hero->getPosition().y <= borderDistance)
-		worldView.move(0, -scrollSpeed);
-	if (hero->getPosition().y + hero->getBoundingRect().height >= worldView.getSize().y - borderDistance)
-		worldView.move(0, scrollSpeed);*/
-
 	if (hero->getPosition().x <= viewBounds.left + borderDistance)
 		worldView.move(-scrollSpeed, 0);
 	if (hero->getPosition().x + hero->getBoundingRect().width >= viewBounds.left + viewBounds.width - borderDistance)
@@ -320,16 +316,22 @@ void World::adaptPlayerPosition()
 		worldView.move(0, -scrollSpeed);
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
+}
 
-	/*const float borderDistance = 40.f;
+void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands)
+{
+	auto heroCopy = new Actor(Actor::Type::Hero, textures, fonts);
+	heroCopy->setPosition(hero->getPosition());
+	heroCopy->setVelocity(hero->getVelocity());
+	heroCopy->update(dt, commands);
 
-	sf::Vector2f position = playerAircraft->getPosition();
-	position.x = std::max(position.x, viewBounds.left + borderDistance);
-	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-	position.y = std::max(position.y, viewBounds.top + borderDistance);
-	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-
-	playerAircraft->setPosition(position);*/
+	for (auto t : blockingTiles) {
+		if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
+			hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+			//hero->setVelocity(-1.5 * hero->getVelocity().x, -1.5 * hero->getVelocity().y);
+			break;
+		}
+	}
 }
 
 

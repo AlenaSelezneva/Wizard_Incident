@@ -81,6 +81,19 @@ sf::FloatRect Actor::getBoundingRect() const
 	return box;
 }
 
+sf::FloatRect Actor::getBaseTileRect() const
+{
+	auto rect = getBoundingRect();
+	const float tileSize = 50.f;
+
+	if (rect.height > tileSize) {
+		rect.top = rect.top + rect.height - tileSize;
+		rect.height = tileSize;
+	}
+
+	return rect;
+}
+
 float Actor::getMaxSpeed() const
 {
 	//return TABLE.at(type_).speed;

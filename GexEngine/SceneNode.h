@@ -31,12 +31,13 @@ public:
 	Ptr					detachChild(const SceneNode& node);
 
 	virtual sf::FloatRect getBoundingRect() const;
+	virtual sf::FloatRect getBaseTileRect() const;
 
 	void				update(sf::Time dt, CommandQueue& commands);
 
-	sf::Vector2f		getWorldPoition()	const;
 	sf::Transform		getWorldTransform() const;
-
+	sf::Vector2f		getWorldPoition()	const;
+	
 	void				onCommand(const Command& command, sf::Time dt);
 	virtual unsigned int getCategory() const;
 

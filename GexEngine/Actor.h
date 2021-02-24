@@ -33,6 +33,7 @@ public:
 
     unsigned int    getCategory() const override;
     sf::FloatRect   getBoundingRect() const override;
+    sf::FloatRect   getBaseTileRect() const override;
     float           getMaxSpeed() const;
 
     bool            isMarkedForRemoval() const override;

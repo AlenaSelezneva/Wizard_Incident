@@ -16,5 +16,10 @@ std::vector<std::vector<Tile::Type>> LevelsTilesSchema::getLevelLayout()
         }
     }
 
+    level[10][10] = Tile::Type::Wall;
+    level[37][33] = Tile::Type::Wall;
+    level[20][25] = Tile::Type::Wall;
+    level[35][6] = Tile::Type::Wall;
+
     return level;
 }

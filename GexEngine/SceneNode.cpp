@@ -45,6 +45,10 @@ sf::FloatRect SceneNode::getBoundingRect() const
 	return sf::FloatRect();
 }
 
+sf::FloatRect SceneNode::getBaseTileRect() const
+{
+	return sf::FloatRect();
+}
 
 void SceneNode::update(sf::Time dt, CommandQueue& commands) {
 	updateCurrent(dt, commands);

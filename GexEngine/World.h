@@ -44,13 +44,13 @@ private:
 
 	void					addEnemies();
 	void					addEnemy(Actor::Type type, float relX, float relY);
-	void					spawnEnemies();
 	void					handleCollisions();
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 	void					destroyEntitiesOutsideView();
 
 	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
+	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
 	void					updateSounds();
 
 	void					adaptNPCPosition();
@@ -85,6 +85,10 @@ private:
 	SoundPlayer&						sounds;
 
 	SceneNode							sceneGraph;
+
+	std::vector< SpriteNode*>			walkOverTiles;
+	std::vector< SpriteNode*>			blockingTiles;
+
 	// old school array instead of vector
 	std::array<SceneNode*, LayerCount>	sceneLayers;
 	CommandQueue						commandQueue;
@@ -95,7 +99,6 @@ private:
 	sf::Vector2f						spawnPosition;
 	float								scrollSpeed;
 
-	std::vector<SpawnPoint>				enemySpawnPoints;
 	std::vector<std::vector<Tile::Type> > currentLevel;
 	std::map<Tile::Type, TileData>		tileData;
 

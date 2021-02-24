@@ -17,7 +17,7 @@ std::map<Tile::Type, TileData> initializeTileData()
     map[Tile::Type::Wall].isBlocking = true;
     map[Tile::Type::Wall].textureID = TextureID::Wall;
     map[Tile::Type::Wall].width = 50.f;
-    map[Tile::Type::Wall].height = 300.f;
+    map[Tile::Type::Wall].height = 200.f;
 
     return map;
 }
