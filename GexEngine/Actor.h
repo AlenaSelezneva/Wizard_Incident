@@ -48,14 +48,15 @@ private:
     void         updateCurrent(sf::Time dt, CommandQueue& commands) override;
     void         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-private:
-    Type                              type_;
-    State                             state_;
-    mutable sf::Sprite                   sprite_;
-    std::map<State, Animation>                animations_;
-    Direction                          direction_;
+protected:
+    Type                            type_;
+    State                           state_;
+    /*mutable sf::Sprite              sprite_;*/
+    sf::Sprite                      sprite_;
+    std::map<State, Animation>      animations_;
+    Direction                       direction_;
 
-    float                             travelDistance_;
-    std::size_t                            directionIndex_;
-    bool                              attack_;
+    float                           travelDistance_;
+    std::size_t                     directionIndex_;
+    bool                            attack_;
 };

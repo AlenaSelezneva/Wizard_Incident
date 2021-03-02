@@ -9,6 +9,8 @@ FriendlyNPC::FriendlyNPC(const TextureHolder_t& textures, const FontHolder_t& fo
     dialog.push_back("Hello");
     dialog.push_back("How is your day?");
     dialog.push_back("Leave me alone");
+
+    sprite_ = sf::Sprite(textures.get(TextureID::Raptor));
 }
 
 std::string FriendlyNPC::getDialog()
@@ -21,4 +23,14 @@ std::string FriendlyNPC::getDialog()
     auto res = dialog[currentDialogOptionIndex];
     currentDialogOptionIndex++;
     return res;
+}
+
+void FriendlyNPC::setCanTalkToHero(bool canTalk)
+{
+    canTalkToHero_ = canTalk;
+}
+
+bool FriendlyNPC::canTalkToHero()
+{
+    return canTalkToHero_;
 }

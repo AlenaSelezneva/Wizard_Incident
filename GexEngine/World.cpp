@@ -6,7 +6,7 @@ Alena Selezneva
 #include "World.h"
 #include "Player.h"
 #include "Category.h"
-#include "SoundNode.h"
+#include "FriendlyNPC.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
@@ -53,6 +53,7 @@ bool World::hasPlayerReachedEnd() const
 	return false;
 }
 
+
 void World::update(sf::Time dt) {
 	
 	// scroll view 
@@ -60,6 +61,9 @@ void World::update(sf::Time dt) {
 
 	// reset player velocity
 	hero->setVelocity(0.f, 0.f);
+	resetNPCsCanTalk();
+
+	handleCollisions();
 
 	//destroyEntitiesOutsideView();
 
@@ -70,10 +74,8 @@ void World::update(sf::Time dt) {
 	}
 
 	//adaptPlyerVelocity();
-
 	//sceneGraph.removeWrecks();
 
-	handleCollisions();
 	adaptPlayerPositionRelatingBlocks(dt, getCommands());
 
 	sceneGraph.update(dt, getCommands());
@@ -203,6 +205,12 @@ void World::buildScene() {
 	hero->setVelocity(0.f, 0.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
+
+	std::unique_ptr<FriendlyNPC> npc(new FriendlyNPC(textures, fonts));
+	npc->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
+	npc->setVelocity(0.f, 0.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(npc));
+
 	// add player aircraft
 	/*std::unique_ptr<Actor> leader(new Actor(Actor::Type::Hero2, textures, fonts));
 	playerAircraft = leader.get();
@@ -234,6 +242,13 @@ void World::handleCollisions()
 	// get all colliding pairs
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
+
+	for (auto pair : collisionPairs) {
+		if (matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
+			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
+			npc.setCanTalkToHero(true);
+		}
+	}
 
 	/*
 	for (auto pair : collisionPairs) {
@@ -373,6 +388,18 @@ void World::adaptNPCPosition()
 
 	commandQueue.push(adaptPosition);*/
 
+}
+
+void World::resetNPCsCanTalk()
+{
+	Command resetCanTalk;
+	resetCanTalk.category = Category::TalkingNPC;
+
+	resetCanTalk.action = derivedAction<FriendlyNPC>([this](FriendlyNPC& npc, sf::Time dt) {
+		npc.setCanTalkToHero(false);
+		});
+
+	commandQueue.push(resetCanTalk);
 }
 
 sf::FloatRect World::getViewBounds() const

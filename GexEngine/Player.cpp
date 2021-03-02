@@ -4,6 +4,8 @@
 #include <algorithm>
 #include "CommandQueue.h"
 #include "Actor.h"
+#include "FriendlyNPC.h"
+#include <iostream>
 
 Player::Player()
 	: currentMissionStatus(MissionStatus::Running)
@@ -13,9 +15,13 @@ Player::Player()
 	initializeActions();
 
 	for (auto& pair : actionBindings) {
-		pair.second.category = Category::Hero;
+		if (pair.first == Action::Interact) {
+			pair.second.category = Category::TalkingNPC;
+		}
+		else {
+			pair.second.category = Category::Hero;
+		}
 	}
-
 }
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
@@ -61,6 +67,8 @@ void Player::initializeKeyBindings() {
 	keyBindings[sf::Keyboard::W] = Action::MoveUp;
 	keyBindings[sf::Keyboard::S] = Action::MoveDown;
 
+	keyBindings[sf::Keyboard::Enter] = Action::Interact;
+
 }
 
 
@@ -88,6 +96,14 @@ void Player::initializeActions()
 			a.accelerate(sf::Vector2f(0.f, playerSpeed));
 		});
 
+	actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(
+		[](FriendlyNPC& npc, sf::Time dt) {
+			if (npc.canTalkToHero())
+				std::cout << npc.getDialog() << "\n";
+			//a.accelerate(sf::Vector2f(0.f, playerSpeed));
+
+		});
+
 
 	/*actionBindings[Action::Fire].action = derivedAction<Actor>(
 		[](Actor& a, sf::Time dt) {
@@ -104,6 +120,8 @@ bool Player::isRealtimeAction(Action action)
 	case Action::MoveDown:
 	case Action::MoveUp:
 		return true;
+	case Action::Interact:
+		return false;
 	default:
 		return false;
 	}

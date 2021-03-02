@@ -20,6 +20,8 @@ public:
 		MoveUp,
 		MoveDown,
 
+		Interact,
+
 		ActionCound,
 	};
 

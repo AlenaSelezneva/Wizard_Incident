@@ -54,6 +54,7 @@ private:
 	void					updateSounds();
 
 	void					adaptNPCPosition();
+	void					resetNPCsCanTalk();
 
 	sf::FloatRect			getViewBounds() const;
 	sf::FloatRect			getBattlefieldBounds() const;
