@@ -93,10 +93,13 @@ void World::draw() {
 	for (auto t : walkOverTiles) {
 		target.draw(*t);
 	}
+
+	target.draw(sceneGraph);
+
 	for (auto t : blockingTiles) {
 		target.draw(*t);
 	}
-	target.draw(sceneGraph);
+	
 
 }
 
@@ -326,8 +329,14 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 	heroCopy->update(dt, commands);
 
 	for (auto t : blockingTiles) {
-		if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
-			hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
+			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
+				hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+			}
+			else {
+				hero->setVelocity(0, 0);
+			}
+			//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
 			//hero->setVelocity(-1.5 * hero->getVelocity().x, -1.5 * hero->getVelocity().y);
 			break;
 		}
