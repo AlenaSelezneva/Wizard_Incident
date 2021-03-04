@@ -114,22 +114,18 @@ void World::draw() {
 
 		std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
 
-		//std::unique_ptr<TextNode> text(new TextNode(fonts, currentDialog));
-
-		sf::Text* text = new sf::Text();
+		std::unique_ptr<TextNode> text(new TextNode(fonts, ""));
 		text->setString(playerData->getCurrentDialog());
+		text->setPosition(150.f, 60.f);
 
-		centerOrigin(*text);
+		dialog.get()->attachChild(std::move(text));
+
+		//centerOrigin(*text);
 
 		dialog.get()->setPosition(	worldView.getCenter().x - dialog.get()->getBoundingRect().width / 2,
 									worldView.getCenter().y - dialog.get()->getBoundingRect().height / 2 );
 
 		target.draw(*dialog);
-		target.draw(*text);
-
-		/*target.draw(TextNode(fonts, currentDialog));*/
-
-		//std::unique_ptr<TextNode> dialog(new TextNode(fonts, currentDialog));
 	}
 }
 
