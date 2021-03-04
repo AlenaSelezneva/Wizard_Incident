@@ -65,6 +65,7 @@ void World::update(sf::Time dt) {
 	// reset player velocity
 	hero->setVelocity(0.f, 0.f);
 	resetNPCsCanTalk();
+	collidingToRedraw = std::list<SceneNode*>();
 
 	handleCollisions();
 
@@ -108,6 +109,10 @@ void World::draw() {
 
 	for (auto t : blockingTiles) {
 		target.draw(*t);
+	}
+
+	for (auto r : collidingToRedraw) {
+		target.draw(*r);
 	}
 
 	if (!playerData->getCurrentDialog().empty()) {
@@ -273,6 +278,31 @@ void World::handleCollisions()
 		if (matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
 			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
 			npc.setCanTalkToHero(true);
+
+			auto& hero = static_cast<Actor&>(*pair.first);
+
+			if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
+				float speed = 2.f;
+
+				if (hero.getPosition().x < npc.getPosition().x) {
+					/*hero.move(sf::Vector2f(-1.f, 0.f));*/
+					hero.move(sf::Vector2f(-speed, 0.f));
+				}
+				else {
+					hero.move(sf::Vector2f(speed, 0.f));
+				}
+
+				if (hero.getPosition().y < npc.getPosition().y) {
+					hero.move(sf::Vector2f(0.f, -speed));
+				}
+				else {
+					hero.move(sf::Vector2f(0.f, speed));
+				}
+			}
+
+			if (hero.getPosition().y >= npc.getPosition().y) {
+				collidingToRedraw.push_back(&hero);
+			}
 		}
 	}
 
@@ -371,6 +401,10 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 	heroCopy->update(dt, commands);
 
 	for (auto t : blockingTiles) {
+		if (hero->getBoundingRect().intersects(t->getBoundingRect()) &&
+				hero->getBoundingRect().top + hero->getBoundingRect().height >= t->getBoundingRect().top + t->getBoundingRect().height)
+			collidingToRedraw.push_back(hero);
+
 		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
 			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
 				hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
@@ -378,8 +412,6 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 			else {
 				hero->setVelocity(0, 0);
 			}
-			//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
-			//hero->setVelocity(-1.5 * hero->getVelocity().x, -1.5 * hero->getVelocity().y);
 			break;
 		}
 	}

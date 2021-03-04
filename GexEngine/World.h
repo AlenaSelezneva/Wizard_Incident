@@ -91,6 +91,8 @@ private:
 	std::vector< SpriteNode*>			walkOverTiles;
 	std::vector< SpriteNode*>			blockingTiles;
 
+	std::list<SceneNode*>				collidingToRedraw;
+
 	// old school array instead of vector
 	std::array<SceneNode*, LayerCount>	sceneLayers;
 	CommandQueue						commandQueue;
@@ -105,6 +107,6 @@ private:
 	std::map<Tile::Type, TileData>		tileData;
 
 	std::string							currentDialog;
-	PlayerData*								playerData;
+	PlayerData*							playerData;
 
 };
