@@ -1,6 +1,2 @@
-﻿  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(196,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(197,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(386,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(386,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+﻿  DialogState.cpp
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe
