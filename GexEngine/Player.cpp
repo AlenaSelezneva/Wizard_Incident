@@ -5,6 +5,7 @@
 #include "CommandQueue.h"
 #include "Actor.h"
 #include "FriendlyNPC.h"
+#include "State.h"
 #include <iostream>
 
 Player::Player(PlayerData* data)
@@ -70,8 +71,8 @@ void Player::initializeKeyBindings() {
 	keyBindings[sf::Keyboard::W] = Action::MoveUp;
 	keyBindings[sf::Keyboard::S] = Action::MoveDown;
 
-	keyBindings[sf::Keyboard::Enter] = Action::Interact;
-	keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
+	//keyBindings[sf::Keyboard::Enter] = Action::Interact;
+	//keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
 }
 
 
@@ -99,20 +100,20 @@ void Player::initializeActions()
 			a.accelerate(sf::Vector2f(0.f, playerSpeed));
 		});
 
-	actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(
+	/*actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(
 		[this](FriendlyNPC& npc, sf::Time dt) {
 			if (npc.canTalkToHero()) {
 				//currentDialog = npc.getDialog();
 				playerData->setCurrentDialog(npc.getDialog());
 				std::cout << playerData->getCurrentDialog() << "\n";
 			}
-		});
+		});*/
 
-	actionBindings[Action::ContinueDialog].action = derivedAction<Actor>(
+	/*actionBindings[Action::ContinueDialog].action = derivedAction<Actor>(
 		[this](Actor& hero, sf::Time dt) {
 			std::cout << "NOT  " << playerData->getCurrentDialog() << "\n";
 			playerData->setCurrentDialog("");
-		});
+		});*/
 
 
 	/*actionBindings[Action::Fire].action = derivedAction<Actor>(

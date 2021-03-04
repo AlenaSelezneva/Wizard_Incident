@@ -34,6 +34,7 @@ enum class TextureID
 
 	DialogMain,
 	DialogOption,
+	DialogOptionChosen,
 
 
 	Eagle,

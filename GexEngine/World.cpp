@@ -79,9 +79,9 @@ void World::update(sf::Time dt) {
 
 	updateSounds();
 
-	if (!playerData->getCurrentDialog().empty()) {
+	/*if (!playerData->getCurrentDialog().empty()) {
 		return;
-	}
+	}*/
 
 	//adaptPlyerVelocity();
 	//sceneGraph.removeWrecks();
@@ -115,23 +115,23 @@ void World::draw() {
 		target.draw(*r);
 	}
 
-	if (!playerData->getCurrentDialog().empty()) {
+	//if (!playerData->getCurrentDialog().empty()) {
 
-		std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
+	//	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
 
-		std::unique_ptr<TextNode> text(new TextNode(fonts, ""));
-		text->setString(playerData->getCurrentDialog());
-		text->setPosition(150.f, 60.f);
+	//	std::unique_ptr<TextNode> text(new TextNode(fonts, ""));
+	//	text->setString(playerData->getCurrentDialog());
+	//	text->setPosition(150.f, 60.f);
 
-		dialog.get()->attachChild(std::move(text));
+	//	dialog.get()->attachChild(std::move(text));
 
-		//centerOrigin(*text);
+	//	//centerOrigin(*text);
 
-		dialog.get()->setPosition(	worldView.getCenter().x - dialog.get()->getBoundingRect().width / 2,
-									worldView.getCenter().y - dialog.get()->getBoundingRect().height / 2 );
+	//	dialog.get()->setPosition(	worldView.getCenter().x - dialog.get()->getBoundingRect().width / 2,
+	//								worldView.getCenter().y - dialog.get()->getBoundingRect().height / 2 );
 
-		target.draw(*dialog);
-	}
+	//	target.draw(*dialog);
+	//}
 }
 
 void World::loadTextures() {
@@ -142,8 +142,10 @@ void World::loadTextures() {
 	//textures.load(TextureID::Wall, "Media/Textures/wall2.png");
 	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
-	textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
-	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option.png");
+
+	/*textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
+	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
+	textures.load(TextureID::DialogOptionChosen, "Media/Textures/Dialog_Hero_Option_Chosen.png");*/
 
 }
 
@@ -278,6 +280,8 @@ void World::handleCollisions()
 		if (matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
 			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
 			npc.setCanTalkToHero(true);
+
+			playerData->setCurrentDialog(npc.getDialog());
 
 			auto& hero = static_cast<Actor&>(*pair.first);
 

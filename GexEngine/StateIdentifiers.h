@@ -3,9 +3,10 @@
 enum class StateID {
 	None,
 	Title,
-	Menu,
+	//Menu,
 	Game,
-	Loading,
+	Dialog,
+	//Loading,
 	Pause,
 	GameOverState
 };

@@ -48,5 +48,11 @@ bool GameState::handleEvent(const sf::Event& event)
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		requestStackPush(StateID::Pause);
 
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
+				!context.playerData->getCurrentDialog().empty()) {
+		requestStackPush(StateID::Dialog);
+		//context.playerData->setCurrentDialog("");
+	}
+
 	return true;
 }

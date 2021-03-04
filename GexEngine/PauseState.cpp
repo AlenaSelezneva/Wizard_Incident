@@ -68,7 +68,7 @@ bool PauseState::handleEvent(const sf::Event& event)
 	{
 		// Escape pressed, remove itself to return to the game
 		requestStateClear();
-		requestStackPush(StateID::Menu);
+		//requestStackPush(StateID::Menu);
 	}
 	return false;
 }

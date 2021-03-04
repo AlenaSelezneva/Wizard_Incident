@@ -141,6 +141,9 @@
     <ClInclude Include="PlayerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DialogState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -235,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="PlayerData.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogState.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
