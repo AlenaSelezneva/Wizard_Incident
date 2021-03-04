@@ -165,6 +165,7 @@
     <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerData.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifiers.h" />
     <ClInclude Include="SceneNode.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerData.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SoundNode.cpp" />

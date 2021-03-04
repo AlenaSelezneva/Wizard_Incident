@@ -12,6 +12,7 @@ Alena Selezneva
 #include "Player.h"
 #include "MusicPlayer.h"
 #include "SoundPlayer.h"
+#include "PlayerData.h"
 
 #pragma once
 class Application
@@ -36,6 +37,7 @@ private:
 	TextureHolder_t			textures;
 	FontHolder_t			fonts;
 	Player					player;
+	PlayerData				playerData;
 	MusicPlayer				music;
 	SoundPlayer				sounds;
 

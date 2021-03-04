@@ -8,12 +8,14 @@ State::Context::Context(
 	sf::RenderWindow& window,
 	TextureHolder_t& textures,
 	FontHolder_t& fonts,
+	PlayerData* data,
 	Player& player,
 	MusicPlayer& music,
 	SoundPlayer& sounds)
 	: window(&window)
 	, textures(&textures)
 	, fonts(&fonts)
+	, playerData(data)
 	, player(&player)
 	, music(&music)
 	, sounds(&sounds)

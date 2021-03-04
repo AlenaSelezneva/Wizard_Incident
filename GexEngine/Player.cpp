@@ -7,8 +7,9 @@
 #include "FriendlyNPC.h"
 #include <iostream>
 
-Player::Player()
+Player::Player(PlayerData* data)
 	: currentMissionStatus(MissionStatus::Running)
+	, playerData(data)
 {
 
 	initializeKeyBindings();
@@ -18,7 +19,9 @@ Player::Player()
 		if (pair.first == Action::Interact) {
 			pair.second.category = Category::TalkingNPC;
 		}
-		else {
+		else if (pair.first == Action::ContinueDialog) {
+			pair.second.category = Category::Hero;
+		} else {
 			pair.second.category = Category::Hero;
 		}
 	}
@@ -68,7 +71,7 @@ void Player::initializeKeyBindings() {
 	keyBindings[sf::Keyboard::S] = Action::MoveDown;
 
 	keyBindings[sf::Keyboard::Enter] = Action::Interact;
-
+	keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
 }
 
 
@@ -97,11 +100,18 @@ void Player::initializeActions()
 		});
 
 	actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(
-		[](FriendlyNPC& npc, sf::Time dt) {
-			if (npc.canTalkToHero())
-				std::cout << npc.getDialog() << "\n";
-			//a.accelerate(sf::Vector2f(0.f, playerSpeed));
+		[this](FriendlyNPC& npc, sf::Time dt) {
+			if (npc.canTalkToHero()) {
+				//currentDialog = npc.getDialog();
+				playerData->setCurrentDialog(npc.getDialog());
+				std::cout << playerData->getCurrentDialog() << "\n";
+			}
+		});
 
+	actionBindings[Action::ContinueDialog].action = derivedAction<Actor>(
+		[this](Actor& hero, sf::Time dt) {
+			std::cout << "NOT  " << playerData->getCurrentDialog() << "\n";
+			playerData->setCurrentDialog("");
 		});
 
 

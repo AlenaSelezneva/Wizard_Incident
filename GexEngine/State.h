@@ -14,6 +14,7 @@ namespace sf {
 
 class StateStack;
 class Player;
+class PlayerData;
 class MusicPlayer;
 class SoundPlayer;
 
@@ -28,6 +29,7 @@ public:
 			sf::RenderWindow& window
 			, TextureHolder_t& textures
 			, FontHolder_t& fonts
+			, PlayerData* playerData
 			, Player& player
 			, MusicPlayer& music,
 			SoundPlayer& sounds);
@@ -35,6 +37,7 @@ public:
 		sf::RenderWindow* window;
 		TextureHolder_t* textures;
 		FontHolder_t* fonts;
+		PlayerData* playerData;
 		Player* player;
 		MusicPlayer* music;
 		SoundPlayer* sounds;

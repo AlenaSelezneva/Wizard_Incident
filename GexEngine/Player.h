@@ -6,6 +6,7 @@ Alena Selezneva
 
 #include <SFML/Window/Event.hpp>
 #include "Command.h"
+#include "PlayerData.h"
 #include <map>
 
 //forward declaration
@@ -21,6 +22,7 @@ public:
 		MoveDown,
 
 		Interact,
+		ContinueDialog,
 
 		ActionCound,
 	};
@@ -32,7 +34,8 @@ public:
 	};
 
 public:
-	Player();
+	//Player();
+	Player(PlayerData* data);
 
 	void				handleEvent(const sf::Event& event, CommandQueue& commands);
 	void				handleRealTimeInput(CommandQueue& commands);
@@ -46,6 +49,7 @@ private:
 	static bool			isRealtimeAction(Action action);
 
 	MissionStatus		currentMissionStatus;
+	PlayerData*			playerData;
 
 	//public:
 private:

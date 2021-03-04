@@ -7,19 +7,22 @@ Alena Selezneva
 #include "Player.h"
 #include "Category.h"
 #include "FriendlyNPC.h"
+#include "TextNode.h"
+#include "Utility.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
 #include <iostream>
 
 
-World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds)
+World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data)
 	: target(outputTarget)
 	, sceneTexture()
 	, worldView(outputTarget.getDefaultView())
 	, textures()
 	, fonts(fonts)
 	, sounds(sounds)
+	, playerData(data)
 	, sceneGraph()
 	, sceneLayers()
 	, commandQueue()
@@ -73,6 +76,12 @@ void World::update(sf::Time dt) {
 		sceneGraph.onCommand(commandQueue.pop(), dt);
 	}
 
+	updateSounds();
+
+	if (!playerData->getCurrentDialog().empty()) {
+		return;
+	}
+
 	//adaptPlyerVelocity();
 	//sceneGraph.removeWrecks();
 
@@ -80,7 +89,6 @@ void World::update(sf::Time dt) {
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
-	updateSounds();
 }
 
 void World::updateSounds()
@@ -101,8 +109,28 @@ void World::draw() {
 	for (auto t : blockingTiles) {
 		target.draw(*t);
 	}
-	
 
+	if (!playerData->getCurrentDialog().empty()) {
+
+		std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
+
+		//std::unique_ptr<TextNode> text(new TextNode(fonts, currentDialog));
+
+		sf::Text* text = new sf::Text();
+		text->setString(playerData->getCurrentDialog());
+
+		centerOrigin(*text);
+
+		dialog.get()->setPosition(	worldView.getCenter().x - dialog.get()->getBoundingRect().width / 2,
+									worldView.getCenter().y - dialog.get()->getBoundingRect().height / 2 );
+
+		target.draw(*dialog);
+		target.draw(*text);
+
+		/*target.draw(TextNode(fonts, currentDialog));*/
+
+		//std::unique_ptr<TextNode> dialog(new TextNode(fonts, currentDialog));
+	}
 }
 
 void World::loadTextures() {
@@ -113,6 +141,8 @@ void World::loadTextures() {
 	//textures.load(TextureID::Wall, "Media/Textures/wall2.png");
 	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
+	textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main.png");
+	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option.png");
 
 }
 

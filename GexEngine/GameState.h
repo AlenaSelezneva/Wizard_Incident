@@ -5,6 +5,7 @@ Alena Selezneva
 #include "State.h"
 #include "World.h"
 #include "Player.h"
+#include "PlayerData.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -21,7 +22,7 @@ public:
 
 private:
 	World				world;
-	Player& player;
+	Player&				player;
 
 };
 

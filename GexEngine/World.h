@@ -11,6 +11,7 @@
 #include "Actor.h"
 #include "LevelsTilesSchema.h"
 #include "DataTables.h"
+#include "PlayerData.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -29,7 +30,7 @@ class World : private sf::NonCopyable {
 public:
 	explicit				World(sf::RenderTarget& window,
 								const FontHolder_t& fonts,
-								SoundPlayer& sounds);
+								SoundPlayer& sounds, PlayerData* data);
 	void					update(sf::Time dt);
 	void					draw();
 
@@ -102,5 +103,8 @@ private:
 
 	std::vector<std::vector<Tile::Type> > currentLevel;
 	std::map<Tile::Type, TileData>		tileData;
+
+	std::string							currentDialog;
+	PlayerData*								playerData;
 
 };
