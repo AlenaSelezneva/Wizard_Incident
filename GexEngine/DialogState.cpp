@@ -95,20 +95,12 @@ bool DialogState::handleEvent(const sf::Event& event)
 
 	}
 	else if (event.key.code == sf::Keyboard::Up) {
-		/*if (optionIndex > 0)
-			optionIndex--
-		else
-			optionIndex = options.size() - 1;*/
 		--optionIndex;
 		optionIndex += options.size();
 		optionIndex %= options.size();
 		updateChosenDialogOption();
 	}
 	else if (event.key.code == sf::Keyboard::Down) {
-		/*if (optionIndex < option.size() - 1)
-			optionIndex++
-		else
-			optionIndex = 0;*/
 		++optionIndex;
 		optionIndex += options.size();
 		optionIndex %= options.size();
@@ -172,13 +164,6 @@ void DialogState::drawMessageAndOptions(sf::RenderWindow* window)
 
 	for (int i = 0; i < options.size(); ++i) {
 
-		//sf::Texture texture;
-
-		//if (i == optionIndex) 
-		//	texture = textures.get(TextureID::DialogOptionChosen);
-		//else 
-		//	texture = textures.get(TextureID::DialogOption);
-
 		std::unique_ptr<SpriteNode> option(new SpriteNode(i == optionIndex ? textures.get(TextureID::DialogOptionChosen) : textures.get(TextureID::DialogOption)));
 
 		std::unique_ptr<TextNode> optionText(new TextNode(*context.fonts, ""));
@@ -186,8 +171,6 @@ void DialogState::drawMessageAndOptions(sf::RenderWindow* window)
 		optionText->setPosition(90.f, 50.f);
 
 		option->attachChild(std::move(optionText));
-
-		/*option->setPosition(dialog.get()->getBoundingRect().width + horizontalSpacing, dialog.get()->getPosition().y + i * (optionHeight + verticalSpacing));*/
 		option->setPosition(dialog.get()->getBoundingRect().width + horizontalSpacing,  i * (optionHeight + verticalSpacing));
 
 		dialog.get()->attachChild(std::move(option));
