@@ -1,2 +1,3 @@
-﻿  DataTables.cpp
+﻿  DialogState.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(173,20): warning C4018: '<': signed/unsigned mismatch
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

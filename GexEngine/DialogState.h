@@ -33,9 +33,9 @@ private:
 	};
 
 private:
-	TextureHolder_t			textures;
-	sf::Text				currentMessage;
-	std::vector<sf::Text>	options;
-	std::size_t				optionIndex;
+	TextureHolder_t				textures;
+	sf::Text					currentMessage;
+	std::vector<std::string>	options;
+	std::size_t					optionIndex;
 
 };
