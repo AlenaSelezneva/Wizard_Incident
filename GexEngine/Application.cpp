@@ -32,7 +32,8 @@ Application::Application()
 
     fonts.load(FontID::Main, "Media/Sansation.ttf");
 
-    textures.load(TextureID::TitleScreen, "Media/Textures/TitleScreen.png");
+    /*textures.load(TextureID::TitleScreen, "Media/Textures/TitleScreen.png");*/
+    textures.load(TextureID::TitleScreen, "Media/Textures/Title_2.png");
     statsText.setFont(fonts.get(FontID::Main));
     statsText.setPosition(5.f, 5.f);
     statsText.setCharacterSize(10u);

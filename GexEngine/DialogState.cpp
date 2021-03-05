@@ -102,7 +102,6 @@ bool DialogState::handleEvent(const sf::Event& event)
 	}
 	else if (event.key.code == sf::Keyboard::Down) {
 		++optionIndex;
-		optionIndex += options.size();
 		optionIndex %= options.size();
 		updateChosenDialogOption();
 	}
