@@ -9,6 +9,9 @@ public:
 	static std::vector<std::vector<Tile::Type> > getLevelLayout();
 
 private:
+	static std::vector<std::vector<Tile::Type>> IntVectorToTileType(std::vector<std::vector<int> > input, int n, int m);
+
+private:
 	static std::vector<std::vector<Tile::Type> > levelLayout;
 
 };

@@ -26,7 +26,7 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	, sceneGraph()
 	, sceneLayers()
 	, commandQueue()
-	, worldBounds(0.f, 0.f, 2000.f, 2000.f)
+	, worldBounds(0.f, 0.f, 1500.f, 1500.f)
 	, spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f)
 {
 	sceneTexture.create(target.getSize().x, target.getSize().y);
@@ -94,8 +94,8 @@ void World::update(sf::Time dt) {
 
 void World::updateSounds()
 {
-	/*sounds.setListenerPosition(playerAircraft->getWorldPoition());
-	sounds.removeStoppedSounds();*/
+	sounds.setListenerPosition(hero->getWorldPoition());
+	sounds.removeStoppedSounds();
 }
 
 void World::draw() {
