@@ -15,8 +15,8 @@
 struct ActorData
 {
 	int									hitpoints;
-	int									damageDone;
-	float								speed;
+	//int									damageDone;
+	//float								speed;
 	TextureID							texture;
 	std::map<Actor::State, Animation>	animations;
 

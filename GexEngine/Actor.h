@@ -18,7 +18,12 @@ public:
     };
 
     enum class State {
-        Idle, Move, SpellCast, Count
+        IdleLeft, MoveLeft, SpellCastLeft,
+        IdleRight, MoveRight, SpellCastRight,
+        IdleUp, MoveUp, SpellCastUp,
+        IdleDown, MoveDown, SpellCastDown,
+        Death,
+        Count
     };
 
     enum class Direction

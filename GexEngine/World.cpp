@@ -143,7 +143,7 @@ void World::loadTextures() {
 	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
 
-	textures.load(TextureID::Hero, "Media/Textures/Semrid.png");
+	textures.load(TextureID::Hero, "Media/Textures/Archmage_sheet.png");
 
 	/*textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
 	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
@@ -241,10 +241,10 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
 
-	std::unique_ptr<FriendlyNPC> npc(new FriendlyNPC(textures, fonts));
-	npc->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
-	npc->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(npc));
+	//std::unique_ptr<FriendlyNPC> npc(new FriendlyNPC(textures, fonts));
+	//npc->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
+	//npc->setVelocity(0.f, 0.f);
+	//sceneLayers[PlayerLayer]->attachChild(std::move(npc));
 
 	// add player aircraft
 	/*std::unique_ptr<Actor> leader(new Actor(Actor::Type::Hero2, textures, fonts));

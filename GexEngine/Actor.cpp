@@ -13,12 +13,12 @@ Alena Selezneva
 
 namespace
 {
-	//const std::map<Actor::Type, ActorData> TABLE = initializeActorData();
+	const std::map<Actor::Type, ActorData> TABLE = initializeActorData();
 }
 Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
 	: Entity(100)
 	, type_(type)
-	, state_(State::Idle)
+	, state_(State::MoveDown)
 	//, sprite_(textures.get(TABLE.at(type).texture))
 	//, sprite_(textures.get(TextureID::Eagle))
 	, sprite_(textures.get(TextureID::Hero))
@@ -27,6 +27,14 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	, directionIndex_(0)
 	, attack_(false)
 {
+
+	if (type_ == Actor::Type::Hero) {
+		for (auto a : TABLE.at(type).animations)
+		{
+			animations_[a.first] = a.second;
+		}
+	}
+
 
 	/*for (auto a : TABLE.at(type).animations)
 	{
@@ -133,6 +141,11 @@ void Actor::updateStates()
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	Entity::updateCurrent(dt, commands);
+
+	auto rec = animations_.at(state_).update(dt);
+
+	sprite_.setTextureRect(rec);
+	centerOrigin(sprite_);
 
 	/*updateStates();
 
