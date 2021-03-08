@@ -13,15 +13,26 @@ class Actor : public Entity
 {
 public:
     enum class Type {
-        Hero, FightingNPC, TalkingNPC
+        Hero = 1,
+        Archmage = 1 << 1,
+        Dgery = 1 << 2,
+        Elony = 1 << 3,
+        Gazan = 1 << 4,
+        Lunars = 1 << 5,
+        Semrid = 1 << 6,
+        MysteriousFigure = 1 << 7,
+
+        TalkingNPC = Archmage | Dgery | Elony | Gazan | Lunars | Semrid,
+
+        FightingNPC, 
         //Frogger, Car, Log, NPC
     };
 
     enum class State {
         IdleLeft, MoveLeft, SpellCastLeft,
         IdleRight, MoveRight, SpellCastRight,
-        IdleUp, MoveUp, SpellCastUp,
-        IdleDown, MoveDown, SpellCastDown,
+        IdleBack, MoveBack, SpellCastBack,
+        IdleFront, MoveFront, SpellCastFront,
         Death,
         Count
     };

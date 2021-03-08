@@ -18,7 +18,7 @@ namespace
 Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
 	: Entity(100)
 	, type_(type)
-	, state_(State::MoveDown)
+	, state_(State::IdleBack)
 	//, sprite_(textures.get(TABLE.at(type).texture))
 	//, sprite_(textures.get(TextureID::Eagle))
 	, sprite_(textures.get(TextureID::Hero))
@@ -135,6 +135,14 @@ Actor::State Actor::getState() const
 
 void Actor::updateStates()
 {
+	if (getVelocity().x > 0) 
+		state_ = Actor::State::MoveRight;
+	if (getVelocity().x < 0)
+		state_ = Actor::State::MoveLeft;
+	if (getVelocity().y > 0)
+		state_ = Actor::State::MoveFront;
+	if (getVelocity().y < 0)
+		state_ = Actor::State::MoveBack;
 	
 }
 
@@ -147,9 +155,9 @@ void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 	sprite_.setTextureRect(rec);
 	centerOrigin(sprite_);
 
-	/*updateStates();
+	updateStates();
 
-	auto rec = animations_.at(state_).update(dt);
+	/*auto rec = animations_.at(state_).update(dt);
 
 	if (state_ != State::Dead)
 	{
