@@ -215,6 +215,9 @@ void Actor::updateDirections()
 
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
+	if (spellcasting_)
+		setVelocity(0.f, 0.f);
+
 	updateDirections();
 	updateStates();
 

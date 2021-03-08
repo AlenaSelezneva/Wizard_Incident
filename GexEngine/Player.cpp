@@ -138,6 +138,7 @@ bool Player::isRealtimeAction(Action action)
 	case Action::MoveRight:
 	case Action::MoveDown:
 	case Action::MoveUp:
+	case Action::SpellCast:
 		return true;
 	case Action::Interact:
 		return false;
