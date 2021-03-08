@@ -22,7 +22,9 @@ public:
 		MoveDown,
 
 		Interact,
-		ContinueDialog,
+		//ContinueDialog,
+
+		SpellCast,
 
 		ActionCound,
 	};

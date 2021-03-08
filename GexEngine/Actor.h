@@ -33,13 +33,13 @@ public:
         IdleRight, MoveRight, SpellCastRight,
         IdleBack, MoveBack, SpellCastBack,
         IdleFront, MoveFront, SpellCastFront,
-        Death,
+        Dead,
         Count
     };
 
     enum class Direction
     {
-        Left, Right, Up, Down
+        Left, Right, Back, Front
     };
 
 
@@ -55,12 +55,17 @@ public:
     bool            isMarkedForRemoval() const override;
 
     void            attack();
+
+    bool            isSpellCasting();
+    void            setSpellCasting(bool b);
+
     void            setState(State state);
     Actor::State    getState() const;
 
 
 private:
     void         updateStates();
+    void         updateDirections();
     void         updateCurrent(sf::Time dt, CommandQueue& commands) override;
     void         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -75,4 +80,5 @@ protected:
     float                           travelDistance_;
     std::size_t                     directionIndex_;
     bool                            attack_;
+    bool                            spellcasting_;
 };

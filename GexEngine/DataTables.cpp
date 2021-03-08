@@ -55,19 +55,19 @@ std::map<Actor::Type, ActorData> initializeActorData()
 
 
     data[Actor::Type::Hero].animations[Actor::State::SpellCastBack].addFrameSet(frames.getFramesFor("cast_back"));
-    data[Actor::Type::Hero].animations[Actor::State::SpellCastBack].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Hero].animations[Actor::State::SpellCastBack].setDuration(sf::seconds(1.f));
     data[Actor::Type::Hero].animations[Actor::State::SpellCastBack].setRepeating(true);
 
     data[Actor::Type::Hero].animations[Actor::State::SpellCastRight].addFrameSet(frames.getFramesFor("cast_right"));
-    data[Actor::Type::Hero].animations[Actor::State::SpellCastRight].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Hero].animations[Actor::State::SpellCastRight].setDuration(sf::seconds(1.f));
     data[Actor::Type::Hero].animations[Actor::State::SpellCastRight].setRepeating(true);
 
     data[Actor::Type::Hero].animations[Actor::State::SpellCastFront].addFrameSet(frames.getFramesFor("cast_front"));
-    data[Actor::Type::Hero].animations[Actor::State::SpellCastFront].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Hero].animations[Actor::State::SpellCastFront].setDuration(sf::seconds(1.f));
     data[Actor::Type::Hero].animations[Actor::State::SpellCastFront].setRepeating(true);
 
     data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].addFrameSet(frames.getFramesFor("cast_left"));
-    data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].setDuration(sf::seconds(1.f));
     data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].setRepeating(true);
 
 

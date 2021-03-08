@@ -20,9 +20,10 @@ Player::Player(PlayerData* data)
 		if (pair.first == Action::Interact) {
 			pair.second.category = Category::TalkingNPC;
 		}
-		else if (pair.first == Action::ContinueDialog) {
+		/*else if (pair.first == Action::ContinueDialog) {
 			pair.second.category = Category::Hero;
-		} else {
+		} */
+		else {
 			pair.second.category = Category::Hero;
 		}
 	}
@@ -71,6 +72,8 @@ void Player::initializeKeyBindings() {
 	keyBindings[sf::Keyboard::W] = Action::MoveUp;
 	keyBindings[sf::Keyboard::S] = Action::MoveDown;
 
+	keyBindings[sf::Keyboard::Space] = Action::SpellCast;
+
 	//keyBindings[sf::Keyboard::Enter] = Action::Interact;
 	//keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
 }
@@ -98,6 +101,11 @@ void Player::initializeActions()
 	actionBindings[Action::MoveDown].action = derivedAction<Actor>(
 		[playerSpeed](Actor& a, sf::Time dt) {
 			a.accelerate(sf::Vector2f(0.f, playerSpeed));
+		});
+
+	actionBindings[Action::SpellCast].action = derivedAction<Actor>(
+		[playerSpeed](Actor& a, sf::Time dt) {
+			a.setSpellCasting(true);
 		});
 
 	/*actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(

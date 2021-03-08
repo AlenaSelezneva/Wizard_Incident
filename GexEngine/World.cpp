@@ -64,6 +64,7 @@ void World::update(sf::Time dt) {
 
 	// reset player velocity
 	hero->setVelocity(0.f, 0.f);
+	hero->setSpellCasting(false);
 	resetNPCsCanTalk();
 	collidingToRedraw = std::list<SceneNode*>();
 

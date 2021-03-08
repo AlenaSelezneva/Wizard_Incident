@@ -122,6 +122,16 @@ void Actor::attack()
 	attack_ = true;
 }
 
+bool Actor::isSpellCasting()
+{
+	return spellcasting_;
+}
+
+void Actor::setSpellCasting(bool b)
+{
+	spellcasting_ = b;
+}
+
 void Actor::setState(State state)
 {
 	state_ = state;
@@ -135,19 +145,79 @@ Actor::State Actor::getState() const
 
 void Actor::updateStates()
 {
-	if (getVelocity().x > 0) 
-		state_ = Actor::State::MoveRight;
-	if (getVelocity().x < 0)
-		state_ = Actor::State::MoveLeft;
-	if (getVelocity().y > 0)
-		state_ = Actor::State::MoveFront;
-	if (getVelocity().y < 0)
-		state_ = Actor::State::MoveBack;
-	
+	float delta = 0.01f;
+	if (abs(getVelocity().x) < delta && abs(getVelocity().y) <= delta) {
+		if (spellcasting_) {
+  			switch (direction_)
+			{
+			case Direction::Front:
+				state_ = Actor::State::SpellCastFront;
+				break;
+			case Direction::Back:
+				state_ = Actor::State::SpellCastBack;
+				break;
+			case Direction::Right:
+				state_ = Actor::State::SpellCastRight;
+				break;
+			case Direction::Left:
+				state_ = Actor::State::SpellCastLeft;
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			switch (direction_)
+			{
+			case Direction::Front:
+				state_ = Actor::State::IdleFront;
+				break;
+			case Direction::Back:
+				state_ = Actor::State::IdleBack;
+				break;
+			case Direction::Right:
+				state_ = Actor::State::IdleRight;
+				break;
+			case Direction::Left:
+				state_ = Actor::State::IdleLeft;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	else {
+		if (getVelocity().x > 0)
+			state_ = Actor::State::MoveRight;
+		if (getVelocity().x < 0)
+			state_ = Actor::State::MoveLeft;
+		if (getVelocity().y > 0)
+			state_ = Actor::State::MoveFront;
+		if (getVelocity().y < 0)
+			state_ = Actor::State::MoveBack;
+	}
 }
+
+void Actor::updateDirections()
+{
+	if (getVelocity().y > 0)
+		direction_ = Direction::Front;
+	if (getVelocity().y < 0)
+		direction_ = Direction::Back;
+
+	if (getVelocity().x > 0)
+		direction_ = Direction::Right;
+	if (getVelocity().x < 0)
+		direction_ = Direction::Left;
+}
+
+
 
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
+	updateDirections();
+	updateStates();
+
 	Entity::updateCurrent(dt, commands);
 
 	auto rec = animations_.at(state_).update(dt);
@@ -155,29 +225,24 @@ void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 	sprite_.setTextureRect(rec);
 	centerOrigin(sprite_);
 
-	updateStates();
+	/*if (direction_ != Direction::Front && getVelocity().y > 0)
+		direction_ = Direction::Front;
+	if (direction_ != Direction::Back && getVelocity().y < 0)
+		direction_ = Direction::Back;
 
-	/*auto rec = animations_.at(state_).update(dt);
+	if (direction_ != Direction::Right && getVelocity().x > 0)
+		direction_ = Direction::Right;
+	if (direction_ != Direction::Left && getVelocity().x < 0)
+		direction_ = Direction::Left;*/
 
-	if (state_ != State::Dead)
-	{
-		if (direction_ == Direction::Left && getVelocity().x > 0)
-			direction_ = Direction::Right;
-		if (direction_ == Direction::Right && getVelocity().x < 0)
-			direction_ = Direction::Left;
-	}
+	//// flip image left right
+	//if (direction_ == Direction::Left)
+	//	rec = flip(rec);
 
-	// flip image left right
-	if (direction_ == Direction::Left)
-		rec = flip(rec);
+	//if (state_ != State::Dead) // dont move it while dying
+	//	Entity::updateCurrent(dt, commands);
 
-	sprite_.setTextureRect(rec);
-	centerOrigin(sprite_);
-
-	if (state_ != State::Dead) // dont move it while dying
-		Entity::updateCurrent(dt, commands);
-
-	updateMovementPattern(dt);
+	/*updateMovementPattern(dt);
 	updateTexts();*/
 }
 

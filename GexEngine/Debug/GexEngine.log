@@ -1,14 +1,4 @@
 ﻿  Actor.cpp
-  Application.cpp
   DataTables.cpp
-  FriendlyNPC.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\FriendlyNPC.cpp(20,34): warning C4018: '>=': signed/unsigned mismatch
-  GameState.cpp
-  Player.cpp
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(195,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(196,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(416,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(416,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Generating Code...
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe
