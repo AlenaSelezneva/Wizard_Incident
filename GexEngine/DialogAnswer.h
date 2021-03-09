@@ -10,5 +10,8 @@ class DialogAnswer : DialogNode
 public:
 	DialogAnswer(std::string text);
 
+private:
+	// add stats change
+
 };
 

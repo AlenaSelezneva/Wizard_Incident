@@ -144,6 +144,9 @@
     <ClInclude Include="DialogState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
+    <ClInclude Include="DialogManager.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="DialogState.cpp">
       <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogManager.cpp">
+      <Filter>Source Files\Dialog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

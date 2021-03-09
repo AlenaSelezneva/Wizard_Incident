@@ -5,7 +5,7 @@ std::map<Actor::Type, ActorData> initializeActorData()
 {
     std::map<Actor::Type, ActorData> data;
 
-    data[Actor::Type::Hero].texture = TextureID::Hero;
+    data[Actor::Type::Hero].textureID = TextureID::Hero;
 
     JsonFrameParser frames = JsonFrameParser("Media/Textures/Archmage_sheet.json");
 

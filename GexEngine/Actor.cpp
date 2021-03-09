@@ -18,18 +18,28 @@ namespace
 Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
 	: Entity(100)
 	, type_(type)
-	, state_(State::IdleBack)
+	, state_(State::IdleFront)
 	//, sprite_(textures.get(TABLE.at(type).texture))
 	//, sprite_(textures.get(TextureID::Eagle))
-	, sprite_(textures.get(TextureID::Hero))
-	, direction_(Direction::Right)
+	//, sprite_(textures.get(TextureID::Hero))
+	,sprite_()
+	, direction_(Direction::Front)
 	, travelDistance_(0.f)
 	, directionIndex_(0)
 	, attack_(false)
 {
 
 	if (type_ == Actor::Type::Hero) {
+		sprite_.setTexture(textures.get( TABLE.at(type).textureID));
 		for (auto a : TABLE.at(type).animations)
+		{
+			animations_[a.first] = a.second;
+		}
+	}
+	else {
+		// change this when get more json!!!
+		sprite_.setTexture(textures.get(TABLE.at(Actor::Type::Hero).textureID));
+		for (auto a : TABLE.at(Actor::Type::Hero).animations)
 		{
 			animations_[a.first] = a.second;
 		}
@@ -67,6 +77,13 @@ unsigned int Actor::getCategory() const
 	case Type::FightingNPC:
 		return Category::FightingNPC;
 		break;
+	case Type::Archmage:
+	case Type::Dgery:
+	case Type::Elony:
+	case Type::Gazan:
+	case Type::Lunars:
+	case Type::MysteriousFigure:
+	case Type::Semrid:
 	case Type::TalkingNPC:
 		return Category::TalkingNPC;
 		break;
@@ -141,6 +158,11 @@ void Actor::setState(State state)
 Actor::State Actor::getState() const
 {
 	return state_;
+}
+
+Actor::Type Actor::getType() const
+{
+	return type_;
 }
 
 void Actor::updateStates()

@@ -21,7 +21,7 @@ DialogState::DialogState(StateStack& stack, Context context)
 
 	currentMessage = sf::Text();
 	currentMessage.setFont(context.fonts->get(FontID::Main));
-	currentMessage.setString(context.playerData->getCurrentDialog());
+	currentMessage.setString(context.playerData->getCurrentDialog()->getText());
 
 	options = std::vector<std::string>(3);
 
@@ -90,7 +90,7 @@ bool DialogState::handleEvent(const sf::Event& event)
 			requestStackPop();
 
 		}*/
-		context.playerData->setCurrentDialog("");
+		//context.playerData->setCurrentDialog(nullptr);
 		requestStackPop();
 
 	}

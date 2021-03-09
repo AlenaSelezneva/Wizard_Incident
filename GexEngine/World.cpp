@@ -242,10 +242,10 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
 
-	//std::unique_ptr<FriendlyNPC> npc(new FriendlyNPC(textures, fonts));
-	//npc->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
-	//npc->setVelocity(0.f, 0.f);
-	//sceneLayers[PlayerLayer]->attachChild(std::move(npc));
+	std::unique_ptr<FriendlyNPC> archmage(new FriendlyNPC(Actor::Type::Archmage, textures, fonts));
+	archmage->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
+	archmage->setVelocity(0.f, 0.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(archmage));
 
 	// add player aircraft
 	/*std::unique_ptr<Actor> leader(new Actor(Actor::Type::Hero2, textures, fonts));
@@ -284,7 +284,8 @@ void World::handleCollisions()
 			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
 			npc.setCanTalkToHero(true);
 
-			playerData->setCurrentDialog(npc.getDialog());
+			//playerData->setCurrentDialog(npc.getDialog());
+			playerData->setCurrentDialog(npc.getType());
 
 			auto& hero = static_cast<Actor&>(*pair.first);
 

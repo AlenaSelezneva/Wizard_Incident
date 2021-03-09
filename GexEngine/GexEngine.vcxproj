@@ -154,6 +154,7 @@
     <ClInclude Include="DataTables.h" />
     <ClInclude Include="Dialog.h" />
     <ClInclude Include="DialogAnswer.h" />
+    <ClInclude Include="DialogManager.h" />
     <ClInclude Include="DialogMessage.h" />
     <ClInclude Include="DialogNode.h" />
     <ClInclude Include="DialogState.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="DataTables.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="DialogAnswer.cpp" />
+    <ClCompile Include="DialogManager.cpp" />
     <ClCompile Include="DialogMessage.cpp" />
     <ClCompile Include="DialogNode.cpp" />
     <ClCompile Include="DialogState.cpp" />

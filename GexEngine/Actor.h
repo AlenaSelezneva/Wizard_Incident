@@ -62,6 +62,8 @@ public:
     void            setState(State state);
     Actor::State    getState() const;
 
+    Actor::Type     getType() const;
+
 
 private:
     void         updateStates();

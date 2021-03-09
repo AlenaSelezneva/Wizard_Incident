@@ -11,23 +11,26 @@ class DialogNode
 {
 public:
 	enum class Type {
-		Message, Answer, Count
+		Message, HeroOption, Count
 	};
 
 
 public:
-						DialogNode(std::string text, DialogNode::Type type);
+						DialogNode( DialogNode::Type type, std::string text);
+						DialogNode();
 
 	std::string			getText();
-	bool				isAnswerRequired();
+	void				setText(std::string t);
+	//bool				isAnswerRequired();
 	DialogNode::Type	getType();
 	void				attachChild(DialogNode* child);
 
 
 protected:
-	std::string					text;
-	std::list<DialogNode*>		children;
 	Type						type;
+	std::string					text;
+	std::vector<DialogNode*>		children;
+
 
 };
 

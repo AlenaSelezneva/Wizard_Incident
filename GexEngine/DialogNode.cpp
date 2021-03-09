@@ -4,11 +4,18 @@ Alena Selezneva
 
 #include "DialogNode.h"
 
-DialogNode::DialogNode(std::string text, DialogNode::Type type)
-	: text(text)
-	, type(type)
+DialogNode::DialogNode(DialogNode::Type type, std::string text)
+	: type(type)
+	, text(text)
+
 {
-	children = std::list<DialogNode*>();
+	children = std::vector<DialogNode*>();
+}
+
+DialogNode::DialogNode()
+	: type(Type::Message)
+	, text("")
+{
 }
 
 std::string DialogNode::getText()
@@ -16,10 +23,15 @@ std::string DialogNode::getText()
 	return text;
 }
 
-bool DialogNode::isAnswerRequired()
+void DialogNode::setText(std::string t)
 {
-	return children.size() > 1;
+	text = t;
 }
+
+//bool DialogNode::isAnswerRequired()
+//{
+//	return children.size() > 1;
+//}
 
 DialogNode::Type DialogNode::getType()
 {

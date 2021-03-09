@@ -1,12 +1,24 @@
 #include "PlayerData.h"
 
 
-std::string PlayerData::getCurrentDialog() const
+PlayerData::PlayerData()
+	//: dialogManager()
+	//, currentDialog()
+{
+	dialogManager = new DialogManager();
+}
+
+DialogNode* PlayerData::getCurrentDialog() const
 {
 	return currentDialog;
 }
 
-void PlayerData::setCurrentDialog(std::string s)
+void PlayerData::setCurrentDialog(DialogNode* d)
 {
-	currentDialog = s;
+	currentDialog = d;
+}
+
+void PlayerData::setCurrentDialog(Actor::Type npc)
+{
+	currentDialog = dialogManager->getDialog(npc);
 }
