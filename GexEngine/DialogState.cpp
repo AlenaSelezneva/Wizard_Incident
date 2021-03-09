@@ -91,6 +91,7 @@ bool DialogState::handleEvent(const sf::Event& event)
 
 		}*/
 		//context.playerData->setCurrentDialog(nullptr);
+		context.playerData->onCurrentDialogComplete();
 		requestStackPop();
 
 	}

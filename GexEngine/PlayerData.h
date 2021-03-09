@@ -9,15 +9,13 @@ class PlayerData
 public:
 	PlayerData();
 
-	/*std::string				getCurrentDialog() const;
-	void					setCurrentDialog(std::string s);*/
 	DialogNode*				getCurrentDialog() const;
-	void					setCurrentDialog(DialogNode* s);
 	void					setCurrentDialog(Actor::Type npc);
+	void					onCurrentDialogComplete();
 
 private:
-	//std::string				currentDialog;
 	DialogNode*					currentDialog;
+	Actor::Type					currentTalkingNPC;
 	DialogManager*				dialogManager;
 
 };

@@ -11,6 +11,7 @@ public:
 	DialogManager();
 
 	DialogNode* getDialog(Actor::Type);
+	void		removeFirstDialog(Actor::Type);
 
 
 private:

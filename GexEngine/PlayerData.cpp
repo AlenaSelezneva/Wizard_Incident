@@ -13,12 +13,13 @@ DialogNode* PlayerData::getCurrentDialog() const
 	return currentDialog;
 }
 
-void PlayerData::setCurrentDialog(DialogNode* d)
-{
-	currentDialog = d;
-}
-
 void PlayerData::setCurrentDialog(Actor::Type npc)
 {
 	currentDialog = dialogManager->getDialog(npc);
+	currentTalkingNPC = npc;
+}
+
+void PlayerData::onCurrentDialogComplete()
+{
+	dialogManager->removeFirstDialog(currentTalkingNPC);
 }

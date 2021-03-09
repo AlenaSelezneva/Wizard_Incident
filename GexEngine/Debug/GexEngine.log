@@ -1,6 +1,6 @@
 ﻿  Application.cpp
   DialogState.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(164,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(165,20): warning C4018: '<': signed/unsigned mismatch
   GameState.cpp
   Main.cpp
   Player.cpp
