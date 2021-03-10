@@ -38,6 +38,8 @@ enum class TextureID
 
 	Hero,
 
+	BookShelf,
+
 	Eagle,
 	Raptor,
 	Avenger,

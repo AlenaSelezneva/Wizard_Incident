@@ -147,6 +147,9 @@
     <ClInclude Include="DialogManager.h">
       <Filter>Header Files\Dialog</Filter>
     </ClInclude>
+    <ClInclude Include="InteractableObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -247,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="DialogManager.cpp">
       <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractableObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,12 +22,16 @@ namespace Category
 		Door			= 1 << 7,
 		Wall			= 1 << 8,
 
+		BookshelfQuest	= 1 << 9,
+		BookshelfNotQuest = 1 << 10,
+
 		//ParticleSystem = 1 << 7,
 		//SoundEffect = 1 << 4,
 
 
 		NPC = TalkingNPC | FightingNPC,
-		Spell = ShieldSpell | LightningSpell | BaseAttack
+		Spell = ShieldSpell | LightningSpell | BaseAttack,
+		InteractableObject = BookshelfQuest | BookshelfNotQuest
 	};
 }
 

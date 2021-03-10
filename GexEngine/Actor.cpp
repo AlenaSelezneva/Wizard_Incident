@@ -22,7 +22,7 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	//, sprite_(textures.get(TABLE.at(type).texture))
 	//, sprite_(textures.get(TextureID::Eagle))
 	//, sprite_(textures.get(TextureID::Hero))
-	,sprite_()
+	, sprite_()
 	, direction_(Direction::Front)
 	, travelDistance_(0.f)
 	, directionIndex_(0)

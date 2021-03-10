@@ -138,13 +138,15 @@ void World::draw() {
 void World::loadTextures() {
 	//textures.load(TextureID::Hero2, "Media/Textures/Hero2.png");
 	//textures.load(TextureID::Road, "Media/Textures/Road.png");
-	textures.load(TextureID::Eagle, "Media/Textures/Eagle.png");
-	textures.load(TextureID::Raptor, "Media/Textures/Raptor.png");
+	//textures.load(TextureID::Eagle, "Media/Textures/Eagle.png");
+	//textures.load(TextureID::Raptor, "Media/Textures/Raptor.png");
 	//textures.load(TextureID::Wall, "Media/Textures/wall2.png");
 	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
 
 	textures.load(TextureID::Hero, "Media/Textures/Archmage_sheet.png");
+
+	textures.load(TextureID::BookShelf, "Media/Textures/book_shelf.png");
 
 	/*textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
 	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
