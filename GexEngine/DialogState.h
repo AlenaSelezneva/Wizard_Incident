@@ -1,6 +1,8 @@
 #include "State.h"
 #include "ResourceHolder.h"
 #include "ResourceIdentifiers.h"
+#include "DialogNode.h"
+#include "SceneNode.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -24,6 +26,9 @@ public:
 
 private:
 	void				loadTextures();
+	void				buildView();
+	void				buildMessage(sf::RenderWindow* window);
+	void				buildMessageWithOptions(sf::RenderWindow* window);
 
 private:
 	enum OptionNames {
@@ -34,8 +39,10 @@ private:
 
 private:
 	TextureHolder_t				textures;
+	DialogNode*					currentDialog;
 	sf::Text					currentMessage;
-	std::vector<std::string>	options;
+	//std::vector<std::string>	options;
 	std::size_t					optionIndex;
+	SceneNode*					dialogView;					
 
 };

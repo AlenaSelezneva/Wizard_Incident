@@ -42,3 +42,8 @@ void DialogNode::attachChild(DialogNode* child)
 {
 	children.push_back(child);
 }
+
+std::vector<DialogNode*>* DialogNode::getChildren()
+{
+	return &children;
+}

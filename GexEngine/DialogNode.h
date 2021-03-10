@@ -24,12 +24,13 @@ public:
 	//bool				isAnswerRequired();
 	DialogNode::Type	getType();
 	void				attachChild(DialogNode* child);
+	std::vector<DialogNode*>* getChildren();
 
 
 protected:
 	Type						type;
 	std::string					text;
-	std::vector<DialogNode*>		children;
+	std::vector<DialogNode*>	children;
 
 
 };

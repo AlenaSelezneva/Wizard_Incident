@@ -5,7 +5,7 @@ Alena Selezneva
 #include "DialogNode.h"
 
 #pragma once
-class DialogAnswer : DialogNode
+class DialogAnswer : public DialogNode
 {
 public:
 	DialogAnswer(std::string text);
