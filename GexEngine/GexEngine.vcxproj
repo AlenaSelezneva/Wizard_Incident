@@ -169,6 +169,7 @@
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerData.h" />
+    <ClInclude Include="Quest.h" />
     <ClInclude Include="QuestManager.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifiers.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerData.cpp" />
+    <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestManager.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="SceneNode.cpp" />

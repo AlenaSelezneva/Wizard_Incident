@@ -3,7 +3,8 @@ class ObjectWithQuest
 {
 public:
     enum class Type {
-        Hero = 1,
+        None = 0,
+        //Hero = 1,
         Archmage = 1 << 1,
         Dgery = 1 << 2,
         Elony = 1 << 3,

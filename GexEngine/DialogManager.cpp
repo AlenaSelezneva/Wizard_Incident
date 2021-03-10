@@ -9,8 +9,8 @@ DialogManager::DialogManager()
 	mainDialogs = {};
 	defaultDialogs = {};
 
-	mainInterations = {};
-	defaultInteractions = {};
+	//mainInterations = {};
+	//defaultInteractions = {};
 
 	buildWelcomeDialog();
 }

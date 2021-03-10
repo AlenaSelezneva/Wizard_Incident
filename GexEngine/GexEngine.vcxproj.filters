@@ -156,8 +156,11 @@
     <ClInclude Include="QuestManager.h">
       <Filter>Header Files\Quest</Filter>
     </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>Header Files\Quest</Filter>
+    </ClInclude>
     <ClInclude Include="ObjectWithQuest.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Quest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,8 +266,11 @@
     <ClCompile Include="QuestManager.cpp">
       <Filter>Source Files\Quest</Filter>
     </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>Source Files\Quest</Filter>
+    </ClCompile>
     <ClCompile Include="ObjectWithQuest.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Quest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
