@@ -1,13 +1,14 @@
 #pragma once
 #include "Actor.h"
+#include "ObjectWithQuest.h"
 
 #include <string>
 
 class FriendlyNPC :
-    public Actor
+    public Actor, public ObjectWithQuest
 {
 public:
-                    FriendlyNPC(Actor::Type type, const TextureHolder_t& textures, const FontHolder_t& fonts);
+                    FriendlyNPC(Actor::Type type, ObjectWithQuest::Type questType, const TextureHolder_t& textures, const FontHolder_t& fonts);
     void            setCanTalkToHero(bool canTalk);
     bool            canTalkToHero();
 

@@ -1,11 +1,12 @@
 #include "Entity.h"
 #include "ResourceHolder.h"
 #include "ResourceIdentifiers.h"
+#include "ObjectWithQuest.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 
 #pragma once
-class InteractableObject : public Entity
+class InteractableObject : public Entity, public ObjectWithQuest
 {
 public:
     enum Type {
@@ -20,7 +21,7 @@ public:
 
 
 public:
-    InteractableObject(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts);
+    InteractableObject(Type type, ObjectWithQuest::Type questType, const TextureHolder_t& textures, const FontHolder_t& fonts);
     ~InteractableObject() = default;
 
     unsigned int    getCategory() const override;

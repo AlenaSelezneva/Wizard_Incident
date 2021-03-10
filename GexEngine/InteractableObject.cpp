@@ -2,8 +2,9 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-InteractableObject::InteractableObject(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
+InteractableObject::InteractableObject(Type type, ObjectWithQuest::Type questType, const TextureHolder_t& textures, const FontHolder_t& fonts)
 	: Entity(100)
+	, ObjectWithQuest(questType)
 	, type_(type)
 	, sprite_()
 {

@@ -9,6 +9,7 @@ Alena Selezneva
 #include "FriendlyNPC.h"
 #include "TextNode.h"
 #include "Utility.h"
+#include "InteractableObject.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
@@ -244,10 +245,27 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
 
-	std::unique_ptr<FriendlyNPC> archmage(new FriendlyNPC(Actor::Type::Archmage, textures, fonts));
+	std::unique_ptr<FriendlyNPC> archmage(new FriendlyNPC(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, textures, fonts));
 	archmage->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
 	archmage->setVelocity(0.f, 0.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(archmage));
+
+
+
+
+	std::unique_ptr<InteractableObject> shelf1(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, textures, fonts));
+	shelf1->setPosition(spawnPosition.x - 100.f, spawnPosition.y - 1100.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(shelf1));
+
+	std::unique_ptr<InteractableObject> shelf2(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
+	shelf2->setPosition(spawnPosition.x + 150.f, spawnPosition.y - 1100.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(shelf2));
+
+	std::unique_ptr<InteractableObject> shelf3(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
+	shelf3->setPosition(spawnPosition.x + 400.f, spawnPosition.y - 1100.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
+
+
 
 	// add player aircraft
 	/*std::unique_ptr<Actor> leader(new Actor(Actor::Type::Hero2, textures, fonts));
@@ -292,28 +310,47 @@ void World::handleCollisions()
 			auto& hero = static_cast<Actor&>(*pair.first);
 
 			if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
-				float speed = 2.f;
+				adaptPosition(&hero, &npc);
 
-				if (hero.getPosition().x < npc.getPosition().x) {
-					/*hero.move(sf::Vector2f(-1.f, 0.f));*/
-					hero.move(sf::Vector2f(-speed, 0.f));
-				}
-				else {
-					hero.move(sf::Vector2f(speed, 0.f));
-				}
+				//if (hero.getPosition().x < npc.getPosition().x) {
+				//	/*hero.move(sf::Vector2f(-1.f, 0.f));*/
+				//	hero.move(sf::Vector2f(-speed, 0.f));
+				//}
+				//else {
+				//	hero.move(sf::Vector2f(speed, 0.f));
+				//}
 
-				if (hero.getPosition().y < npc.getPosition().y) {
-					hero.move(sf::Vector2f(0.f, -speed));
-				}
-				else {
-					hero.move(sf::Vector2f(0.f, speed));
-				}
+				//if (hero.getPosition().y < npc.getPosition().y) {
+				//	hero.move(sf::Vector2f(0.f, -speed));
+				//}
+				//else {
+				//	hero.move(sf::Vector2f(0.f, speed));
+				//}
 			}
 
 			if (hero.getPosition().y >= npc.getPosition().y) {
 				collidingToRedraw.push_back(&hero);
 			}
 		}
+		else if (matchesCategories(pair, Category::Hero, Category::InteractableObject)) {
+			auto& interactableObject = static_cast<InteractableObject&>(*pair.second);
+			//playerData->setCurrentDialog(npc.getDialog());
+			//playerData->setCurrentDialog(interactableObject.getType());
+
+			auto& hero = static_cast<Actor&>(*pair.first);
+
+
+			if (hero.getBaseTileRect().intersects(interactableObject.getBaseTileRect())) {
+				adaptPosition(&hero, &interactableObject);
+			}
+
+			if (hero.getBaseTileRect().top + hero.getBaseTileRect().height >= 
+						interactableObject.getBaseTileRect().top + interactableObject.getBaseTileRect().height) {
+				collidingToRedraw.push_back(&hero);
+			}
+		}
+		
+				
 	}
 
 	/*
@@ -427,6 +464,26 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 	}
 }
 
+void World::adaptPosition(Entity* ent1, Entity* ent2)
+{
+	float speed = 2.f;
+
+	if (ent1->getPosition().x < ent2->getPosition().x) {
+		/*hero.move(sf::Vector2f(-1.f, 0.f));*/
+		ent1->move(sf::Vector2f(-speed, 0.f));
+	}
+	else {
+		ent1->move(sf::Vector2f(speed, 0.f));
+	}
+
+	if (ent1->getPosition().y < ent2->getPosition().y) {
+		ent1->move(sf::Vector2f(0.f, -speed));
+	}
+	else {
+		ent1->move(sf::Vector2f(0.f, speed));
+	}
+}
+
 
 void World::adaptNPCPosition()
 {
@@ -460,14 +517,16 @@ void World::adaptNPCPosition()
 
 void World::resetNPCsCanTalk()
 {
-	Command resetCanTalk;
+	playerData->setCurrentDialog(Actor::Type::None);
+
+	/*Command resetCanTalk;
 	resetCanTalk.category = Category::TalkingNPC;
 
 	resetCanTalk.action = derivedAction<FriendlyNPC>([this](FriendlyNPC& npc, sf::Time dt) {
 		npc.setCanTalkToHero(false);
 		});
 
-	commandQueue.push(resetCanTalk);
+	commandQueue.push(resetCanTalk);*/
 }
 
 sf::FloatRect World::getViewBounds() const

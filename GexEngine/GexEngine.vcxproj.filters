@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{3d7a7ee8-e300-4d32-911e-13e2d63740c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Quest">
+      <UniqueIdentifier>{19d5fdb3-f40b-4979-ae15-9ce91b24f32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Quest">
+      <UniqueIdentifier>{eda4d36e-e58b-45e9-a405-142d91d481e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneNode.h">
@@ -99,9 +105,6 @@
     <ClInclude Include="DialogNode.h">
       <Filter>Header Files\Dialog</Filter>
     </ClInclude>
-    <ClInclude Include="Dialog.h">
-      <Filter>Header Files\Dialog</Filter>
-    </ClInclude>
     <ClInclude Include="DialogMessage.h">
       <Filter>Header Files\Dialog</Filter>
     </ClInclude>
@@ -148,6 +151,12 @@
       <Filter>Header Files\Dialog</Filter>
     </ClInclude>
     <ClInclude Include="InteractableObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestManager.h">
+      <Filter>Header Files\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectWithQuest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,9 +224,6 @@
     <ClCompile Include="DialogNode.cpp">
       <Filter>Source Files\Dialog</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>Source Files\Dialog</Filter>
-    </ClCompile>
     <ClCompile Include="DialogMessage.cpp">
       <Filter>Source Files\Dialog</Filter>
     </ClCompile>
@@ -252,6 +258,12 @@
       <Filter>Source Files\Dialog</Filter>
     </ClCompile>
     <ClCompile Include="InteractableObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestManager.cpp">
+      <Filter>Source Files\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectWithQuest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

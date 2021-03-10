@@ -15,6 +15,12 @@ DialogNode* PlayerData::getCurrentDialog() const
 
 void PlayerData::setCurrentDialog(Actor::Type npc)
 {
+	if (npc == Actor::Type::None) {
+		currentDialog = nullptr;
+		return;
+	}
+		
+
 	currentDialog = dialogManager->getDialog(npc);
 	currentTalkingNPC = npc;
 }

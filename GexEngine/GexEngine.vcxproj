@@ -152,7 +152,6 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="DataTables.h" />
-    <ClInclude Include="Dialog.h" />
     <ClInclude Include="DialogAnswer.h" />
     <ClInclude Include="DialogManager.h" />
     <ClInclude Include="DialogMessage.h" />
@@ -166,9 +165,11 @@
     <ClInclude Include="JsonFrameParser.h" />
     <ClInclude Include="LevelsTilesSchema.h" />
     <ClInclude Include="MusicPlayer.h" />
+    <ClInclude Include="ObjectWithQuest.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerData.h" />
+    <ClInclude Include="QuestManager.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifiers.h" />
     <ClInclude Include="SceneNode.h" />
@@ -191,7 +192,6 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="DataTables.cpp" />
-    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="DialogAnswer.cpp" />
     <ClCompile Include="DialogManager.cpp" />
     <ClCompile Include="DialogMessage.cpp" />
@@ -205,9 +205,11 @@
     <ClCompile Include="LevelsTilesSchema.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
+    <ClCompile Include="ObjectWithQuest.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerData.cpp" />
+    <ClCompile Include="QuestManager.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SoundNode.cpp" />

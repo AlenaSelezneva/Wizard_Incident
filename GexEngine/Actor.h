@@ -13,6 +13,7 @@ class Actor : public Entity
 {
 public:
     enum class Type {
+        None = 0,
         Hero = 1,
         Archmage = 1 << 1,
         Dgery = 1 << 2,

@@ -2,8 +2,9 @@
 
 
 
-FriendlyNPC::FriendlyNPC(Actor::Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
+FriendlyNPC::FriendlyNPC(Actor::Type type, ObjectWithQuest::Type questType, const TextureHolder_t& textures, const FontHolder_t& fonts)
     :Actor(type, textures, fonts)
+    , ObjectWithQuest(questType)
 {
 }
 

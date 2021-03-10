@@ -52,6 +52,7 @@ private:
 	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
 	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
+	void					adaptPosition(Entity* ent1, Entity* ent2);
 	void					updateSounds();
 
 	void					adaptNPCPosition();

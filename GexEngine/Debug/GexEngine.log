@@ -1,27 +1,6 @@
-﻿  Actor.cpp
-  Application.cpp
-  Command.cpp
-  CommandQueue.cpp
-  DataTables.cpp
-  DialogManager.cpp
-  DialogState.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(86,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(172,20): warning C4018: '<': signed/unsigned mismatch
-  Entity.cpp
-  FriendlyNPC.cpp
-  GameState.cpp
-  InteractableObject.cpp
-  Main.cpp
-  Player.cpp
-  PlayerData.cpp
-  SceneNode.cpp
-  SoundNode.cpp
-  SpriteNode.cpp
-  TextNode.cpp
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(198,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(199,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(420,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(420,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  World.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(199,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(200,21): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(457,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(457,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe
