@@ -39,10 +39,6 @@ void DialogManager::buildWelcomeDialog()
 	mainDialogs[Actor::Type::Archmage] = std::list<DialogNode*>();
 	mainDialogs[Actor::Type::Archmage].push_back(new DialogMessage("Main Dialog"));
 
-	mainDialogs[Actor::Type::Archmage].push_back(new DialogMessage("Second Dialog sdfsd fsd f"));
-
-	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Default Greetings!");
-
 	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 1"));
 	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 2"));
 	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 3"));
@@ -53,4 +49,13 @@ void DialogManager::buildWelcomeDialog()
 	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(1)->attachChild(secondPartOfDialog);
 	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(2)->attachChild(secondPartOfDialog);
 
+
+
+	auto secondDialog = new DialogMessage("Second Dialog sdfsd fsd f");
+	secondDialog->attachChild(new DialogMessage("Second Dialog Continue Talking"));
+	secondDialog->getChildren()->at(0)->attachChild(new DialogMessage("Second Dialog Final Message"));
+
+	mainDialogs[Actor::Type::Archmage].push_back(secondDialog);
+
+	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Default Greetings!");
 }

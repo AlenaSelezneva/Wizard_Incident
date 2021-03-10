@@ -94,6 +94,13 @@ void DialogState::updateChosenDialogOption()
 	options[optionIndex].setFillColor(sf::Color::Red);*/
 }
 
+void DialogState::moveToNextDialogMessage(int childIndex)
+{
+	if (currentDialog->getChildren() > 0) {
+		currentDialog = currentDialog->getChildren()->at(childIndex);
+	}
+}
+
 void DialogState::loadTextures()
 {
 	textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
@@ -125,6 +132,8 @@ void DialogState::buildView()
 void DialogState::buildMessage(sf::RenderWindow* window)
 {
 	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
+
+	optionNodes.clear();
 
 	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, ""));
 	//text->setString(currentMessage.getString());
@@ -187,6 +196,21 @@ bool DialogState::handleEvent(const sf::Event& event)
 	}
 
 	if (event.key.code == sf::Keyboard::Return || event.key.code == sf::Keyboard::Enter) {
+
+		if (currentDialog->getChildren()->size() > 1) {
+			moveToNextDialogMessage(optionIndex);
+			moveToNextDialogMessage();
+			buildView();
+		}
+		else if (currentDialog->getChildren()->size() > 0) {
+			moveToNextDialogMessage();
+			buildView();
+		}
+		else {
+			context.playerData->onCurrentDialogComplete();
+			requestStackPop();
+		}
+
 		/*if (optionIndex == Play) {
 			requestStackPop();
 			requestStackPush(StateID::Game);
@@ -195,10 +219,6 @@ bool DialogState::handleEvent(const sf::Event& event)
 			requestStackPop();
 
 		}*/
-		//context.playerData->setCurrentDialog(nullptr);
-		context.playerData->onCurrentDialogComplete();
-		requestStackPop();
-
 	}
 	else if (event.key.code == sf::Keyboard::Up) {
 		--optionIndex;

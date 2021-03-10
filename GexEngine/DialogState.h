@@ -29,6 +29,8 @@ private:
 	void				buildMessage(sf::RenderWindow* window);
 	void				buildMessageWithOptions(sf::RenderWindow* window);
 
+	void				moveToNextDialogMessage(int childIndex = 0);
+
 private:
 	enum OptionNames {
 		Intelligence, 
