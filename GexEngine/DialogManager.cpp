@@ -1,4 +1,6 @@
 #include "DialogManager.h"
+#include "DialogMessage.h"
+#include "DialogAnswer.h"
 
 DialogManager::DialogManager()
 {
@@ -7,12 +9,7 @@ DialogManager::DialogManager()
 	mainDialogs = {};
 	defaultDialogs = {};
 
-	mainDialogs[Actor::Type::Archmage] = std::list<DialogNode*>();
-	mainDialogs[Actor::Type::Archmage].push_back(new DialogNode(DialogNode::Type::Message, "Main Dialog"));
-
-	mainDialogs[Actor::Type::Archmage].push_back(new DialogNode(DialogNode::Type::Message, "Second Dialog sdfsd fsd f"));
-
-	defaultDialogs[Actor::Type::Archmage] = DialogNode(DialogNode::Type::Message, "Default Greetings!");
+	buildWelcomeDialog();
 }
 
 DialogNode* DialogManager::getDialog(Actor::Type npc)
@@ -35,4 +32,25 @@ void DialogManager::removeFirstDialog(Actor::Type npc)
 	if (mainDialogs.count(npc) > 0 && mainDialogs[npc].size() > 0) {
 		mainDialogs[npc].pop_front();
 	}
+}
+
+void DialogManager::buildWelcomeDialog()
+{
+	mainDialogs[Actor::Type::Archmage] = std::list<DialogNode*>();
+	mainDialogs[Actor::Type::Archmage].push_back(new DialogMessage("Main Dialog"));
+
+	mainDialogs[Actor::Type::Archmage].push_back(new DialogMessage("Second Dialog sdfsd fsd f"));
+
+	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Default Greetings!");
+
+	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 1"));
+	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 2"));
+	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 3"));
+
+	auto secondPartOfDialog = new DialogMessage("Continue Talking...");
+
+	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(0)->attachChild(secondPartOfDialog);
+	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(1)->attachChild(secondPartOfDialog);
+	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(2)->attachChild(secondPartOfDialog);
+
 }

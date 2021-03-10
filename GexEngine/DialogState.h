@@ -1,13 +1,15 @@
 #include "State.h"
 #include "ResourceHolder.h"
 #include "ResourceIdentifiers.h"
-#include "DialogNode.h"
-#include "SceneNode.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 #include <vector>
+
+class SpriteNode;
+class SceneNode;
+class DialogNode;
 
 #pragma once
 class DialogState : public State
@@ -20,9 +22,6 @@ public:
 	virtual bool		handleEvent(const sf::Event& event) override;
 
 	void				updateChosenDialogOption();
-
-	void				drawMainMessage(sf::RenderWindow* window);
-	void				drawMessageAndOptions(sf::RenderWindow* window);
 
 private:
 	void				loadTextures();
@@ -40,6 +39,7 @@ private:
 private:
 	TextureHolder_t				textures;
 	DialogNode*					currentDialog;
+	std::vector<SpriteNode*>	optionNodes;
 	sf::Text					currentMessage;
 	//std::vector<std::string>	options;
 	std::size_t					optionIndex;

@@ -16,6 +16,7 @@ DialogState::DialogState(StateStack& stack, Context context)
 	: State(stack, context)
 	, optionIndex(0)
 	, textures()
+	, optionNodes()
 	, dialogView()
 {
 	loadTextures();
@@ -81,25 +82,16 @@ void DialogState::updateChosenDialogOption()
 	if (currentDialog->getChildren() == nullptr || currentDialog->getChildren()->size() == 0) {
 		return;
 	}
+
+	for (int i = 0; i < optionNodes.size(); ++i) {
+		optionNodes[i]->setTexture((i == optionIndex ? textures.get(TextureID::DialogOptionChosen) : textures.get(TextureID::DialogOption)));
+	}
+	//options[optionIndex].setFillColor(sf::Color::Red);
+
 	/*for (auto& text : options) {
 		text.setFillColor(sf::Color::White);
 	}
 	options[optionIndex].setFillColor(sf::Color::Red);*/
-}
-
-void DialogState::drawMainMessage(sf::RenderWindow* window)
-{
-
-	
-
-	window->draw(*dialogView);	
-}
-
-void DialogState::drawMessageAndOptions(sf::RenderWindow* window)
-{
-	
-
-	//window->draw(*dialog);
 }
 
 void DialogState::loadTextures()
@@ -180,8 +172,12 @@ void DialogState::buildMessageWithOptions(sf::RenderWindow* window)
 		option->attachChild(std::move(optionText));
 		option->setPosition(dialog.get()->getBoundingRect().width + horizontalSpacing, i * (optionHeight + verticalSpacing));
 
+		optionNodes.push_back(option.get());
+
 		dialog.get()->attachChild(std::move(option));
 	}
+
+	dialogView->attachChild(std::move(dialog));
 }
 
 bool DialogState::handleEvent(const sf::Event& event)

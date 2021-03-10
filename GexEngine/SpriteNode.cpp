@@ -32,3 +32,8 @@ sf::FloatRect SpriteNode::getBaseTileRect() const
 
 	return rect;
 }
+
+void SpriteNode::setTexture(sf::Texture& texture)
+{
+	sprite.setTexture(texture);
+}

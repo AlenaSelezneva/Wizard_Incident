@@ -13,6 +13,8 @@ public:
 	DialogNode* getDialog(Actor::Type);
 	void		removeFirstDialog(Actor::Type);
 
+private:
+	void		buildWelcomeDialog();
 
 private:
 	std::map<Actor::Type, std::list<DialogNode*>> mainDialogs;
