@@ -1,10 +1,13 @@
 #include "QuestManager.h"
+#include "DialogMessage.h"
 
 QuestManager::QuestManager()
 {
 	currectQuests = {};
 	possibleQuests = {};
 	completedQuests = {};
+
+	buildBookQuest();
 }
 
 DialogNode* QuestManager::getQuestDialog(ObjectWithQuest::Type type)
@@ -56,6 +59,8 @@ void QuestManager::moveToNextStep(ObjectWithQuest::Type type)
 
 void QuestManager::buildBookQuest()
 {
+	auto quest = new Quest(ObjectWithQuest::Type::BookshelfQuest, new DialogMessage("You found a Spellbook"));
 
+	possibleQuests.push_back(quest);
 
 }

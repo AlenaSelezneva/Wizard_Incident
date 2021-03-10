@@ -19,10 +19,10 @@ unsigned int InteractableObject::getCategory() const
 	switch (type_)
 	{
 	case InteractableObject::Type::BookshelfQuest:
-		return Category::BookshelfQuest;
+		return Category::InteractableObject;
 		break;
 	case InteractableObject::Type::BookshelfNotQuest:
-		return Category::BookshelfNotQuest;
+		return Category::InteractableObject;
 		break;
 	default:
 		return Category::None;

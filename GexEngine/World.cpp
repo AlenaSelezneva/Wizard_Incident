@@ -10,6 +10,7 @@ Alena Selezneva
 #include "TextNode.h"
 #include "Utility.h"
 #include "InteractableObject.h"
+#include "ObjectWithQuest.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
@@ -300,55 +301,84 @@ void World::handleCollisions()
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
 
 	for (auto pair : collisionPairs) {
-		if (matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
+		/*if (matchesCategories(pair, Category::Hero, Category::QuestObject) && playerData->hasPendingQuest((static_cast<ObjectWithQuest&>(*pair.second)).getQuestObjectType())) {
+
+		}*/
+		bool goOnQuest = false;
+
+		if (matchesCategories(pair, Category::Hero, Category::QuestObject)) {
+			auto& hero = static_cast<Actor&>(*pair.first);
+
+			if ((*pair.second).getCategory() == Category::TalkingNPC) {
+				auto& obj = static_cast<FriendlyNPC&>(*pair.second);
+
+				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+					goOnQuest = true;
+					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+				}
+
+				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
+					adaptPosition(&hero, &obj);
+				}
+
+				if (hero.getPosition().y >= obj.getPosition().y) {
+					collidingToRedraw.push_back(&hero);
+				}
+
+			}
+			else {
+				auto& obj = static_cast<InteractableObject&>(*pair.second);
+
+				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+					goOnQuest = true;
+					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+				}
+
+				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
+					adaptPosition(&hero, &obj);
+				}
+
+				if (hero.getPosition().y >= obj.getPosition().y) {
+					collidingToRedraw.push_back(&hero);
+				}
+			}
+
+		}
+
+		if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
 			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
 			npc.setCanTalkToHero(true);
 
-			//playerData->setCurrentDialog(npc.getDialog());
 			playerData->setCurrentDialog(npc.getType());
 
 			auto& hero = static_cast<Actor&>(*pair.first);
 
 			if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
 				adaptPosition(&hero, &npc);
-
-				//if (hero.getPosition().x < npc.getPosition().x) {
-				//	/*hero.move(sf::Vector2f(-1.f, 0.f));*/
-				//	hero.move(sf::Vector2f(-speed, 0.f));
-				//}
-				//else {
-				//	hero.move(sf::Vector2f(speed, 0.f));
-				//}
-
-				//if (hero.getPosition().y < npc.getPosition().y) {
-				//	hero.move(sf::Vector2f(0.f, -speed));
-				//}
-				//else {
-				//	hero.move(sf::Vector2f(0.f, speed));
-				//}
 			}
 
 			if (hero.getPosition().y >= npc.getPosition().y) {
 				collidingToRedraw.push_back(&hero);
 			}
 		}
-		else if (matchesCategories(pair, Category::Hero, Category::InteractableObject)) {
-			auto& interactableObject = static_cast<InteractableObject&>(*pair.second);
-			//playerData->setCurrentDialog(npc.getDialog());
-			//playerData->setCurrentDialog(interactableObject.getType());
+		
+		//else if (matchesCategories(pair, Category::Hero, Category::InteractableObject)) {
+		//	auto& interactableObject = static_cast<InteractableObject&>(*pair.second);
+		//	//playerData->setCurrentDialog(npc.getDialog());
+		//	//playerData->setCurrentDialog(interactableObject.getType());
 
-			auto& hero = static_cast<Actor&>(*pair.first);
+		//	auto& hero = static_cast<Actor&>(*pair.first);
 
 
-			if (hero.getBaseTileRect().intersects(interactableObject.getBaseTileRect())) {
-				adaptPosition(&hero, &interactableObject);
-			}
+		//	if (hero.getBaseTileRect().intersects(interactableObject.getBaseTileRect())) {
+		//		adaptPosition(&hero, &interactableObject);
+		//	}
 
-			if (hero.getBaseTileRect().top + hero.getBaseTileRect().height >= 
-						interactableObject.getBaseTileRect().top + interactableObject.getBaseTileRect().height) {
-				collidingToRedraw.push_back(&hero);
-			}
-		}
+		//	if (hero.getBaseTileRect().top + hero.getBaseTileRect().height >= 
+		//				interactableObject.getBaseTileRect().top + interactableObject.getBaseTileRect().height) {
+		//		collidingToRedraw.push_back(&hero);
+		//	}
+		//}
 		
 				
 	}
