@@ -47,7 +47,7 @@ private:
 	std::size_t					optionIndex;
 	SceneNode*					dialogView;	
 
-	const size_t CHARACTER_SIZE_FOR_OPTION = 14;
+	const size_t CHARACTER_SIZE_FOR_OPTION = 16;
 	const size_t CHARACTER_SIZE_FOR_MESSAGE = 20;
 
 };

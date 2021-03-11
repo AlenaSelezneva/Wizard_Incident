@@ -52,11 +52,11 @@ void DialogManager::buildWelcomeDialog()
 	weldomeSpeach = weldomeSpeach->getChildren()->at(0);
 
 	weldomeSpeach->attachChild(new DialogAnswer("I am so glad to be here! Can’t \nwait to get to learn all of this."));
-	weldomeSpeach->attachChild(new DialogAnswer("Thank you, it is a great honor to \nget here. I need to \nrestrain the Magic so \nthat it only brings good to everyone. "));
+	weldomeSpeach->attachChild(new DialogAnswer("Thank you, it is a great honor to \nget here. I need to restrain the \nMagic so that it only brings good to everyone. "));
 	weldomeSpeach->attachChild(new DialogAnswer("You are lucky to get such a talented \nstudent as I am. I will master my \npowers quickly."));
 
 	DialogNode* nextStep = new DialogMessage(
-		"You have a long way ahead, my pointy-eared friend. Magic requires a lot of effort, patience, \nand a bit of artfulness. This place was created to help the like of you to develop your potential. \nThe magisters will teach you a variety of different spells. You will learn quicker when cooperating \nwith other students.");
+		"You have a long way ahead, my pointy-eared friend. Magic requires a lot of effort, \npatience, and a bit of artfulness. This place was created to help the \nlike of you to develop your potential. The magisters will teach you \na variety of different spells. You will learn quicker when cooperating \nwith other students.");
 
 	weldomeSpeach->getChildren()->at(0)->attachChild(nextStep);
 	weldomeSpeach->getChildren()->at(1)->attachChild(nextStep);
@@ -64,34 +64,38 @@ void DialogManager::buildWelcomeDialog()
 
 	weldomeSpeach = nextStep;
 
-	weldomeSpeach->attachChild(new DialogAnswer("I will be a diligent student. I will \npractice and absorb all the knowledge I \ncan get! "));
-	weldomeSpeach->attachChild(new DialogAnswer("I do hope to find people here who will \nhelp me develop and improve. "));
-	weldomeSpeach->attachChild(new DialogAnswer("Thanks, but I feel a talent in me. You \nwill have no problems with \nme being here."));
+	weldomeSpeach->attachChild(new DialogAnswer("I will be a diligent student. I will practice and \nabsorb all the knowledge I can get! "));
+	weldomeSpeach->attachChild(new DialogAnswer("I do hope to find people here who will help me \ndevelop and improve. "));
+	weldomeSpeach->attachChild(new DialogAnswer("Thanks, but I feel a talent in me. You will \nhave no problems with me being here."));
 
+	nextStep = new DialogMessage(
+		"Anyways, now you will learn your first spell. Every wizard needs to know how to \ndefend themselves, and you can never know where the danger may be. Even within the \nwalls of this school, you may need to be able to stand up for yourself.");
 
-	/*mainDialogs[Actor::Type::Archmage] = std::list<DialogNode*>();
-	mainDialogs[Actor::Type::Archmage].push_back(new DialogMessage(
-		"Welcome to the Wizard Tower, School of Magic. You are one of the few who is able to enter here and who has the potential to master the power of Magic and use it in your own interests."));
+	weldomeSpeach->getChildren()->at(0)->attachChild(nextStep);
+	weldomeSpeach->getChildren()->at(1)->attachChild(nextStep);
+	weldomeSpeach->getChildren()->at(2)->attachChild(nextStep);
 
+	weldomeSpeach = nextStep;
 
+	weldomeSpeach->attachChild(new DialogMessage(
+		"I will teach you to cast a Shield Spell. It will also serve as a test for your \nabilities, as we can’t teach serious Magic to a person unable to cast \nthis simple spell."));
 
-	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 1"));
-	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 2"));
-	mainDialogs[Actor::Type::Archmage].front()->attachChild(new DialogAnswer("Ansswer 3"));
+	weldomeSpeach = weldomeSpeach->getChildren()->at(0);
 
-	auto secondPartOfDialog = new DialogMessage("Continue Talking...");
+	weldomeSpeach->attachChild(new DialogAnswer("Can’t wait to learn the Shield Spell! I am ready to \nbe tested and start my way to knowledge."));
+	weldomeSpeach->attachChild(new DialogAnswer("This sounds reasonable. Who knows where they might \nencounter something dangerous? \nIt is better to be prepared."));
+	weldomeSpeach->attachChild(new DialogAnswer("Will I really have to prove my abilities to you? \nCan’t you see my obvious talent?"));
 
-	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(0)->attachChild(secondPartOfDialog);
-	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(1)->attachChild(secondPartOfDialog);
-	mainDialogs[Actor::Type::Archmage].front()->getChildren()->at(2)->attachChild(secondPartOfDialog);
+	auto difOptiong = weldomeSpeach->getChildren()->at(2);
+	difOptiong->attachChild(new DialogMessage( "I am sorry, but it is absolutely necessary."));
+	difOptiong = difOptiong->getChildren()->at(0);
+	difOptiong->attachChild(new DialogAnswer("Alright, the sooner we start, the sooner it is done."));
 
+	nextStep = new DialogMessage("Let's start");
 
-
-	auto secondDialog = new DialogMessage("Second Dialog sdfsd fsd f");
-	secondDialog->attachChild(new DialogMessage("Second Dialog Continue Talking"));
-	secondDialog->getChildren()->at(0)->attachChild(new DialogMessage("Second Dialog Final Message"));
-
-	mainDialogs[Actor::Type::Archmage].push_back(secondDialog);*/
+	weldomeSpeach->getChildren()->at(0)->attachChild(nextStep);
+	weldomeSpeach->getChildren()->at(1)->attachChild(nextStep);
+	difOptiong->getChildren()->at(0)->attachChild(nextStep);
 
 	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Run along, I am busy...");
 }
