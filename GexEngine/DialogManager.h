@@ -12,7 +12,7 @@ public:
 	DialogManager();
 
 	DialogNode* getDialog(Actor::Type);
-	void		removeFirstDialog(Actor::Type);
+	void		onCurrentDialogComplete(Actor::Type);
 
 private:
 	void		buildWelcomeDialog();

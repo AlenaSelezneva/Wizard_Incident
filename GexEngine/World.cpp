@@ -253,6 +253,11 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(archmage));
 
 
+	std::unique_ptr<FriendlyNPC> gazan(new FriendlyNPC(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, textures, fonts));
+	gazan->setPosition(spawnPosition.x + 500.f, spawnPosition.y - 500.f);
+	gazan->setVelocity(0.f, 0.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(gazan));
+
 
 
 	std::unique_ptr<InteractableObject> shelf1(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, textures, fonts));

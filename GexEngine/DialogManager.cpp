@@ -30,7 +30,7 @@ DialogNode* DialogManager::getDialog(Actor::Type npc)
 	}
 }
 
-void DialogManager::removeFirstDialog(Actor::Type npc)
+void DialogManager::onCurrentDialogComplete(Actor::Type npc)
 {
 	if (mainDialogs.count(npc) > 0 && mainDialogs[npc].size() > 0) {
 		mainDialogs[npc].pop_front();
@@ -51,7 +51,7 @@ void DialogManager::buildWelcomeDialog()
 
 	weldomeSpeach = weldomeSpeach->getChildren()->at(0);
 
-	weldomeSpeach->attachChild(new DialogAnswer("I am so glad to be here! Can’t \nwait to get to learn all of this."));
+	weldomeSpeach->attachChild(new DialogAnswer("I am so glad to be here! Can\'t \nwait to get to learn all of this."));
 	weldomeSpeach->attachChild(new DialogAnswer("Thank you, it is a great honor to \nget here. I need to restrain the \nMagic so that it only brings good to everyone. "));
 	weldomeSpeach->attachChild(new DialogAnswer("You are lucky to get such a talented \nstudent as I am. I will master my \npowers quickly."));
 
@@ -78,24 +78,25 @@ void DialogManager::buildWelcomeDialog()
 	weldomeSpeach = nextStep;
 
 	weldomeSpeach->attachChild(new DialogMessage(
-		"I will teach you to cast a Shield Spell. It will also serve as a test for your \nabilities, as we can’t teach serious Magic to a person unable to cast \nthis simple spell."));
+		"I will teach you to cast a Shield Spell. It will also serve as a test for your \nabilities, as we can\'t teach serious Magic to a person unable to cast \nthis simple spell."));
 
 	weldomeSpeach = weldomeSpeach->getChildren()->at(0);
 
-	weldomeSpeach->attachChild(new DialogAnswer("Can’t wait to learn the Shield Spell! I am ready to \nbe tested and start my way to knowledge."));
+	weldomeSpeach->attachChild(new DialogAnswer("Can\'t wait to learn the Shield Spell! I am ready to \nbe tested and start my way to knowledge."));
 	weldomeSpeach->attachChild(new DialogAnswer("This sounds reasonable. Who knows where they might \nencounter something dangerous? \nIt is better to be prepared."));
-	weldomeSpeach->attachChild(new DialogAnswer("Will I really have to prove my abilities to you? \nCan’t you see my obvious talent?"));
+	weldomeSpeach->attachChild(new DialogAnswer("Will I really have to prove my abilities to you? \nCan\'t you see my obvious talent?"));
 
 	auto difOptiong = weldomeSpeach->getChildren()->at(2);
 	difOptiong->attachChild(new DialogMessage( "I am sorry, but it is absolutely necessary."));
 	difOptiong = difOptiong->getChildren()->at(0);
 	difOptiong->attachChild(new DialogAnswer("Alright, the sooner we start, the sooner it is done."));
 
-	nextStep = new DialogMessage("Let's start");
+	nextStep = new DialogMessage("Let\'s start");
 
 	weldomeSpeach->getChildren()->at(0)->attachChild(nextStep);
 	weldomeSpeach->getChildren()->at(1)->attachChild(nextStep);
 	difOptiong->getChildren()->at(0)->attachChild(nextStep);
 
 	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Run along, I am busy...");
+	defaultDialogs[Actor::Type::Gazan] = DialogMessage("Morning! Nice day for reading, isn\'t it?");
 }

@@ -123,6 +123,7 @@ void DialogState::buildMessage(sf::RenderWindow* window)
 void DialogState::buildMessageWithOptions(sf::RenderWindow* window)
 {
 	optionNodes.clear();
+	optionIndex = 0;
 
 	float optionWidth = 250.f;
 	float optionHeight = 90.f;

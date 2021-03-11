@@ -1,5 +1,6 @@
 #include "QuestManager.h"
 #include "DialogMessage.h"
+#include "DialogAnswer.h"
 #include "QuestNode.h"
 
 #include <algorithm>
@@ -46,54 +47,6 @@ void QuestManager::onCurrentQuestDialogComplete()
 
 	if (quest->isCompleted())
 		moveToCompleted(quest);
-
-	/*for (int i = 0; i < currectQuests.size(); ++i) {
-		if (currectQuests[i]->getObjectType() == type) {
-			currectQuests[i]->complete();
-			auto nextStep = currectQuests[i]->getNextStep();
-
-			if (nextStep == nullptr) {
-				// Work on this later!!
-
-				//completedQuests.push_back();
-				currectQuests[i] = nullptr;
-			}
-			else {
-				currectQuests[i] = nextStep;
-			}
-		}
-	}
-
-	for (int i = 0; i < possibleQuests.size(); ++i) {
-		if (possibleQuests[i]->getObjectType() == type) {
-			possibleQuests[i]->complete();
-
-			auto nextStep = possibleQuests[i]->getNextStep();
-
-			if (nextStep != nullptr) {
-				currectQuests.push_back(nextStep);
-			}
-			else {
-				completedQuests.push_back(possibleQuests[i]);
-			}
-			//possibleQuests[i] = nullptr;
-			possibleQuests.erase(possibleQuests.begin() + i, possibleQuests.begin() + i + 1);
-		}
-
-	}*/
-}
-
-void QuestManager::buildBookQuest()
-{
-	auto questNode = QuestNode(ObjectWithQuest::Type::BookshelfQuest, new DialogMessage("You found a Spellbook"), false);
-	auto questNode2 = QuestNode(ObjectWithQuest::Type::BookshelfNotQuest, new DialogMessage("Not here"), true);
-
-	std::vector<QuestNode> nodes{ questNode, questNode2 };
-
-	auto quest = new Quest(++newId);
-	quest->addQuestNodeBunch(nodes);
-
-	possibleQuests.push_back(quest);
 }
 
 Quest* QuestManager::getQuestById(int id)
@@ -127,4 +80,36 @@ void QuestManager::moveToCompleted(Quest* quest)
 	std::remove_if(possibleQuests.begin(), possibleQuests.end(), [quest](Quest* q) {
 		return q->getId() == quest->getId();
 	});
+}
+
+void QuestManager::buildBookQuest()
+{
+	auto bookQuest = new Quest(++newId);
+
+	DialogNode* gazanRequest = new DialogMessage( "I am looking for the Monstrous Bestiary, could you help me find it please?");
+	gazanRequest->attachChild(new DialogAnswer("I will see what I can do."));
+
+	auto initialNode = QuestNode(ObjectWithQuest::Type::Gazan, gazanRequest, false);
+
+	bookQuest->addQuestNodeBunch({ initialNode });
+
+	auto questNodeBook = QuestNode(ObjectWithQuest::Type::BookshelfQuest, new DialogMessage("You found the Monstrous Bestiary"), false);
+	auto questNodeBook2 = QuestNode(ObjectWithQuest::Type::BookshelfNotQuest, new DialogMessage("The book you are looking for is not here"), true);
+	auto gazanWaitingNode = QuestNode(ObjectWithQuest::Type::Gazan, new DialogMessage("Have you found it yet?"), true);
+
+	std::vector<QuestNode> nodes{ questNodeBook, questNodeBook2, gazanWaitingNode };
+
+	bookQuest->addQuestNodeBunch(nodes);
+
+	gazanRequest = new DialogMessage("Great, that is the one!");
+	gazanRequest->attachChild(new DialogMessage("Could you deliver it to the Archmage now?"));
+	gazanRequest->getChildren()->at(0)->attachChild(new DialogAnswer("Alright, I will do that."));
+
+	/*auto sentToArchmage = QuestNode(ObjectWithQuest::Type::Gazan, gazanRequest, false);*/
+
+	bookQuest->addQuestNodeBunch({ QuestNode(ObjectWithQuest::Type::Gazan, gazanRequest, false) });
+
+	bookQuest->addQuestNodeBunch({ QuestNode(ObjectWithQuest::Type::Archmage, new DialogMessage("Thank you, I have been waiting for this book for half a day now."), false) });
+
+	possibleQuests.push_back(bookQuest);
 }
