@@ -38,8 +38,8 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	}
 	else {
 		// change this when get more json!!!
-		sprite_.setTexture(textures.get(TABLE.at(Actor::Type::Hero).textureID));
-		for (auto a : TABLE.at(Actor::Type::Hero).animations)
+		sprite_.setTexture(textures.get(TABLE.at(Actor::Type::Archmage).textureID));
+		for (auto a : TABLE.at(Actor::Type::Archmage).animations)
 		{
 			animations_[a.first] = a.second;
 		}

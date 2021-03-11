@@ -40,33 +40,17 @@ enum class TextureID
 
 	BookShelf,
 
+	Archmage,
+
 	Eagle,
 	Raptor,
 	Avenger,
-	Bullet,
-	Missile,
-	Desert,
-	HealthRefill,
-	MissileRefill,
 	FireSpread,
 	FireRate,
 
-	Entities,
-	Jungle,
 	TitleScreen,
-	Buttons,
 	Explosion,
 	Particle,
-	FinishLine,
-
-	Road,
-	Zombie1,
-	Zombie2,
-	Zombie3,
-	Zombie4,
-	Zombie5,
-	Hero2,
-
 };
 
 enum class FontID {
