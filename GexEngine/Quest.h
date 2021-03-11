@@ -1,32 +1,34 @@
 
-#include "ObjectWithQuest.h"
+#include "QuestNode.h"
 #include "DialogNode.h"
+#include "ObjectWithQuest.h"
+
+#include <vector>
 
 #pragma once
 class Quest
 {
 public:
-	Quest();
-	Quest(ObjectWithQuest::Type t, DialogNode* dialog);
+	Quest(size_t newId);
 
-	ObjectWithQuest::Type	getObjectType() const;
-	void					setObjectType(ObjectWithQuest::Type t);
+	void			addQuestNodeBunch(std::vector<QuestNode> nodes);
+	DialogNode*		getQuestDialog(ObjectWithQuest::Type obj);
 
-	DialogNode*				getQuestDialog() const;
-	void					setQuestDialog(DialogNode* dialog);
+	void			moveToNextQuestStep();
+	bool			isCompleted() const;
 
-	bool					isCompleted() const;
-	void					complete();
+	size_t			getId() const;
 
-	Quest*					getNextStep();
-	void					setNextStep(Quest* q);
+	void			onDialogShowed();
 
 private:
-	ObjectWithQuest::Type			type;
-	DialogNode*						questDialog;
+	size_t								id;
 
-	Quest*							nextStep;
+	std::vector<std::vector<QuestNode > >	questNodes;
+	size_t								questNodeIndex;
+	bool								isCompleted_;
 
-	bool							isCompleted_;
+	int									lastRestrievedNodeIndex;
+
 };
 

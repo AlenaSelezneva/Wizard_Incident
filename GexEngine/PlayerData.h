@@ -16,7 +16,7 @@ public:
 	void					onCurrentDialogComplete();
 
 	void					setCurrentQuestDialog(ObjectWithQuest::Type obj);
-	void					onCurrectQuestNextStep();
+	void					onCurrectQuestDialogComplete();
 
 	bool					hasPendingQuest(ObjectWithQuest::Type obj);
 

@@ -34,7 +34,7 @@ void PlayerData::setCurrentDialog(Actor::Type npc)
 void PlayerData::onCurrentDialogComplete()
 {
 	if (currentQuestObject != ObjectWithQuest::Type::None)
-		onCurrectQuestNextStep();
+		onCurrectQuestDialogComplete();
 	else
 		dialogManager->removeFirstDialog(currentTalkingNPC);
 }
@@ -51,9 +51,9 @@ void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)
 	currentQuestObject = obj;
 }
 
-void PlayerData::onCurrectQuestNextStep()
+void PlayerData::onCurrectQuestDialogComplete()
 {
-	questManager->moveToNextStep(currentQuestObject);
+	questManager->onCurrentQuestDialogComplete();
 }
 
 bool PlayerData::hasPendingQuest(ObjectWithQuest::Type obj)

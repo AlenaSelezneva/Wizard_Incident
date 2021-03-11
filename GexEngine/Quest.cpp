@@ -1,37 +1,46 @@
 #include "Quest.h"
 
-Quest::Quest()
-	: type(ObjectWithQuest::Type::None)
-	, questDialog()
-	, isCompleted_(false)
+Quest::Quest(size_t newId)
+	: id(newId)
 {
+	questNodes = { {} };
+	questNodeIndex = 0;
+	isCompleted_ = false;
+
+	lastRestrievedNodeIndex = -1;
 }
 
-Quest::Quest(ObjectWithQuest::Type t, DialogNode* dialog)
-	: type(t)
-	, questDialog(dialog)
-	, isCompleted_(false)
+
+void Quest::addQuestNodeBunch(std::vector<QuestNode> nodes)
 {
+	if (questNodes[0].size() == 0)
+		questNodes[0] = nodes;
+	else
+		questNodes.push_back(nodes);
 }
 
-ObjectWithQuest::Type Quest::getObjectType() const
+DialogNode* Quest::getQuestDialog(ObjectWithQuest::Type obj)
 {
-	return type;
+	lastRestrievedNodeIndex = -1;
+
+	if (isCompleted_ || questNodes.size() == 0 || questNodes[questNodeIndex].size() == 0) 
+		return nullptr;	
+
+	for (int i = 0; i < questNodes[questNodeIndex].size(); ++i) {
+		if (questNodes[questNodeIndex][i].getObjectType() == obj) {
+			lastRestrievedNodeIndex = i;
+			return questNodes[questNodeIndex][i].getQuestDialog();
+		}
+	}
+	
+	return nullptr;
 }
 
-void Quest::setObjectType(ObjectWithQuest::Type t)
+void Quest::moveToNextQuestStep()
 {
-	type = t;
-}
-
-DialogNode* Quest::getQuestDialog() const
-{
-	return questDialog;
-}
-
-void Quest::setQuestDialog(DialogNode* dialog)
-{
-	questDialog = dialog;
+	questNodeIndex++;
+	if (questNodeIndex >= questNodes.size())
+		isCompleted_ = true;
 }
 
 bool Quest::isCompleted() const
@@ -39,18 +48,14 @@ bool Quest::isCompleted() const
 	return isCompleted_;
 }
 
-void Quest::complete()
+size_t Quest::getId() const
 {
-	isCompleted_ = true;
+	return id;
 }
 
-Quest* Quest::getNextStep()
+void Quest::onDialogShowed()
 {
-	return nextStep;
+	if (!questNodes[questNodeIndex][lastRestrievedNodeIndex].isRepeated()) {
+		moveToNextQuestStep();
+	}
 }
-
-void Quest::setNextStep(Quest* q)
-{
-	nextStep = q;
-}
-

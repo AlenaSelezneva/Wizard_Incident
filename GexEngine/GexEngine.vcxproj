@@ -171,6 +171,7 @@
     <ClInclude Include="PlayerData.h" />
     <ClInclude Include="Quest.h" />
     <ClInclude Include="QuestManager.h" />
+    <ClInclude Include="QuestNode.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifiers.h" />
     <ClInclude Include="SceneNode.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="PlayerData.cpp" />
     <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestManager.cpp" />
+    <ClCompile Include="QuestNode.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SoundNode.cpp" />

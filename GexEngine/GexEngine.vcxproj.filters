@@ -162,6 +162,9 @@
     <ClInclude Include="ObjectWithQuest.h">
       <Filter>Header Files\Quest</Filter>
     </ClInclude>
+    <ClInclude Include="QuestNode.h">
+      <Filter>Header Files\Quest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -270,6 +273,9 @@
       <Filter>Source Files\Quest</Filter>
     </ClCompile>
     <ClCompile Include="ObjectWithQuest.cpp">
+      <Filter>Source Files\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestNode.cpp">
       <Filter>Source Files\Quest</Filter>
     </ClCompile>
   </ItemGroup>
