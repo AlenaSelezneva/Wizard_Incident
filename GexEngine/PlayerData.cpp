@@ -33,7 +33,10 @@ void PlayerData::setCurrentDialog(Actor::Type npc)
 
 void PlayerData::onCurrentDialogComplete()
 {
-	dialogManager->removeFirstDialog(currentTalkingNPC);
+	if (currentQuestObject != ObjectWithQuest::Type::None)
+		onCurrectQuestNextStep();
+	else
+		dialogManager->removeFirstDialog(currentTalkingNPC);
 }
 
 void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)

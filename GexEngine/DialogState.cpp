@@ -29,22 +29,6 @@ DialogState::DialogState(StateStack& stack, Context context)
 
 	buildView();
 
-	/*sf::Text playOption;
-	playOption.setFont(context.fonts->get(FontID::Main));
-	playOption.setString("Play");
-	centerOrigin(playOption);
-	playOption.setPosition(context.window->getView().getSize() / 2.f);
-	options.push_back(playOption);
-
-	sf::Text exitOption;
-	exitOption.setFont(context.fonts->get(FontID::Main));
-	exitOption.setString("Exit");
-	centerOrigin(exitOption);
-	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
-	options.push_back(exitOption);*/
-
-	//updateDialogOptionText();
-
 	//context.music->play(MusicID::MenuTheme);
 }
 
@@ -61,15 +45,6 @@ void DialogState::draw()
 	window.draw(backgroundShape);
 
 	window.draw(*dialogView);
-
-	//window.draw(currentMessage);
-
-	//drawMainMessage(&window);
-	//drawMessageAndOptions(&window);
-
-	/*for (const auto& text : options) {
-		window.draw(text);
-	}*/
 }
 
 bool DialogState::update(sf::Time dt)
@@ -86,12 +61,6 @@ void DialogState::updateChosenDialogOption()
 	for (int i = 0; i < optionNodes.size(); ++i) {
 		optionNodes[i]->setTexture((i == optionIndex ? textures.get(TextureID::DialogOptionChosen) : textures.get(TextureID::DialogOption)));
 	}
-	//options[optionIndex].setFillColor(sf::Color::Red);
-
-	/*for (auto& text : options) {
-		text.setFillColor(sf::Color::White);
-	}
-	options[optionIndex].setFillColor(sf::Color::Red);*/
 }
 
 void DialogState::moveToNextDialogMessage(int childIndex)
@@ -136,7 +105,6 @@ void DialogState::buildMessage(sf::RenderWindow* window)
 	optionNodes.clear();
 
 	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, ""));
-	//text->setString(currentMessage.getString());
 	text->setString(currentDialog->getText());
 	text->setPosition(150.f, 100.f);
 
@@ -158,7 +126,6 @@ void DialogState::buildMessageWithOptions(sf::RenderWindow* window)
 	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
 
 	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, ""));
-	//text->setString(currentMessage.getString());
 	text->setString(currentDialog->getText());
 	text->setPosition(150.f, 100.f);
 

@@ -50,8 +50,14 @@ void QuestManager::moveToNextStep(ObjectWithQuest::Type type)
 
 			auto nextStep = possibleQuests[i]->getNextStep();
 
-			currectQuests.push_back(nextStep);
-			possibleQuests[i] = nullptr;
+			if (nextStep != nullptr) {
+				currectQuests.push_back(nextStep);
+			}
+			else {
+				completedQuests.push_back(possibleQuests[i]);
+			}
+			//possibleQuests[i] = nullptr;
+			possibleQuests.erase(possibleQuests.begin() + i, possibleQuests.begin() + i + 1);
 		}
 
 	}
