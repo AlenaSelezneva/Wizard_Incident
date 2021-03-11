@@ -20,6 +20,9 @@ Player::Player(PlayerData* data)
 		if (pair.first == Action::Interact) {
 			pair.second.category = Category::TalkingNPC;
 		}
+		else if (pair.first == Action::ShowOrHideJournal) {
+			pair.second.category = Category::Hero;
+		}
 		/*else if (pair.first == Action::ContinueDialog) {
 			pair.second.category = Category::Hero;
 		} */
@@ -72,6 +75,8 @@ void Player::initializeKeyBindings() {
 	keyBindings[sf::Keyboard::W] = Action::MoveUp;
 	keyBindings[sf::Keyboard::S] = Action::MoveDown;
 
+	keyBindings[sf::Keyboard::J] = Action::ShowOrHideJournal;
+
 	keyBindings[sf::Keyboard::Space] = Action::SpellCast;
 
 	//keyBindings[sf::Keyboard::Enter] = Action::Interact;
@@ -106,6 +111,11 @@ void Player::initializeActions()
 	actionBindings[Action::SpellCast].action = derivedAction<Actor>(
 		[playerSpeed](Actor& a, sf::Time dt) {
 			a.setSpellCasting(true);
+		});
+
+	actionBindings[Action::ShowOrHideJournal].action = derivedAction<SceneNode>(
+		[this](SceneNode& node, sf::Time dt) {
+			playerData->flipShowingJournal();
 		});
 
 	/*actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(

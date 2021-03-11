@@ -20,6 +20,10 @@ public:
 
 	bool					hasPendingQuest(ObjectWithQuest::Type obj);
 
+	bool					isShowingJournal();
+	void					setShowingJournal(bool b);
+	void					flipShowingJournal();
+
 
 private:
 	DialogManager*				dialogManager;
@@ -29,6 +33,8 @@ private:
 	ObjectWithQuest::Type		currentQuestObject;
 
 	DialogNode*					currentDialog;
+
+	bool						isShowingJournal_;
 
 };
 

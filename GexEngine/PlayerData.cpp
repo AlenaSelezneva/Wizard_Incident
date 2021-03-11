@@ -59,3 +59,18 @@ bool PlayerData::hasPendingQuest(ObjectWithQuest::Type obj)
 {
 	return questManager->getQuestDialog(obj) != nullptr;
 }
+
+bool PlayerData::isShowingJournal()
+{
+	return isShowingJournal_;
+}
+
+void PlayerData::setShowingJournal(bool b)
+{
+	isShowingJournal_ = b;
+}
+
+void PlayerData::flipShowingJournal()
+{
+	isShowingJournal_ = !isShowingJournal_;
+}

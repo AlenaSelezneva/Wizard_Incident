@@ -156,6 +156,8 @@ void World::loadTextures() {
 	textures.load(TextureID::BookShelf, "Media/Textures/book_shelf.png");
 
 	textures.load(TextureID::QuestJournal, "Media/Textures/QuestJournal.png");
+
+	textures.load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");
 }
 
 void World::buildScene() {
@@ -277,11 +279,14 @@ void World::buildScene() {
 
 void World::biuldUiElements()
 {
+	float margin = 20.f;
+
 	uiGraph = new SceneNode(Category::None);
 
 	std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
 	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
-	qJournalBackground->setPosition(20.f, 20.f);
+	qJournalBackground->setPosition(margin, margin);
+	journalView = qJournalBackground.get();
 
 	std::unique_ptr<TextNode> questHeaderNode(new TextNode(fonts, "", 30));
 	questHeaderNode->setString("Quests\n");
@@ -290,16 +295,34 @@ void World::biuldUiElements()
 	questHeaderNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 80.f);
 
 	std::unique_ptr<TextNode> questTextNode(new TextNode(fonts, "", 16));
-	questTextNode->setString("Some Quest: Do this");
+	//questTextNode->setString("Some Quest: Do this");
 	questTextNode->setTextColor(sf::Color(125, 120, 186));
 	questTextNode->setPosition(0.f, 30.f);
-	questJournal = questTextNode.get();
+	questLog = questTextNode.get();
 
 	questHeaderNode.get()->attachChild(std::move(questTextNode));
 
 	qJournalBackground.get()->attachChild(std::move(questHeaderNode));
 
 	uiGraph->attachChild(std::move(qJournalBackground));
+
+
+	std::unique_ptr<SpriteNode> hintBackground(new SpriteNode(textures.get(TextureID::HintBackground)));
+	hintBackground->setPosition(worldView.getSize().x - hintBackground->getBoundingRect().width - margin,
+			worldView.getSize().y - hintBackground->getBoundingRect().height - margin);
+
+	hintView = hintBackground.get();
+
+	std::unique_ptr<TextNode> hint(new TextNode(fonts, "", 20));
+	hint->setString("Press Enter to talk to ");
+	//questHeaderNode->setTextColor(sf::Color(125, 120, 186));
+
+	hint->setPosition(hintBackground.get()->getBoundingRect().width / 2, hintBackground.get()->getBoundingRect().height / 2);
+	hintText = hint.get();
+
+	hintBackground->attachChild(std::move(hint));
+
+	uiGraph->attachChild(std::move(hintBackground));
 }
 
 void World::addEnemies()

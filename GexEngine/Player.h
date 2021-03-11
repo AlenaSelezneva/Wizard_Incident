@@ -26,6 +26,8 @@ public:
 
 		SpellCast,
 
+		ShowOrHideJournal,
+
 		ActionCound,
 	};
 

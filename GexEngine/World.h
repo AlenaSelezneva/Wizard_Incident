@@ -102,7 +102,6 @@ private:
 	CommandQueue						commandQueue;
 
 	Actor*								hero;
-	TextNode*							questJournal;
 
 	sf::FloatRect						worldBounds;
 	sf::Vector2f						spawnPosition;
@@ -114,4 +113,9 @@ private:
 	std::string							currentDialog;
 	PlayerData*							playerData;
 
+	SceneNode*							journalView;
+	SceneNode*							hintView;
+
+	TextNode*							questLog;
+	TextNode*							hintText;
 };
