@@ -147,7 +147,8 @@ void World::draw() {
 }
 
 void World::loadTextures() {
-	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
+	//textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
+	textures.load(TextureID::Floor, "Media/Textures/floor_new.jpg");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
 
 	textures.load(TextureID::Hero, "Media/Textures/Hero.png");
