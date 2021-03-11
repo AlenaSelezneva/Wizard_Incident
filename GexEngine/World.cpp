@@ -69,6 +69,7 @@ void World::update(sf::Time dt) {
 	hero->setVelocity(0.f, 0.f);
 	hero->setSpellCasting(false);
 	resetNPCsCanTalk();
+	hintView->setVisible(false);
 	collidingToRedraw = std::list<SceneNode*>();
 
 	handleCollisions();
@@ -108,19 +109,8 @@ void World::updateSounds()
 
 void World::updateUiElements()
 {
-	//uiGraph->clearChildren();
 	questLog->setString(playerData->getQuestInstrunstionDisplay());
-
-
 	questsView->setVisible(playerData->isShowingJournal());
-
-	hintView->setVisible(true);
-
-	/*if (playerData->isShowingJournal())
-		buildQuestView();*/
-
-	//buildHintView();
-
 }
 
 void World::draw() {
@@ -382,6 +372,7 @@ void World::handleCollisions()
 					collidingToRedraw.push_back(&hero);
 				}
 
+				hintView->setVisible(true);
 			}
 			else {
 				auto& obj = static_cast<InteractableObject&>(*pair.second);
@@ -398,6 +389,8 @@ void World::handleCollisions()
 				if (hero.getPosition().y >= obj.getPosition().y) {
 					collidingToRedraw.push_back(&hero);
 				}
+
+				hintView->setVisible(true);
 			}
 
 		}
@@ -417,6 +410,8 @@ void World::handleCollisions()
 			if (hero.getPosition().y >= npc.getPosition().y) {
 				collidingToRedraw.push_back(&hero);
 			}
+
+			hintView->setVisible(true);
 		}
 		
 		//else if (matchesCategories(pair, Category::Hero, Category::InteractableObject)) {
@@ -607,15 +602,6 @@ void World::adaptNPCPosition()
 void World::resetNPCsCanTalk()
 {
 	playerData->setCurrentDialog(Actor::Type::None);
-
-	/*Command resetCanTalk;
-	resetCanTalk.category = Category::TalkingNPC;
-
-	resetCanTalk.action = derivedAction<FriendlyNPC>([this](FriendlyNPC& npc, sf::Time dt) {
-		npc.setCanTalkToHero(false);
-		});
-
-	commandQueue.push(resetCanTalk);*/
 }
 
 sf::FloatRect World::getViewBounds() const
