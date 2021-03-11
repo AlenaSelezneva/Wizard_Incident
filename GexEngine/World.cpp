@@ -70,6 +70,7 @@ void World::update(sf::Time dt) {
 	hero->setSpellCasting(false);
 	resetNPCsCanTalk();
 	hintView->setVisible(false);
+	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
 
 	handleCollisions();
@@ -314,7 +315,7 @@ void World::buildHintView()
 	hintView = hintBackground.get();
 
 	std::unique_ptr<TextNode> hint(new TextNode(fonts, "", 20));
-	hint->setString("Press Enter to talk to ");
+	hint->setString("Press ENTER to interact");
 	//questHeaderNode->setTextColor(sf::Color(125, 120, 186));
 
 	hint->setPosition(hintBackground.get()->getBoundingRect().width / 2, hintBackground.get()->getBoundingRect().height / 2);
@@ -362,6 +363,7 @@ void World::handleCollisions()
 				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
 					goOnQuest = true;
 					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+					hintView->setVisible(true);
 				}
 
 				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
@@ -371,8 +373,6 @@ void World::handleCollisions()
 				if (hero.getPosition().y >= obj.getPosition().y) {
 					collidingToRedraw.push_back(&hero);
 				}
-
-				hintView->setVisible(true);
 			}
 			else {
 				auto& obj = static_cast<InteractableObject&>(*pair.second);
@@ -380,6 +380,7 @@ void World::handleCollisions()
 				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
 					goOnQuest = true;
 					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+					hintView->setVisible(true);
 				}
 
 				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
@@ -389,10 +390,7 @@ void World::handleCollisions()
 				if (hero.getPosition().y >= obj.getPosition().y) {
 					collidingToRedraw.push_back(&hero);
 				}
-
-				hintView->setVisible(true);
 			}
-
 		}
 
 		if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
@@ -411,6 +409,7 @@ void World::handleCollisions()
 				collidingToRedraw.push_back(&hero);
 			}
 
+			hintText->setString("Press ENTER to talk");
 			hintView->setVisible(true);
 		}
 		
