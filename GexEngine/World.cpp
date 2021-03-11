@@ -26,6 +26,7 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	, sounds(sounds)
 	, playerData(data)
 	, sceneGraph()
+	, uiGraph()
 	, sceneLayers()
 	, commandQueue()
 	, worldBounds(0.f, 0.f, 1500.f, 1500.f)
@@ -93,6 +94,9 @@ void World::update(sf::Time dt) {
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
+
+	//sceneLayers[UiLevel]->setPosition(worldView.getCenter());
+
 }
 
 void World::updateSounds()
@@ -118,6 +122,11 @@ void World::draw() {
 		target.draw(*r);
 	}
 
+	//uiGraph.setPosition(worldView.getViewport().left, worldView.getViewport().top);
+	
+	target.draw(*uiGraph);
+
+
 	//if (!playerData->getCurrentDialog().empty()) {
 
 	//	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
@@ -138,11 +147,6 @@ void World::draw() {
 }
 
 void World::loadTextures() {
-	//textures.load(TextureID::Hero2, "Media/Textures/Hero2.png");
-	//textures.load(TextureID::Road, "Media/Textures/Road.png");
-	//textures.load(TextureID::Eagle, "Media/Textures/Eagle.png");
-	//textures.load(TextureID::Raptor, "Media/Textures/Raptor.png");
-	//textures.load(TextureID::Wall, "Media/Textures/wall2.png");
 	textures.load(TextureID::Floor, "Media/Textures/Floor50.png");
 	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
 
@@ -151,10 +155,7 @@ void World::loadTextures() {
 
 	textures.load(TextureID::BookShelf, "Media/Textures/book_shelf.png");
 
-	/*textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
-	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
-	textures.load(TextureID::DialogOptionChosen, "Media/Textures/Dialog_Hero_Option_Chosen.png");*/
-
+	textures.load(TextureID::QuestJournal, "Media/Textures/QuestJournal.png");
 }
 
 void World::buildScene() {
@@ -169,15 +170,13 @@ void World::buildScene() {
 			break;
 		case PlayerLayer:
 		case SpellsLayer:
-			category = Category::Type::None;
-			break;
 		default:
 			category = Category::Type::None;
 			break;
 		}
 
 		SceneNode::Ptr layer(new SceneNode(category));
-
+		
 		sceneLayers[i] = layer.get();
 
 		sceneGraph.attachChild(std::move(layer));
@@ -272,16 +271,35 @@ void World::buildScene() {
 	shelf3->setPosition(spawnPosition.x + 400.f, spawnPosition.y - 1100.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
 
+	/*addEnemies();*/
+	biuldUiElements();
+}
 
+void World::biuldUiElements()
+{
+	uiGraph = new SceneNode(Category::None);
 
-	// add player aircraft
-	/*std::unique_ptr<Actor> leader(new Actor(Actor::Type::Hero2, textures, fonts));
-	playerAircraft = leader.get();
-	playerAircraft->setPosition(spawnPosition);
-	playerAircraft->setVelocity(80.f, scrollSpeed);
-	sceneLayers[UpperAir]->attachChild(std::move(leader));
+	std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
+	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
+	qJournalBackground->setPosition(20.f, 20.f);
 
-	addEnemies();*/
+	std::unique_ptr<TextNode> questHeaderNode(new TextNode(fonts, "", 30));
+	questHeaderNode->setString("Quests\n");
+	questHeaderNode->setTextColor(sf::Color(125, 120, 186));
+
+	questHeaderNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 80.f);
+
+	std::unique_ptr<TextNode> questTextNode(new TextNode(fonts, "", 16));
+	questTextNode->setString("Some Quest: Do this");
+	questTextNode->setTextColor(sf::Color(125, 120, 186));
+	questTextNode->setPosition(0.f, 30.f);
+	questJournal = questTextNode.get();
+
+	questHeaderNode.get()->attachChild(std::move(questTextNode));
+
+	qJournalBackground.get()->attachChild(std::move(questHeaderNode));
+
+	uiGraph->attachChild(std::move(qJournalBackground));
 }
 
 void World::addEnemies()
@@ -474,6 +492,8 @@ void World::adaptPlayerPosition()
 		worldView.move(0, -scrollSpeed);
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
+
+	uiGraph->setPosition(viewBounds.left, viewBounds.top);
 }
 
 void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands)

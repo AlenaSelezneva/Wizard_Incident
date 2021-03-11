@@ -12,6 +12,7 @@
 #include "LevelsTilesSchema.h"
 #include "DataTables.h"
 #include "PlayerData.h"
+#include "TextNode.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -42,6 +43,7 @@ public:
 private:
 	void					loadTextures();
 	void					buildScene();
+	void					biuldUiElements();
 
 	void					addEnemies();
 	void					addEnemy(Actor::Type type, float relX, float relY);
@@ -88,6 +90,7 @@ private:
 	SoundPlayer&						sounds;
 
 	SceneNode							sceneGraph;
+	SceneNode*							uiGraph;
 
 	std::vector< SpriteNode*>			walkOverTiles;
 	std::vector< SpriteNode*>			blockingTiles;
@@ -99,6 +102,7 @@ private:
 	CommandQueue						commandQueue;
 
 	Actor*								hero;
+	TextNode*							questJournal;
 
 	sf::FloatRect						worldBounds;
 	sf::Vector2f						spawnPosition;

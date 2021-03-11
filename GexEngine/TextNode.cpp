@@ -20,6 +20,17 @@ void TextNode::setString(const std::string& text_)
 	centerOrigin(text);
 }
 
+void TextNode::setTextColor(sf::Color color)
+{
+	//text.setColor(color);
+	text.setFillColor(color);
+}
+
+void TextNode::setCharacterSize(size_t size)
+{
+	text.setCharacterSize(size);
+}
+
 void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(text, states);

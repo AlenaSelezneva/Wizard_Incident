@@ -37,6 +37,8 @@ enum class TextureID
 	DialogOption,
 	DialogOptionChosen,
 
+	QuestJournal,
+
 	Hero,
 
 	BookShelf,
