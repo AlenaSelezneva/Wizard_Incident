@@ -113,8 +113,8 @@ void Player::initializeActions()
 			a.setSpellCasting(true);
 		});
 
-	actionBindings[Action::ShowOrHideJournal].action = derivedAction<SceneNode>(
-		[this](SceneNode& node, sf::Time dt) {
+	actionBindings[Action::ShowOrHideJournal].action = derivedAction<Actor>(
+		[this](Actor& a, sf::Time dt) {
 			playerData->flipShowingJournal();
 		});
 

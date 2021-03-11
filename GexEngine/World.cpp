@@ -82,6 +82,7 @@ void World::update(sf::Time dt) {
 	}
 
 	updateSounds();
+	updateUiElements();
 
 	/*if (!playerData->getCurrentDialog().empty()) {
 		return;
@@ -105,6 +106,29 @@ void World::updateSounds()
 	sounds.removeStoppedSounds();
 }
 
+void World::updateUiElements()
+{
+	uiGraph->clearChildren();
+
+	if (playerData->isShowingJournal())
+		buildQuestView();
+
+	buildHintView();
+
+	//std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
+
+
+	/*if (playerData->isShowingJournal())
+		uiGraph->attachChild(std::move( std::make_unique<SpriteNode>(questsView) ));*/
+
+	//uiGraph->attachChild(std::move(std::make_unique<SpriteNode>(hintView)));
+
+	/*std::unique_ptr<SpriteNode> pointer;
+	pointer.reset(hintView);*/
+
+	//uiGraph->attachChild(std::move(pointer));
+}
+
 void World::draw() {
 
 	target.setView(worldView);
@@ -122,28 +146,12 @@ void World::draw() {
 		target.draw(*r);
 	}
 
+	if (playerData->isShowingJournal())
+		target.draw(*questsView);
+
 	//uiGraph.setPosition(worldView.getViewport().left, worldView.getViewport().top);
 	
 	target.draw(*uiGraph);
-
-
-	//if (!playerData->getCurrentDialog().empty()) {
-
-	//	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
-
-	//	std::unique_ptr<TextNode> text(new TextNode(fonts, ""));
-	//	text->setString(playerData->getCurrentDialog());
-	//	text->setPosition(150.f, 60.f);
-
-	//	dialog.get()->attachChild(std::move(text));
-
-	//	//centerOrigin(*text);
-
-	//	dialog.get()->setPosition(	worldView.getCenter().x - dialog.get()->getBoundingRect().width / 2,
-	//								worldView.getCenter().y - dialog.get()->getBoundingRect().height / 2 );
-
-	//	target.draw(*dialog);
-	//}
 }
 
 void World::loadTextures() {
@@ -275,10 +283,11 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
 
 	/*addEnemies();*/
-	biuldUiElements();
+	buildQuestView();
+	buildHintView();
 }
 
-void World::biuldUiElements()
+void World::buildQuestView()
 {
 	float margin = 20.f;
 
@@ -287,7 +296,7 @@ void World::biuldUiElements()
 	std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
 	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
 	qJournalBackground->setPosition(margin, margin);
-	journalView = qJournalBackground.get();
+	questsView = qJournalBackground.get();
 
 	std::unique_ptr<TextNode> questHeaderNode(new TextNode(fonts, "", 30));
 	questHeaderNode->setString("Quests\n");
@@ -306,11 +315,15 @@ void World::biuldUiElements()
 	qJournalBackground.get()->attachChild(std::move(questHeaderNode));
 
 	uiGraph->attachChild(std::move(qJournalBackground));
+}
 
+void World::buildHintView()
+{
+	float margin = 20.f;
 
 	std::unique_ptr<SpriteNode> hintBackground(new SpriteNode(textures.get(TextureID::HintBackground)));
 	hintBackground->setPosition(worldView.getSize().x - hintBackground->getBoundingRect().width - margin,
-			worldView.getSize().y - hintBackground->getBoundingRect().height - margin);
+		worldView.getSize().y - hintBackground->getBoundingRect().height - margin);
 
 	hintView = hintBackground.get();
 

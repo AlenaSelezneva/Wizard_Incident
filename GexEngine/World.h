@@ -43,7 +43,8 @@ public:
 private:
 	void					loadTextures();
 	void					buildScene();
-	void					biuldUiElements();
+	void					buildQuestView();
+	void					buildHintView();
 
 	void					addEnemies();
 	void					addEnemy(Actor::Type type, float relX, float relY);
@@ -56,6 +57,7 @@ private:
 	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
 	void					adaptPosition(Entity* ent1, Entity* ent2);
 	void					updateSounds();
+	void					updateUiElements();
 
 	void					adaptNPCPosition();
 	void					resetNPCsCanTalk();
@@ -113,8 +115,8 @@ private:
 	std::string							currentDialog;
 	PlayerData*							playerData;
 
-	SceneNode*							journalView;
-	SceneNode*							hintView;
+	SpriteNode*							questsView;
+	SpriteNode*							hintView;
 
 	TextNode*							questLog;
 	TextNode*							hintText;

@@ -30,6 +30,8 @@ public:
 	void				attachChild(Ptr child);
 	Ptr					detachChild(const SceneNode& node);
 
+	void				clearChildren();
+
 	virtual sf::FloatRect getBoundingRect() const;
 	virtual sf::FloatRect getBaseTileRect() const;
 

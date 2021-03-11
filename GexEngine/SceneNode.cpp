@@ -40,6 +40,11 @@ Ptr	SceneNode::detachChild(const SceneNode& node) {
 	return res;
 }
 
+void SceneNode::clearChildren()
+{
+	children.clear();
+}
+
 sf::FloatRect SceneNode::getBoundingRect() const
 {
 	return sf::FloatRect();

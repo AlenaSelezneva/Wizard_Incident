@@ -1,57 +1,6 @@
-﻿  Actor.cpp
-  Animation.cpp
-  Application.cpp
-  Command.cpp
-  CommandQueue.cpp
-  DataTables.cpp
-  DialogAnswer.cpp
-  DialogManager.cpp
-  DialogMessage.cpp
-  DialogNode.cpp
-  DialogState.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(61,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(150,20): warning C4018: '<': signed/unsigned mismatch
-  Entity.cpp
-  FriendlyNPC.cpp
-  GameState.cpp
-  InteractableObject.cpp
-  JsonFrameParser.cpp
-  LevelsTilesSchema.cpp
-  Main.cpp
-  MusicPlayer.cpp
-  ObjectWithQuest.cpp
-  Generating Code...
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogMessage.cpp(13): warning C4715: 'DialogMessage::isAnswerRequired': not all control paths return a value
-  Compiling...
-  PauseState.cpp
-  Player.cpp
-  PlayerData.cpp
-  Quest.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\Quest.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
-  QuestManager.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(22,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(54,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(64,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(76,7): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(80,7): warning C4834: discarding return value of function with 'nodiscard' attribute
-  QuestNode.cpp
-  ResourceHolder.cpp
-  SceneNode.cpp
-  SoundNode.cpp
-  SoundPlayer.cpp
-  SpriteNode.cpp
-  State.cpp
-  StateStack.cpp
-  TextNode.cpp
-  TitleState.cpp
-  Utility.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\Utility.cpp(16,28): warning C4305: 'initializing': truncation from 'double' to 'float'
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(203,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(204,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(537,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(537,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  World.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(211,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(212,21): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(550,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(550,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe
