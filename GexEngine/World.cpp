@@ -502,6 +502,15 @@ void World::destroyEntitiesOutsideView()
 	commandQueue.push(command);
 }
 
+void World::adaptPlayerVelocity()
+{
+	sf::Vector2f velocity = hero->getVelocity();
+
+	// If moving diagonally, normalize the velocity
+	if (velocity.x != 0.f && velocity.y != 0.f)
+		hero->setVelocity(velocity / std::sqrt(2.f));
+}
+
 void World::adaptPlayerPosition()
 {
 	const float borderDistance = 100.f;
