@@ -5,9 +5,12 @@ std::map<Actor::Type, ActorData> initializeActorData()
 {
     std::map<Actor::Type, ActorData> data;
 
+    data[Actor::Type::Gazan].npcName = "Gazan";
+
     /////////////////////////////////////////// Archmage ///////////////////////////////////////////////
 
     data[Actor::Type::Archmage].textureID = TextureID::Archmage;
+    data[Actor::Type::Archmage].npcName = "Archmage";
 
     JsonFrameParser frames = JsonFrameParser("Media/Textures/Archmage_sheet.json");
 

@@ -1,22 +1,2 @@
-﻿  Application.cpp
-  DialogState.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(61,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(150,20): warning C4018: '<': signed/unsigned mismatch
-  GameState.cpp
-  Main.cpp
-  Player.cpp
-  PlayerData.cpp
-  QuestManager.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(22,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(74,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(79,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(84,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(103,20): warning C4018: '<': signed/unsigned mismatch
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(205,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(206,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(546,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(546,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  FriendlyNPC.cpp
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

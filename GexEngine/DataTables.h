@@ -20,6 +20,7 @@ struct ActorData
 	TextureID							textureID;
 	std::map<Actor::State, Animation>	animations;
 
+	std::string							npcName;
 };
 
 struct TileData {

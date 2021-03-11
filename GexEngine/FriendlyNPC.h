@@ -12,8 +12,11 @@ public:
     void            setCanTalkToHero(bool canTalk);
     bool            canTalkToHero();
 
+    std::string     getName();
+    void            setName(std::string n);
 
 private:
-    bool canTalkToHero_;
+    bool            canTalkToHero_;
+    std::string     name;
 };
 
