@@ -165,6 +165,9 @@
     <ClInclude Include="QuestNode.h">
       <Filter>Header Files\Quest</Filter>
     </ClInclude>
+    <ClInclude Include="UiNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="QuestNode.cpp">
       <Filter>Source Files\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="UiNode.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

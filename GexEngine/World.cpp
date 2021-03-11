@@ -108,25 +108,17 @@ void World::updateSounds()
 
 void World::updateUiElements()
 {
-	uiGraph->clearChildren();
+	//uiGraph->clearChildren();
 
-	if (playerData->isShowingJournal())
-		buildQuestView();
+	questsView->setVisible(playerData->isShowingJournal());
 
-	buildHintView();
-
-	//std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
-
+	hintView->setVisible(true);
 
 	/*if (playerData->isShowingJournal())
-		uiGraph->attachChild(std::move( std::make_unique<SpriteNode>(questsView) ));*/
+		buildQuestView();*/
 
-	//uiGraph->attachChild(std::move(std::make_unique<SpriteNode>(hintView)));
+	//buildHintView();
 
-	/*std::unique_ptr<SpriteNode> pointer;
-	pointer.reset(hintView);*/
-
-	//uiGraph->attachChild(std::move(pointer));
 }
 
 void World::draw() {
@@ -146,8 +138,8 @@ void World::draw() {
 		target.draw(*r);
 	}
 
-	if (playerData->isShowingJournal())
-		target.draw(*questsView);
+	//if (playerData->isShowingJournal())
+	//	target.draw(*questsView);
 
 	//uiGraph.setPosition(worldView.getViewport().left, worldView.getViewport().top);
 	
@@ -293,7 +285,7 @@ void World::buildQuestView()
 
 	uiGraph = new SceneNode(Category::None);
 
-	std::unique_ptr<SpriteNode> qJournalBackground(new SpriteNode(textures.get(TextureID::QuestJournal)));
+	std::unique_ptr<UiNode> qJournalBackground(new UiNode(textures.get(TextureID::QuestJournal)));
 	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
 	qJournalBackground->setPosition(margin, margin);
 	questsView = qJournalBackground.get();
@@ -321,7 +313,7 @@ void World::buildHintView()
 {
 	float margin = 20.f;
 
-	std::unique_ptr<SpriteNode> hintBackground(new SpriteNode(textures.get(TextureID::HintBackground)));
+	std::unique_ptr<UiNode> hintBackground(new UiNode(textures.get(TextureID::HintBackground)));
 	hintBackground->setPosition(worldView.getSize().x - hintBackground->getBoundingRect().width - margin,
 		worldView.getSize().y - hintBackground->getBoundingRect().height - margin);
 

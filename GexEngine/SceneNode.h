@@ -51,13 +51,15 @@ public:
 	virtual bool		isMarkedForRemoval() const;
 	virtual bool		isDestroyed() const;
 
+protected:
+	void				drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+
 private:
 	virtual void		updateCurrent(sf::Time dt, CommandQueue& commands);
 	void				updateChildren(sf::Time dt, CommandQueue& commands);
 
 	virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void		drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	void				drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void				drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 

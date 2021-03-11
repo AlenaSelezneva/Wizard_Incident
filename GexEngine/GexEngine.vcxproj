@@ -184,6 +184,7 @@
     <ClInclude Include="TextNode.h" />
     <ClInclude Include="TileType.h" />
     <ClInclude Include="TitleState.h" />
+    <ClInclude Include="UiNode.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -223,6 +224,7 @@
     <ClCompile Include="StateStack.cpp" />
     <ClCompile Include="TextNode.cpp" />
     <ClCompile Include="TitleState.cpp" />
+    <ClCompile Include="UiNode.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

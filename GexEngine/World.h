@@ -13,6 +13,7 @@
 #include "DataTables.h"
 #include "PlayerData.h"
 #include "TextNode.h"
+#include "UiNode.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -115,8 +116,8 @@ private:
 	std::string							currentDialog;
 	PlayerData*							playerData;
 
-	SpriteNode*							questsView;
-	SpriteNode*							hintView;
+	UiNode*								questsView;
+	UiNode*								hintView;
 
 	TextNode*							questLog;
 	TextNode*							hintText;

@@ -429,3 +429,4 @@ GexEngine/Debug/TitleState.obj
 GexEngine/Debug/vc142.idb
 GexEngine/Debug/vc142.pdb
 GexEngine/Debug/World.obj
+*.obj
