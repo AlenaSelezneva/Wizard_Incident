@@ -74,3 +74,8 @@ void PlayerData::flipShowingJournal()
 {
 	isShowingJournal_ = !isShowingJournal_;
 }
+
+std::string PlayerData::getQuestInstrunstionDisplay() const
+{
+	return questManager->getAllQuestInstructions();
+}

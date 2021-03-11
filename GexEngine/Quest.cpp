@@ -1,9 +1,11 @@
 #include "Quest.h"
 
-Quest::Quest(size_t newId)
+Quest::Quest(size_t newId, std::string name)
 	: id(newId)
+	, questName(name)
 {
 	questNodes = { {} };
+	instructions = {};
 	questNodeIndex = 0;
 	isCompleted_ = false;
 
@@ -11,12 +13,14 @@ Quest::Quest(size_t newId)
 }
 
 
-void Quest::addQuestNodeBunch(std::vector<QuestNode> nodes)
+void Quest::addQuestNodeBunch(std::vector<QuestNode> nodes, std::string instruction)
 {
 	if (questNodes[0].size() == 0)
 		questNodes[0] = nodes;
 	else
 		questNodes.push_back(nodes);
+
+	instructions.push_back(instruction);
 }
 
 DialogNode* Quest::getQuestDialog(ObjectWithQuest::Type obj)
@@ -58,4 +62,9 @@ void Quest::onDialogShowed()
 	if (!questNodes[questNodeIndex][lastRestrievedNodeIndex].isRepeated()) {
 		moveToNextQuestStep();
 	}
+}
+
+std::string Quest::getQuestDisplayLine() const
+{
+	return questName + ": \n\t\t" + instructions[questNodeIndex];
 }

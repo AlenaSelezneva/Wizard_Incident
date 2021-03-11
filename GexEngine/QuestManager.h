@@ -14,11 +14,14 @@ public:
 	DialogNode* getQuestDialog(ObjectWithQuest::Type);
 	void		onCurrentQuestDialogComplete();
 
+	std::string	getAllQuestInstructions() const;
+
 private:
 	void		buildBookQuest();
 	Quest*		getQuestById(int id);
 
 	void		moveToCompleted(Quest* quest);
+	void		removeQuestFromArray(std::vector<Quest*>* arr, int questId);
 
 
 private:

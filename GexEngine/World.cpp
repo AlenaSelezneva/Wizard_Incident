@@ -109,6 +109,8 @@ void World::updateSounds()
 void World::updateUiElements()
 {
 	//uiGraph->clearChildren();
+	questLog->setString(playerData->getQuestInstrunstionDisplay());
+
 
 	questsView->setVisible(playerData->isShowingJournal());
 
@@ -297,14 +299,16 @@ void World::buildQuestView()
 	questHeaderNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 80.f);
 
 	std::unique_ptr<TextNode> questTextNode(new TextNode(fonts, "", 16));
-	//questTextNode->setString("Some Quest: Do this");
+	questTextNode->setString("Some Quest: Do this");
 	questTextNode->setTextColor(sf::Color(125, 120, 186));
-	questTextNode->setPosition(0.f, 30.f);
+	questTextNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 130.f);
 	questLog = questTextNode.get();
 
-	questHeaderNode.get()->attachChild(std::move(questTextNode));
+	//questHeaderNode.get()->attachChild(std::move(questTextNode));
 
 	qJournalBackground.get()->attachChild(std::move(questHeaderNode));
+
+	qJournalBackground.get()->attachChild(std::move(questTextNode));
 
 	uiGraph->attachChild(std::move(qJournalBackground));
 }

@@ -24,6 +24,8 @@ public:
 	void					setShowingJournal(bool b);
 	void					flipShowingJournal();
 
+	std::string				getQuestInstrunstionDisplay() const;
+
 
 private:
 	DialogManager*				dialogManager;
