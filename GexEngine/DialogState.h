@@ -45,6 +45,9 @@ private:
 	sf::Text					currentMessage;
 	//std::vector<std::string>	options;
 	std::size_t					optionIndex;
-	SceneNode*					dialogView;					
+	SceneNode*					dialogView;	
+
+	const size_t CHARACTER_SIZE_FOR_OPTION = 14;
+	const size_t CHARACTER_SIZE_FOR_MESSAGE = 20;
 
 };

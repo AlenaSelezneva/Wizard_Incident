@@ -75,6 +75,7 @@ void DialogState::loadTextures()
 	textures.load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
 	textures.load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
 	textures.load(TextureID::DialogOptionChosen, "Media/Textures/Dialog_Hero_Option_Chosen.png");
+	textures.load(TextureID::DialogMainHero, "Media/Textures/Dialog_Hero_Option_Main.png");
 	/*context.textures->load(TextureID::DialogMain, "Media/Textures/Dialog_Main_2.png");
 	context.textures->load(TextureID::DialogOption, "Media/Textures/Dialog_Hero_Option_2.png");
 	context.textures->load(TextureID::DialogOptionChosen, "Media/Textures/Dialog_Hero_Option_Chosen.png");*/
@@ -100,13 +101,16 @@ void DialogState::buildView()
 
 void DialogState::buildMessage(sf::RenderWindow* window)
 {
-	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
+	std::unique_ptr<SpriteNode> dialog(new SpriteNode(
+		currentDialog->getType() == DialogNode::Type::Message ?
+		textures.get(TextureID::DialogMain) : textures.get(TextureID::DialogMainHero)));
 
 	optionNodes.clear();
 
-	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, ""));
+	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, "", CHARACTER_SIZE_FOR_MESSAGE));
 	text->setString(currentDialog->getText());
-	text->setPosition(150.f, 100.f);
+	/*text->setPosition(150.f, 100.f);*/
+	text->setPosition(dialog.get()->getBoundingRect().width / 2, dialog.get()->getBoundingRect().height / 2);
 
 	dialog.get()->attachChild(std::move(text));
 
@@ -118,16 +122,22 @@ void DialogState::buildMessage(sf::RenderWindow* window)
 
 void DialogState::buildMessageWithOptions(sf::RenderWindow* window)
 {
+	optionNodes.clear();
+
 	float optionWidth = 250.f;
 	float optionHeight = 90.f;
 	float verticalSpacing = 15.f;
 	float horizontalSpacing = 10.f;
 
-	std::unique_ptr<SpriteNode> dialog(new SpriteNode(textures.get(TextureID::DialogMain)));
+	std::unique_ptr<SpriteNode> dialog(new SpriteNode(
+		currentDialog->getType() == DialogNode::Type::Message ? 
+			textures.get(TextureID::DialogMain) : textures.get(TextureID::DialogMainHero)));
 
-	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, ""));
+	std::unique_ptr<TextNode> text(new TextNode(*context.fonts, "", CHARACTER_SIZE_FOR_MESSAGE));
 	text->setString(currentDialog->getText());
-	text->setPosition(150.f, 100.f);
+	//text->setPosition(150.f, 100.f);
+	text->setPosition(dialog.get()->getBoundingRect().width / 2, dialog.get()->getBoundingRect().height / 2);
+
 
 	dialog.get()->attachChild(std::move(text));
 
@@ -140,10 +150,12 @@ void DialogState::buildMessageWithOptions(sf::RenderWindow* window)
 
 		std::unique_ptr<SpriteNode> option(new SpriteNode(i == optionIndex ? textures.get(TextureID::DialogOptionChosen) : textures.get(TextureID::DialogOption)));
 
-		std::unique_ptr<TextNode> optionText(new TextNode(*context.fonts, ""));
+		std::unique_ptr<TextNode> optionText(new TextNode(*context.fonts, "", CHARACTER_SIZE_FOR_OPTION));
 		optionText.get()->setString(currentDialog->getChildren()->at(i)->getText());
 		//optionText.get()->setString(options[i]);
-		optionText->setPosition(90.f, 50.f);
+		//optionText->setPosition(90.f, 50.f);
+		optionText->setPosition(option.get()->getBoundingRect().width / 2, option.get()->getBoundingRect().height / 2);
+
 
 		option->attachChild(std::move(optionText));
 		option->setPosition(dialog.get()->getBoundingRect().width + horizontalSpacing, i * (optionHeight + verticalSpacing));
@@ -166,10 +178,11 @@ bool DialogState::handleEvent(const sf::Event& event)
 
 		if (currentDialog->getChildren()->size() > 1) {
 			moveToNextDialogMessage(optionIndex);
-			moveToNextDialogMessage();
+			//moveToNextDialogMessage();
 			buildView();
 		}
-		else if (currentDialog->getChildren()->size() > 0) {
+		else 
+			if (currentDialog->getChildren()->size() > 0) {
 			moveToNextDialogMessage();
 			buildView();
 		}
@@ -178,14 +191,6 @@ bool DialogState::handleEvent(const sf::Event& event)
 			requestStackPop();
 		}
 
-		/*if (optionIndex == Play) {
-			requestStackPop();
-			requestStackPush(StateID::Game);
-		}
-		else if (optionIndex == Exit) {
-			requestStackPop();
-
-		}*/
 	}
 	else if (event.key.code == sf::Keyboard::Up) {
 		--optionIndex;

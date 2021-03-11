@@ -33,6 +33,7 @@ enum class TextureID
 	Wall,
 
 	DialogMain,
+	DialogMainHero,
 	DialogOption,
 	DialogOptionChosen,
 

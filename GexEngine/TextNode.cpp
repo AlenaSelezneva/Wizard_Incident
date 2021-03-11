@@ -7,10 +7,10 @@ Alena Selezneva
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-TextNode::TextNode(const FontHolder_t& fonts, const std::string& text_)
+TextNode::TextNode(const FontHolder_t& fonts, const std::string& text_, int charSize)
 {
 	text.setFont(fonts.get(FontID::Main));
-	text.setCharacterSize(20);
+	text.setCharacterSize(charSize);
 	setString(text_);
 }
 

@@ -1,9 +1,4 @@
-﻿  QuestManager.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(101,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(106,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(111,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(123,7): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\QuestManager.cpp(127,7): warning C4834: discarding return value of function with 'nodiscard' attribute
+﻿  DialogState.cpp
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(61,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\DialogState.cpp(149,20): warning C4018: '<': signed/unsigned mismatch
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

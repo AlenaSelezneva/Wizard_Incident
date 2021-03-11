@@ -13,7 +13,7 @@
 class TextNode : public SceneNode
 {
 public:
-	TextNode(const FontHolder_t& fonts, const std::string& text_);
+	TextNode(const FontHolder_t& fonts, const std::string& text_, int charSize);
 
 	void			setString(const std::string& text_);
 
