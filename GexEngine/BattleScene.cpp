@@ -45,6 +45,7 @@ void BattleScene::update(sf::Time dt)
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
+	destroyEntitiesOutsideView();
 }
 
 void BattleScene::draw()
@@ -171,10 +172,43 @@ void BattleScene::buildScene()
 
 void BattleScene::handleCollisions(sf::Time dt, CommandQueue& commands)
 {
+	std::set<SceneNode::Pair> collisionPairs;
+	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
+
+	for (auto pair : collisionPairs) {
+		
+		if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
+			auto& hero_ = static_cast<Actor&>(*pair.first);
+			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+
+			hero_.damage(bolt.getDamage());
+			bolt.destroy();
+		}
+
+		if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
+			auto& enemy_ = static_cast<Actor&>(*pair.first);
+			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+
+			enemy_.damage(bolt.getDamage());
+			bolt.destroy();
+		}
+
+		if ( matchesCategories(pair, Category::Hero, Category::FightingNPC)) {
+			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+		}
+	}
 }
 
 void BattleScene::destroyEntitiesOutsideView()
 {
+	Command command;
+	command.category = Category::BaseAttack;
+	command.action = derivedAction<Entity>([this](Entity& e, sf::Time t) {
+		if (!getViewBounds().intersects(e.getBoundingRect())) {
+			e.destroy();
+		}
+		});
+	commandQueue.push(command);
 }
 
 void BattleScene::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands)

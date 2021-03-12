@@ -9,6 +9,7 @@ EnergyBolt::EnergyBolt(Type type, int dmg, const TextureHolder_t& textures)
 	: Entity(1)
 	, type(type)
 	, sprite()
+	, damage(dmg)
 {
 	switch (type) {
 	case Type::AlliedBolt:
