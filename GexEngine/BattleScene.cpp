@@ -48,6 +48,8 @@ void BattleScene::update(sf::Time dt)
 	adaptPlayerPositionRelatingBlocks(dt, getCommands());
 	handleCollisions(dt, commandQueue);
 
+	updateStatTexts();
+
 	//updateSounds();
 
 	sceneGraph.removeWrecks();
@@ -93,6 +95,7 @@ void BattleScene::loadTextures()
 
 	textures.load(TextureID::EnergyBallHero, "Media/Textures/energy_ball_hero.png");
 	textures.load(TextureID::EnergyBallEnemy, "Media/Textures/energy_ball_enemy.png");
+	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell.png");
 
 	textures.load(TextureID::HealthDisplay, "Media/Textures/helth_display.png");
 
@@ -225,6 +228,15 @@ void BattleScene::buildUiStats()
 
 void BattleScene::updateStatTexts()
 {
+	//std::cout << "\nHitpoints: Hero(" << hero->getHitpoints() << "), Enemy (" << enemy->getHitpoints() << ")";
+
+
+	std::string enemyString = "Enemy:\nHP:" + std::to_string( enemy->getHitpoints());
+
+	std::string heroHealth = hero->getFightHealthDisplayString();
+
+	heroStatText->setString(heroHealth);
+	enemyStatsText->setString(enemyString);
 }
 
 void BattleScene::handleCollisions(sf::Time dt, CommandQueue& commands)

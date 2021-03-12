@@ -198,6 +198,15 @@ Actor::Type Actor::getType() const
 	return type_;
 }
 
+std::string Actor::getFightHealthDisplayString()
+{
+	std::string heroString = "Hero: \n";
+	heroString += "HP: ";
+	heroString += std::to_string( getHitpoints());
+
+	return heroString;
+}
+
 void Actor::updateStates()
 {
 	if (isSpellcasting_) {

@@ -45,6 +45,7 @@ enum class TextureID
 
 	EnergyBallHero,
 	EnergyBallEnemy,
+	ShieldSpell,
 
 	Hero,
 

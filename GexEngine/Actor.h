@@ -64,6 +64,8 @@ public:
 
     Actor::Type     getType() const;
 
+    std::string     getFightHealthDisplayString();
+
 
 protected:
     void         updateStates();
