@@ -21,8 +21,9 @@ public:
 	virtual bool		handleEvent(const sf::Event& event) override;
 
 protected:
-	World				world;
 	Player&				player;
 
+private:
+	World				world;
 };
 

@@ -33,6 +33,11 @@ public:
 	explicit				World(sf::RenderTarget& window,
 								const FontHolder_t& fonts,
 								SoundPlayer& sounds, PlayerData* data);
+
+	explicit				World(sf::RenderTarget& window,
+								const FontHolder_t& fonts,
+								SoundPlayer& sounds, PlayerData* data, int n);
+
 	void					update(sf::Time dt);
 	void					draw();
 
@@ -41,7 +46,7 @@ public:
 	bool					hasAlivePlayer() const;
 
 protected:
-	void					loadTextures();
+	virtual void			loadTextures();
 	void					buildScene();
 
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
@@ -81,20 +86,19 @@ protected:
 		LayerCount
 	};
 
-	struct SpawnPoint {
+	/*struct SpawnPoint {
 		SpawnPoint(Actor::Type type, float x, float y)
 			:type(type), x(x), y(y) {}
 
 		Actor::Type type;
 		float x, y;
-	};
+	};*/
 
 
 protected:
-	sf::RenderTarget& target;
+	sf::RenderTarget&					target;
 	sf::RenderTexture					sceneTexture;
 	sf::View							worldView;
-	TextureHolder_t						textures;
 	const FontHolder_t& fonts;
 	SoundPlayer& sounds;
 
@@ -119,9 +123,10 @@ protected:
 	std::vector<std::vector<Tile::Type> > currentLevel;
 	std::map<Tile::Type, TileData>		tileData;
 
-	PlayerData*				playerData;
+	PlayerData*							playerData;
 
 private:
+	TextureHolder_t						textures;
 	SceneNode*							uiGraph;
 
 	std::string							currentDialog;

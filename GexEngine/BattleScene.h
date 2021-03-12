@@ -11,12 +11,10 @@ public:
 	void					update(sf::Time dt);
 	void					draw();
 
-	CommandQueue&			getCommands();
-
 	bool					hasAlivePlayer() const;
 
 protected:
-	void					loadTextures();
+	void					loadTextures() override;
 	void					buildScene();
 
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
@@ -25,8 +23,16 @@ protected:
 
 	//void					updateSounds();
 
+	void					adaptPlayerPosition();
+	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
+	//void					adaptPosition(Entity* ent1, SceneNode* sceneNode);
+	//void					adaptHeroPositionRelatingEntity(Entity* ent2, sf::Time dt, CommandQueue& commands);
+
 private:
-	sf::FloatRect			getBattlefieldBounds() const;
+	TextureHolder_t						textures;
+
+	sf::Vector2f			enemySpawnPoint;
+	//sf::FloatRect			getBattlefieldBounds() const;
 
 };
 

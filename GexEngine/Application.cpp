@@ -11,6 +11,7 @@ Alena Selezneva
 #include "PauseState.h"
 #include "TitleState.h"
 #include "DialogState.h"
+#include "FightingState.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -119,5 +120,6 @@ void Application::registerStates()
     stateStack.registerState<GameState>(StateID::Game);
     stateStack.registerState<PauseState>(StateID::Pause);
     stateStack.registerState<DialogState>(StateID::Dialog);
+    stateStack.registerState<FightingState>(StateID::Battle);
     //stateStack.registerState<GameOverState>(StateID::GameOverState);
 }

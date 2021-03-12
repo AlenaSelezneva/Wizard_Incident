@@ -35,7 +35,6 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	sceneTexture.create(target.getSize().x, target.getSize().y);
 	loadTextures();
 
-
 	worldView.setCenter(spawnPosition);
 
 	currentLevel = LevelsTilesSchema::getLevelLayout();
@@ -43,6 +42,19 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 
 	buildScene();
 }
+
+World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data, int n)
+	: target(outputTarget)
+	, sceneTexture()
+	, worldView(outputTarget.getDefaultView())
+	, textures()
+	, fonts(fonts)
+	, sounds(sounds)
+	, playerData(data)
+	, sceneGraph()
+	, sceneLayers()
+	, commandQueue()
+{}
 
 CommandQueue& World::getCommands()
 {

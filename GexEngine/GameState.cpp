@@ -45,5 +45,10 @@ bool GameState::handleEvent(const sf::Event& event)
 		//context.playerData->setCurrentDialog("");
 	}
 
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B) {
+		requestStackPop();
+		requestStackPush(StateID::Battle);
+	}
+
 	return true;
 }

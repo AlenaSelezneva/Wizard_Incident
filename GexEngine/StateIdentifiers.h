@@ -5,6 +5,7 @@ enum class StateID {
 	Title,
 	//Menu,
 	Game,
+	Battle,
 	Dialog,
 	//Loading,
 	Pause,

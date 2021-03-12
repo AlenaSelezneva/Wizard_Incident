@@ -171,6 +171,9 @@
     <ClInclude Include="FightingState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
+    <ClInclude Include="BattleScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneNode.cpp">
@@ -288,6 +291,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FightingState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

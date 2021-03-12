@@ -1,7 +1,8 @@
 #include "GameState.h"
+#include "BattleScene.h"
 
 #pragma once
-class FightingState : GameState
+class FightingState : public GameState
 {
 public:
 	FightingState(StateStack& stack, Context context);
@@ -11,8 +12,8 @@ public:
 	virtual bool		handleEvent(const sf::Event& event) override;
 
 private:
-	World				world;
-	Player& player;
+	BattleScene			battleScene;
+	Player&				player;
 
 };
 
