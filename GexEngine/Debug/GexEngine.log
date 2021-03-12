@@ -1,10 +1,2 @@
-﻿  FriendlyNPC.cpp
-  Player.cpp
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(196,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(197,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(549,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(549,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-  LINK : D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe not found or not built by the last incremental link; performing full link
+﻿  SceneNode.cpp
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

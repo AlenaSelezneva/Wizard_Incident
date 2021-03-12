@@ -73,7 +73,7 @@ void World::update(sf::Time dt) {
 	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
 
-	handleCollisions();
+	//handleCollisions(dt, commandQueue);
 
 	//destroyEntitiesOutsideView();
 
@@ -82,6 +82,10 @@ void World::update(sf::Time dt) {
 	while (!commandQueue.isEmpty()) {
 		sceneGraph.onCommand(commandQueue.pop(), dt);
 	}
+	adaptPlayerVelocity();
+
+	adaptPlayerPositionRelatingBlocks(dt, getCommands());
+	handleCollisions(dt, commandQueue);
 
 	updateSounds();
 	updateUiElements();
@@ -92,8 +96,6 @@ void World::update(sf::Time dt) {
 
 	//adaptPlyerVelocity();
 	//sceneGraph.removeWrecks();
-
-	adaptPlayerPositionRelatingBlocks(dt, getCommands());
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
@@ -339,7 +341,7 @@ void World::addEnemy(Actor::Type type, float relX, float relY)
 }
 
 
-void World::handleCollisions()
+void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 {
 
 	//handleCollisionsWithTiles();
@@ -366,13 +368,15 @@ void World::handleCollisions()
 					hintView->setVisible(true);
 				}
 
-				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
+				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+
+				/*if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
 					adaptPosition(&hero, &obj);
 				}
 
 				if (hero.getPosition().y >= obj.getPosition().y) {
 					collidingToRedraw.push_back(&hero);
-				}
+				}*/
 			}
 			else {
 				auto& obj = static_cast<InteractableObject&>(*pair.second);
@@ -383,13 +387,15 @@ void World::handleCollisions()
 					hintView->setVisible(true);
 				}
 
-				if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
+				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+
+				/*if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
 					adaptPosition(&hero, &obj);
 				}
 
 				if (hero.getPosition().y >= obj.getPosition().y) {
 					collidingToRedraw.push_back(&hero);
-				}
+				}*/
 			}
 		}
 
@@ -401,13 +407,15 @@ void World::handleCollisions()
 
 			auto& hero = static_cast<Actor&>(*pair.first);
 
-			if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
+			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+
+			/*if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
 				adaptPosition(&hero, &npc);
 			}
 
 			if (hero.getPosition().y >= npc.getPosition().y) {
 				collidingToRedraw.push_back(&hero);
-			}
+			}*/
 
 			hintText->setString("Press ENTER to talk");
 			hintView->setVisible(true);
@@ -534,10 +542,13 @@ void World::adaptPlayerPosition()
 
 void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands)
 {
+	size_t deltaTime = 20;
+
 	auto heroCopy = new Actor(Actor::Type::Hero, textures, fonts);
 	heroCopy->setPosition(hero->getPosition());
 	heroCopy->setVelocity(hero->getVelocity());
-	heroCopy->update(dt, commands);
+
+	heroCopy->update(sf::milliseconds(dt.asMilliseconds() + deltaTime), commands);
 
 	for (auto t : blockingTiles) {
 		if (hero->getBoundingRect().intersects(t->getBoundingRect()) &&
@@ -546,7 +557,8 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 
 		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
 			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
-				hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+				//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+				adaptPosition(hero, t);
 			}
 			else {
 				hero->setVelocity(0, 0);
@@ -556,11 +568,11 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 	}
 }
 
-void World::adaptPosition(Entity* ent1, Entity* ent2)
+void World::adaptPosition(Entity* ent1, SceneNode* sceneNode)
 {
 	float speed = 2.f;
 
-	if (ent1->getPosition().x < ent2->getPosition().x) {
+	if (ent1->getPosition().x < sceneNode->getPosition().x) {
 		/*hero.move(sf::Vector2f(-1.f, 0.f));*/
 		ent1->move(sf::Vector2f(-speed, 0.f));
 	}
@@ -568,11 +580,48 @@ void World::adaptPosition(Entity* ent1, Entity* ent2)
 		ent1->move(sf::Vector2f(speed, 0.f));
 	}
 
-	if (ent1->getPosition().y < ent2->getPosition().y) {
+	if (ent1->getPosition().y < sceneNode->getPosition().y) {
 		ent1->move(sf::Vector2f(0.f, -speed));
 	}
 	else {
 		ent1->move(sf::Vector2f(0.f, speed));
+	}
+}
+
+void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, CommandQueue& commands)
+{
+	auto copy = new Actor(Actor::Type::Hero, textures, fonts);
+	copy->setPosition(hero->getPosition());
+	copy->setVelocity(hero->getVelocity());
+	/*copy->update(dt, commands);*/
+
+	size_t deltaTime = 20;
+	copy->update(sf::milliseconds(dt.asMilliseconds() + deltaTime), commands);
+
+	SceneNode* obj;
+
+	if (entity->getCategory() == Category::TalkingNPC) {
+		obj = static_cast<FriendlyNPC*>(entity);
+	}
+	else {
+		obj = static_cast<InteractableObject*>(entity);
+	}
+
+
+	if (hero->getBoundingRect().intersects(obj->getBoundingRect()) &&
+		hero->getBoundingRect().top + hero->getBoundingRect().height >= obj->getBoundingRect().top + obj->getBoundingRect().height)
+		collidingToRedraw.push_back(hero);
+	else
+		collidingToRedraw.push_back(obj);
+
+	if (copy->getBaseTileRect().intersects(obj->getBaseTileRect())) {
+		if (hero->getBaseTileRect().intersects(obj->getBaseTileRect())) {
+			hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+			adaptPosition(hero, obj);
+		}
+		else {
+			hero->setVelocity(0, 0);
+		}
 	}
 }
 

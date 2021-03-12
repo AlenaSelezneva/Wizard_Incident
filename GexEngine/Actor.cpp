@@ -94,11 +94,11 @@ sf::FloatRect Actor::getBoundingRect() const
 	auto box = getWorldTransform().transformRect(sprite_.getGlobalBounds());
 
 	if (type_ == Actor::Type::Hero) {
-		box.width += 30; 
-		box.height += 30;
+		box.width += 10; 
+		box.height += 10;
 
-		box.left -= 15;
-		box.top -= 15;
+		box.left -= 5;
+		box.top -= 5;
 	}
 
 	return box;
@@ -106,6 +106,8 @@ sf::FloatRect Actor::getBoundingRect() const
 
 sf::FloatRect Actor::getBaseTileRect() const
 {
+	//return getBoundingRect();
+
 	auto rect = getBoundingRect();
 	const float tileSize = 50.f;
 

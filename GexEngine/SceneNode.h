@@ -62,6 +62,7 @@ private:
 	virtual void		drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void				drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
+	void				drawBaseTileRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
 	std::vector<Ptr>	children;

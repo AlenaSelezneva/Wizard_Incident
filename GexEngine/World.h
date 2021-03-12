@@ -49,14 +49,15 @@ private:
 
 	void					addEnemies();
 	void					addEnemy(Actor::Type type, float relX, float relY);
-	void					handleCollisions();
+	void					handleCollisions(sf::Time dt, CommandQueue& commands);
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 	void					destroyEntitiesOutsideView();
 
 	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
 	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
-	void					adaptPosition(Entity* ent1, Entity* ent2);
+	void					adaptPosition(Entity* ent1, SceneNode* sceneNode);
+	void					adaptHeroPositionRelatingEntity(Entity* ent2, sf::Time dt, CommandQueue& commands);
 	void					updateSounds();
 	void					updateUiElements();
 
