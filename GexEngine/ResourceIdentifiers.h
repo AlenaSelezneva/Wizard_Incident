@@ -40,6 +40,8 @@ enum class TextureID
 	QuestJournal,
 	HintBackground,
 
+	Portal,
+
 	EnergyBallHero,
 	EnergyBallEnemy,
 

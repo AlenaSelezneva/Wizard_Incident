@@ -40,9 +40,14 @@ bool GameState::handleEvent(const sf::Event& event)
 		requestStackPush(StateID::Pause);
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
+			context.playerData->isIntersectsWithPortal()) {
+		requestStackPop();
+		requestStackPush(StateID::Battle);
+	}
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
 				context.playerData->getCurrentDialog() != nullptr ) {
 		requestStackPush(StateID::Dialog);
-		//context.playerData->setCurrentDialog("");
 	}
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::B) {

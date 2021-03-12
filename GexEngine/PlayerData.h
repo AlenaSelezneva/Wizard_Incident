@@ -26,6 +26,9 @@ public:
 
 	std::string				getQuestInstrunstionDisplay() const;
 
+	bool					isIntersectsWithPortal() const;
+	void					setIntersectsWithPortal(bool b);
+
 
 private:
 	DialogManager*				dialogManager;
@@ -37,6 +40,8 @@ private:
 	DialogNode*					currentDialog;
 
 	bool						isShowingJournal_;
+
+	bool						isIntersectsWithPortal_;
 
 };
 

@@ -88,7 +88,7 @@ protected:
     bool                            isSpellcasting_;
 
 
-    const sf::Time                  ATTACKING_INTERVAL = sf::seconds(1.5f);
+    const sf::Time                  ATTACKING_INTERVAL = sf::seconds(0.5f);
     sf::Time                        attackingCountDown;
     Command				            fireCommand;
 };

@@ -79,3 +79,13 @@ std::string PlayerData::getQuestInstrunstionDisplay() const
 {
 	return questManager->getAllQuestInstructions();
 }
+
+bool PlayerData::isIntersectsWithPortal() const
+{
+	return isIntersectsWithPortal_;
+}
+
+void PlayerData::setIntersectsWithPortal(bool b)
+{
+	isIntersectsWithPortal_ = b;
+}

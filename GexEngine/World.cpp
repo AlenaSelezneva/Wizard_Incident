@@ -76,6 +76,7 @@ void World::update(sf::Time dt) {
 	hero->setVelocity(0.f, 0.f);
 	hero->setSpellCasting(false);
 	resetNPCsCanTalk();
+	playerData->setIntersectsWithPortal(false);
 	hintView->setVisible(false);
 	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
@@ -159,8 +160,9 @@ void World::loadTextures() {
 	textures.load(TextureID::BookShelf, "Media/Textures/book_shelf.png");
 
 	textures.load(TextureID::QuestJournal, "Media/Textures/QuestJournal.png");
-
 	textures.load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");
+
+	textures.load(TextureID::Portal, "Media/Textures/portal.png");
 }
 
 void World::buildScene() {
@@ -282,6 +284,13 @@ void World::buildScene() {
 	shelf3->setPosition(spawnPosition.x + 700.f, spawnPosition.y - 1100.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
 
+
+
+	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
+	portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);
+	portal = portal_.get();
+	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
+
 	/*addEnemies();*/
 	buildQuestView();
 	buildHintView();
@@ -350,6 +359,11 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 	// get all colliding pairs
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
+
+	if (hero->getBoundingRect().intersects(portal->getBoundingRect())) {
+		hintView->setVisible(true);
+		playerData->setIntersectsWithPortal(true);
+	}
 
 	for (auto pair : collisionPairs) {
 		/*if (matchesCategories(pair, Category::Hero, Category::QuestObject) && playerData->hasPendingQuest((static_cast<ObjectWithQuest&>(*pair.second)).getQuestObjectType())) {

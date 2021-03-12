@@ -8,14 +8,19 @@ BattleScene::BattleScene(sf::RenderTarget& outputTarget, const FontHolder_t& fon
 	sceneTexture.create(target.getSize().x, target.getSize().y);
 	loadTextures();
 
-	worldBounds = sf::FloatRect(0.f, 0.f, 1000, 1000.f);
+	float margin = 200.f;
 
-	float spawnMargin = 300.f;
+	worldBounds = sf::FloatRect(0.f, 0.f, 800, 600.f);
 
-	enemySpawnPoint = sf::Vector2f(spawnMargin, spawnMargin);
-	spawnPosition = sf::Vector2f(worldView.getSize().x - 100.f - spawnMargin, worldBounds.height - 100.f - spawnMargin);
+	worldView.setCenter(sf::Vector2f(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f + margin));
 
-	worldView.setCenter(sf::Vector2f(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f));
+
+	spawnPosition = sf::Vector2f(300.f, 300.f);
+	enemySpawnPoint = sf::Vector2f(-100.f, -100.f);
+
+	/*spawnPosition = sf::Vector2f(worldView.getSize().x / 2.f + spawnMargin, worldBounds.height - worldView.getSize().y / 2.f + spawnMargin);
+	enemySpawnPoint = sf::Vector2f(worldView.getSize().x / 2.f - spawnMargin, worldBounds.height - worldView.getSize().y / 2.f - spawnMargin);*/
+
 
 	currentLevel = LevelsTilesSchema::getBattleLevelLayout();
 	tileData = initializeTileData();
@@ -98,13 +103,16 @@ void BattleScene::buildScene()
 			category = Category::Type::Wall;
 			break;
 		case PlayerLayer:
-		case SpellsLayer:
 		default:
 			category = Category::Type::None;
+			break;
+		case SpellsLayer:
+			category = Category::Type::SpellLayer;
 			break;
 		}
 
 		SceneNode::Ptr layer(new SceneNode(category));
+		layer.get()->setPosition(400, 300.f);
 
 		sceneLayers[i] = layer.get();
 

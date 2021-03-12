@@ -128,6 +128,7 @@ protected:
 private:
 	TextureHolder_t						textures;
 	SceneNode*							uiGraph;
+	SpriteNode*							portal;
 
 	std::string							currentDialog;
 
