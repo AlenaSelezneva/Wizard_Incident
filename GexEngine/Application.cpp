@@ -64,7 +64,7 @@ void Application::run()
                 window.close();
         }
 
-        udpateStatistics(elapsedTime);
+        //udpateStatistics(elapsedTime);
         render();
     }
 }

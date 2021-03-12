@@ -268,11 +268,11 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf1));
 
 	std::unique_ptr<InteractableObject> shelf2(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
-	shelf2->setPosition(spawnPosition.x + 150.f, spawnPosition.y - 1100.f);
+	shelf2->setPosition(spawnPosition.x + 300.f, spawnPosition.y - 1100.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf2));
 
 	std::unique_ptr<InteractableObject> shelf3(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
-	shelf3->setPosition(spawnPosition.x + 400.f, spawnPosition.y - 1100.f);
+	shelf3->setPosition(spawnPosition.x + 700.f, spawnPosition.y - 1100.f);
 	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
 
 	/*addEnemies();*/
