@@ -20,6 +20,10 @@ protected:
 	void					loadTextures() override;
 	void					buildScene();
 
+	void					buildUiStats();
+
+	void					updateStatTexts();
+
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
 	//bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 	void					destroyEntitiesOutsideView();
@@ -38,7 +42,17 @@ private:
 
 	Enemy*					enemy;
 
-	//sf::FloatRect			getBattlefieldBounds() const;
+
+
+private:
+	SceneNode* uiGraph;
+
+	UiNode* heroStatsView;
+	UiNode* enemyStatsView;
+
+	TextNode* heroStatText;
+	TextNode* enemyStatsText;
+
 
 };
 

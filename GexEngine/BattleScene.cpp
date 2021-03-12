@@ -1,14 +1,17 @@
 #include "BattleScene.h"
 #include "EnergyBolt.h"
+#include "Utility.h"
+#include <iostream>
 
 BattleScene::BattleScene(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data)
     : World(outputTarget, fonts, sounds, data, 0)
+	, uiGraph()
 {
 
 	sceneTexture.create(target.getSize().x, target.getSize().y);
 	loadTextures();
 
-	float margin = 200.f;
+	float margin = 50.f;
 
 	worldBounds = sf::FloatRect(0.f, 0.f, 800, 600.f);
 
@@ -26,6 +29,7 @@ BattleScene::BattleScene(sf::RenderTarget& outputTarget, const FontHolder_t& fon
 	tileData = initializeTileData();
 
 	buildScene();
+	buildUiStats();
 }
 
 void BattleScene::update(sf::Time dt)
@@ -69,6 +73,8 @@ void BattleScene::draw()
 	for (auto r : collidingToRedraw) {
 		target.draw(*r);
 	}
+
+	target.draw(*uiGraph);
 }
 
 
@@ -87,6 +93,8 @@ void BattleScene::loadTextures()
 
 	textures.load(TextureID::EnergyBallHero, "Media/Textures/energy_ball_hero.png");
 	textures.load(TextureID::EnergyBallEnemy, "Media/Textures/energy_ball_enemy.png");
+
+	textures.load(TextureID::HealthDisplay, "Media/Textures/helth_display.png");
 
 	/*textures.load(TextureID::QuestJournal, "Media/Textures/QuestJournal.png");
 	textures.load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");*/
@@ -176,6 +184,47 @@ void BattleScene::buildScene()
 
 	enemy = enemy_.get();
 	sceneLayers[PlayerLayer]->attachChild(std::move(enemy_));
+}
+
+void BattleScene::buildUiStats()
+{
+	float margin = 20.f;
+
+	uiGraph = new SceneNode(Category::None);
+
+	std::unique_ptr<UiNode> heroHealth(new UiNode(textures.get(TextureID::HealthDisplay)));
+	heroHealth->setPosition(margin, margin);
+	heroHealth->setVisible(true);
+
+	std::unique_ptr<TextNode> heroStats(new TextNode(fonts, "", 30));
+	heroStats->setString("Hero:\n");
+	//heroStats->setTextColor(sf::Color(125, 120, 186));
+	heroStats->setPosition(heroHealth.get()->getBoundingRect().width / 2, heroHealth.get()->getBoundingRect().height / 2);
+
+	heroStatText = heroStats.get();
+
+	heroHealth->attachChild(std::move(heroStats));
+	uiGraph->attachChild(std::move(heroHealth));
+
+
+
+	std::unique_ptr<UiNode> enemyHealth(new UiNode(textures.get(TextureID::HealthDisplay)));
+	enemyHealth->setPosition(worldView.getSize().x - enemyHealth->getBoundingRect().width - margin, margin);
+	enemyHealth->setVisible(true);
+
+	std::unique_ptr<TextNode> enemyStats(new TextNode(fonts, "", 30));
+	enemyStats->setString("Enemy:\n");
+	//heroStats->setTextColor(sf::Color(125, 120, 186));
+	enemyStats->setPosition(enemyHealth.get()->getBoundingRect().width / 2, enemyHealth.get()->getBoundingRect().height / 2);
+
+	enemyStatsText = enemyStats.get();
+
+	enemyHealth->attachChild(std::move(enemyStats));
+	uiGraph->attachChild(std::move(enemyHealth));
+}
+
+void BattleScene::updateStatTexts()
+{
 }
 
 void BattleScene::handleCollisions(sf::Time dt, CommandQueue& commands)
@@ -281,6 +330,10 @@ void BattleScene::adaptPlayerPosition()
 		worldView.move(0, -scrollSpeed);
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
+
+	uiGraph->setPosition(viewBounds.left, viewBounds.top);
+	//std::cout << "\nHero position: " << hero->getWorldPoition().x << ", " << hero->getWorldPoition().y;
+	//std::cout << "\nHero state world position: " << heroStatText->getWorldPoition().x << ", " << heroStatText->getWorldPoition().y;
 }
 
 void BattleScene::guideEnergyBolts()

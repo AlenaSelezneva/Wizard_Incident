@@ -39,6 +39,7 @@ enum class TextureID
 
 	QuestJournal,
 	HintBackground,
+	HealthDisplay,
 
 	Portal,
 
