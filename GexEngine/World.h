@@ -39,35 +39,39 @@ public:
 	CommandQueue&			getCommands();
 
 	bool					hasAlivePlayer() const;
-	bool					hasPlayerReachedEnd() const;
 
-private:
+protected:
 	void					loadTextures();
 	void					buildScene();
-	void					buildQuestView();
-	void					buildHintView();
 
-	void					addEnemies();
-	void					addEnemy(Actor::Type type, float relX, float relY);
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
-	void					destroyEntitiesOutsideView();
+	//void					destroyEntitiesOutsideView();
 
 	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
+
 	void					adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands);
 	void					adaptPosition(Entity* ent1, SceneNode* sceneNode);
 	void					adaptHeroPositionRelatingEntity(Entity* ent2, sf::Time dt, CommandQueue& commands);
 	void					updateSounds();
-	void					updateUiElements();
-
-	void					adaptNPCPosition();
-	void					resetNPCsCanTalk();
 
 	sf::FloatRect			getViewBounds() const;
-	sf::FloatRect			getBattlefieldBounds() const;
 
 private:
+
+	void					buildQuestView();
+	void					buildHintView();
+
+	void					updateUiElements();
+
+	//void					adaptNPCPosition();
+	void					resetNPCsCanTalk();
+
+
+	//sf::FloatRect			getBattlefieldBounds() const;
+
+protected:
 	enum Layer
 	{
 		Floor,
@@ -85,16 +89,16 @@ private:
 		float x, y;
 	};
 
-private:
-	sf::RenderTarget&					target;
+
+protected:
+	sf::RenderTarget& target;
 	sf::RenderTexture					sceneTexture;
 	sf::View							worldView;
 	TextureHolder_t						textures;
-	const FontHolder_t&					fonts;
-	SoundPlayer&						sounds;
+	const FontHolder_t& fonts;
+	SoundPlayer& sounds;
 
 	SceneNode							sceneGraph;
-	SceneNode*							uiGraph;
 
 	std::vector< SpriteNode*>			walkOverTiles;
 	std::vector< SpriteNode*>			blockingTiles;
@@ -106,7 +110,7 @@ private:
 	std::array<SceneNode*, LayerCount>	sceneLayers;
 	CommandQueue						commandQueue;
 
-	Actor*								hero;
+	Actor* hero;
 
 	sf::FloatRect						worldBounds;
 	sf::Vector2f						spawnPosition;
@@ -115,8 +119,12 @@ private:
 	std::vector<std::vector<Tile::Type> > currentLevel;
 	std::map<Tile::Type, TileData>		tileData;
 
+	PlayerData*				playerData;
+
+private:
+	SceneNode*							uiGraph;
+
 	std::string							currentDialog;
-	PlayerData*							playerData;
 
 	UiNode*								questsView;
 	UiNode*								hintView;

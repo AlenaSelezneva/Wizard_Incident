@@ -20,7 +20,7 @@ public:
 	virtual bool		update(sf::Time dt) override;
 	virtual bool		handleEvent(const sf::Event& event) override;
 
-private:
+protected:
 	World				world;
 	Player&				player;
 

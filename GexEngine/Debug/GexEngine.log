@@ -1,8 +1,14 @@
-﻿  Application.cpp
+﻿  Actor.cpp
+  FightingState.cpp
+  FriendlyNPC.cpp
+  GameState.cpp
+  InteractableObject.cpp
+  SpriteNode.cpp
   World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(199,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(200,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(642,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(642,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(194,20): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(195,21): warning C4018: '<': signed/unsigned mismatch
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(625,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(625,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Generating Code...
+  LINK : D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe not found or not built by the last incremental link; performing full link
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

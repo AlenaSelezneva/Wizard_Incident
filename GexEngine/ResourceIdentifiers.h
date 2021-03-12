@@ -40,6 +40,9 @@ enum class TextureID
 	QuestJournal,
 	HintBackground,
 
+	EnergyBallHero,
+	EnergyBallEnemy,
+
 	Hero,
 
 	BookShelf,

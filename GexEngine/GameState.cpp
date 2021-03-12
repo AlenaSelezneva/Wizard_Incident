@@ -24,15 +24,6 @@ bool GameState::update(sf::Time dt)
 {
 	world.update(dt);
 
-	if (!world.hasAlivePlayer()) {
-		player.setMissionStatus(Player::MissionStatus::Failure);
-		requestStackPush(StateID::GameOverState);
-	}
-	else if (world.hasPlayerReachedEnd()) {
-		player.setMissionStatus(Player::MissionStatus::Success);
-		requestStackPush(StateID::GameOverState);
-	}
-
 	CommandQueue& commands = world.getCommands();
 	player.handleRealTimeInput(commands);
 

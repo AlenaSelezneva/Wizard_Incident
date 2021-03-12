@@ -54,11 +54,6 @@ bool World::hasAlivePlayer() const
 	return true;
 }
 
-bool World::hasPlayerReachedEnd() const
-{
-	return false;
-}
-
 
 void World::update(sf::Time dt) {
 	
@@ -334,18 +329,6 @@ void World::buildHintView()
 	uiGraph->attachChild(std::move(hintBackground));
 }
 
-void World::addEnemies()
-{
-	// Add enemies to the spawn point container
-
-}
-
-void World::addEnemy(Actor::Type type, float relX, float relY)
-{
-	// relative to spawn position
-	SpawnPoint spawn(type, spawnPosition.x + relX, spawnPosition.y - relY);
-}
-
 
 void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 {
@@ -504,17 +487,17 @@ bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, 
 	}
 }
 
-void World::destroyEntitiesOutsideView()
-{
-	Command command;
-	command.category = Category::NPC;
-	command.action = derivedAction<Entity>([this](Entity& e, sf::Time t) {
-		if (!getBattlefieldBounds().intersects(e.getBoundingRect())) {
-			e.destroy();
-		}
-		});
-	commandQueue.push(command);
-}
+//void World::destroyEntitiesOutsideView()
+//{
+//	Command command;
+//	command.category = Category::NPC;
+//	command.action = derivedAction<Entity>([this](Entity& e, sf::Time t) {
+//		if (!getBattlefieldBounds().intersects(e.getBoundingRect())) {
+//			e.destroy();
+//		}
+//		});
+//	commandQueue.push(command);
+//}
 
 void World::adaptPlayerVelocity()
 {
@@ -648,37 +631,6 @@ void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, Command
 	}
 }
 
-
-void World::adaptNPCPosition()
-{
-	// worldView
-/*
-	sf::FloatRect viewBounds(worldView.getCenter() - worldView.getSize() / 2.f,
-		worldView.getSize());
-	const float borderDistance = 40.f;
-
-	Command adaptPosition;
-	adaptPosition.category = Category::Zombie;
-
-	adaptPosition.action = derivedAction<Actor>([this](Actor& enemy, sf::Time dt) {
-		sf::FloatRect viewBounds(worldView.getCenter() - worldView.getSize() / 2.f,
-			worldView.getSize());
-		const float borderDistance = 40.f;
-
-		sf::Vector2f position = enemy.getPosition();
-
-		position.x = std::max(position.x, viewBounds.left + borderDistance);
-		position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-		position.y = std::max(position.y, viewBounds.top + borderDistance);
-		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-
-		enemy.setPosition(position);
-		});
-
-	commandQueue.push(adaptPosition);*/
-
-}
-
 void World::resetNPCsCanTalk()
 {
 	playerData->setCurrentDialog(Actor::Type::None);
@@ -689,11 +641,11 @@ sf::FloatRect World::getViewBounds() const
 	return sf::FloatRect(worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize());
 }
 
-sf::FloatRect World::getBattlefieldBounds() const
-{
-	auto bounds = getViewBounds();
-	bounds.top -= 100.f;
-	bounds.height += 100.f;
-
-	return bounds;
-}
+//sf::FloatRect World::getBattlefieldBounds() const
+//{
+//	auto bounds = getViewBounds();
+//	bounds.top -= 100.f;
+//	bounds.height += 100.f;
+//
+//	return bounds;
+//}
