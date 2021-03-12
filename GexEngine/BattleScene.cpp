@@ -90,7 +90,9 @@ bool BattleScene::hasAlivePlayer() const
 void BattleScene::loadTextures()
 {
 	textures.load(TextureID::Floor, "Media/Textures/floor_new.jpg");
-	textures.load(TextureID::Wall, "Media/Textures/wall300.png");
+	//textures.load(TextureID::Wall, "Media/Textures/wall300.png");
+
+	textures.load(TextureID::Wall, "Media/Textures/wall_new.jpg");
 
 	textures.load(TextureID::Hero, "Media/Textures/Hero.png");
 	textures.load(TextureID::Archmage, "Media/Textures/Archmage_sheet.png");

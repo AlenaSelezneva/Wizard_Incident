@@ -19,7 +19,7 @@ private:
     void            createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
 
 private:
-    const sf::Time  ATTACKING_INTERVAL = sf::seconds(1.5f);
+    const sf::Time  ATTACKING_INTERVAL = sf::seconds(3.5f);
 
     sf::Time        attackingCountDown;
 
