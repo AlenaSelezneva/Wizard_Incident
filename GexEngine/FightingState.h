@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "BattleScene.h"
+#include "BattlePlayer.h"
 
 #pragma once
 class FightingState : public GameState
@@ -13,7 +14,6 @@ public:
 
 private:
 	BattleScene			battleScene;
-	Player&				player;
-
+	BattlePlayer		battlePlayer;
 };
 

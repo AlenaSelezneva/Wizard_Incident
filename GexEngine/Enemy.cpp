@@ -31,7 +31,7 @@ void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	Actor::updateCurrent(dt, commands);
 
-	spellcasting_ = true;
+	isSpellcasting_ = true;
 	checkCastingAttackingSpell(dt, commands);
 }
 

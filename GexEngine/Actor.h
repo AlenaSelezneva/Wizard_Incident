@@ -54,7 +54,6 @@ public:
     float           getMaxSpeed() const;
 
     bool            isMarkedForRemoval() const override;
-
     void            attack();
 
     bool            isSpellCasting();
@@ -73,7 +72,8 @@ protected:
     void         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-
+    void            checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands);
+    void            createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
 
 protected:
     Type                            type_;
@@ -85,5 +85,10 @@ protected:
 
     float                           travelDistance_;
     bool                            isAttacking_;
-    bool                            spellcasting_;
+    bool                            isSpellcasting_;
+
+
+    const sf::Time                  ATTACKING_INTERVAL = sf::seconds(1.5f);
+    sf::Time                        attackingCountDown;
+    Command				            fireCommand;
 };

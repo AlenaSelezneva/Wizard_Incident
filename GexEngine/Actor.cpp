@@ -8,6 +8,7 @@ Alena Selezneva
 #include "JsonFrameParser.h"
 #include "Utility.h"
 #include "DataTables.h"
+#include "EnergyBolt.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -31,6 +32,13 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 		{
 			animations_[a.first] = a.second;
 		}
+
+		fireCommand.category = Category::Hero;
+		fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
+		{
+			this->createEnergyBolt(node, textures);
+		};
+
 	}
 	else {
 		// change this when get more json!!!
@@ -134,17 +142,44 @@ bool Actor::isMarkedForRemoval() const
 
 void Actor::attack()
 {
-	isAttacking_ = true;
+	//isAttacking_ = true;
+	if (!isAttacking_) {
+		isAttacking_ = true;
+		isSpellcasting_ = true;
+		attackingCountDown = ATTACKING_INTERVAL;
+	}
+}
+
+void Actor::checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands)
+{
+	if (isAttacking_ && attackingCountDown <= sf::Time::Zero) {
+		commands.push(fireCommand);
+		isAttacking_ = false;
+	}
+	else if (isAttacking_ && attackingCountDown > sf::Time::Zero) {
+		attackingCountDown -= dt;
+	}
+}
+
+void Actor::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
+{
+	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::AlliedBolt, 10, textures));
+
+	bolt->setPosition(0.f, 0.f);
+	//bolt->setPosition(getWorldPoition());
+	bolt->setVelocity(0.f, 0.f);
+
+	node.attachChild(std::move(bolt));
 }
 
 bool Actor::isSpellCasting()
 {
-	return spellcasting_;
+	return isSpellcasting_;
 }
 
 void Actor::setSpellCasting(bool b)
 {
-	spellcasting_ = b;
+	isSpellcasting_ = b;
 }
 
 void Actor::setState(State state)
@@ -165,45 +200,47 @@ Actor::Type Actor::getType() const
 
 void Actor::updateStates()
 {
+	if (isSpellcasting_) {
+		switch (direction_)
+		{
+		case Direction::Front:
+			state_ = Actor::State::SpellCastFront;
+			break;
+		case Direction::Back:
+			state_ = Actor::State::SpellCastBack;
+			break;
+		case Direction::Right:
+			state_ = Actor::State::SpellCastRight;
+			break;
+		case Direction::Left:
+			state_ = Actor::State::SpellCastLeft;
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (isAttacking_)
+		return;
+
 	float delta = 0.01f;
 	if (abs(getVelocity().x) < delta && abs(getVelocity().y) <= delta) {
-		if (spellcasting_) {
-  			switch (direction_)
-			{
-			case Direction::Front:
-				state_ = Actor::State::SpellCastFront;
-				break;
-			case Direction::Back:
-				state_ = Actor::State::SpellCastBack;
-				break;
-			case Direction::Right:
-				state_ = Actor::State::SpellCastRight;
-				break;
-			case Direction::Left:
-				state_ = Actor::State::SpellCastLeft;
-				break;
-			default:
-				break;
-			}
-		}
-		else {
-			switch (direction_)
-			{
-			case Direction::Front:
-				state_ = Actor::State::IdleFront;
-				break;
-			case Direction::Back:
-				state_ = Actor::State::IdleBack;
-				break;
-			case Direction::Right:
-				state_ = Actor::State::IdleRight;
-				break;
-			case Direction::Left:
-				state_ = Actor::State::IdleLeft;
-				break;
-			default:
-				break;
-			}
+		switch (direction_)
+		{
+		case Direction::Front:
+			state_ = Actor::State::IdleFront;
+			break;
+		case Direction::Back:
+			state_ = Actor::State::IdleBack;
+			break;
+		case Direction::Right:
+			state_ = Actor::State::IdleRight;
+			break;
+		case Direction::Left:
+			state_ = Actor::State::IdleLeft;
+			break;
+		default:
+			break;
 		}
 	}
 	else {
@@ -235,7 +272,7 @@ void Actor::updateDirections()
 
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	if (spellcasting_)
+	if (isSpellcasting_ || isAttacking_)
 		setVelocity(0.f, 0.f);
 
 	updateDirections();
@@ -248,25 +285,10 @@ void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 	sprite_.setTextureRect(rec);
 	centerOrigin(sprite_);
 
-	/*if (direction_ != Direction::Front && getVelocity().y > 0)
-		direction_ = Direction::Front;
-	if (direction_ != Direction::Back && getVelocity().y < 0)
-		direction_ = Direction::Back;
+	if (type_ == Type::Hero) {
+		checkCastingAttackingSpell(dt, commands);
+	}
 
-	if (direction_ != Direction::Right && getVelocity().x > 0)
-		direction_ = Direction::Right;
-	if (direction_ != Direction::Left && getVelocity().x < 0)
-		direction_ = Direction::Left;*/
-
-	//// flip image left right
-	//if (direction_ == Direction::Left)
-	//	rec = flip(rec);
-
-	//if (state_ != State::Dead) // dont move it while dying
-	//	Entity::updateCurrent(dt, commands);
-
-	/*updateMovementPattern(dt);
-	updateTexts();*/
 }
 
 void Actor::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

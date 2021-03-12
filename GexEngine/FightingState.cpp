@@ -3,8 +3,8 @@
 FightingState::FightingState(StateStack& stack, Context context)
 	: GameState(stack, context)
 	, battleScene(*context.window, *context.fonts, *context.sounds, context.playerData)
-	, player(*context.player)
 {
+	battlePlayer = BattlePlayer(context.playerData);
 	//context.music->play(MusicID::MissionTheme);
 }
 
@@ -26,17 +26,12 @@ bool FightingState::update(sf::Time dt)
 bool FightingState::handleEvent(const sf::Event& event)
 {
 	CommandQueue& commands = battleScene.getCommands();
-	player.handleEvent(event, commands);
+	battlePlayer.handleEvent(event, commands);
+	//player.handleEvent(event, commands);
 
 	// Escape pressed, trigger the pause screen
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		requestStackPush(StateID::Pause);
-
-	//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
-	//	context.playerData->getCurrentDialog() != nullptr) {
-	//	requestStackPush(StateID::Dialog);
-	//	//context.playerData->setCurrentDialog("");
-	//}
 
 	return false;
 }
