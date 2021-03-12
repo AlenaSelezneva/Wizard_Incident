@@ -66,11 +66,14 @@ public:
     Actor::Type     getType() const;
 
 
-private:
+protected:
     void         updateStates();
     void         updateDirections();
     void         updateCurrent(sf::Time dt, CommandQueue& commands) override;
     void         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+private:
+
 
 protected:
     Type                            type_;
@@ -81,7 +84,6 @@ protected:
     Direction                       direction_;
 
     float                           travelDistance_;
-    std::size_t                     directionIndex_;
-    bool                            attack_;
+    bool                            isAttacking_;
     bool                            spellcasting_;
 };

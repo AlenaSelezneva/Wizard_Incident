@@ -17,17 +17,20 @@ namespace Category
 
 		ShieldSpell		= 1 << 4,
 		LightningSpell  = 1 << 5,
-		BaseAttack		= 1 << 6,
+		
 
 		Door			= 1 << 7,
 		Wall			= 1 << 8,
 
 		InteractableObject = 1 << 9,
 
+		BaseAttackAllied	= 1 << 10,
+		baseAttackEnemy		= 1 << 11,
+
 		//ParticleSystem = 1 << 7,
 		//SoundEffect = 1 << 4,
 
-
+		BaseAttack = BaseAttackAllied | baseAttackEnemy,
 		NPC = TalkingNPC | FightingNPC,
 		Spell = ShieldSpell | LightningSpell | BaseAttack,
 		QuestObject = TalkingNPC | InteractableObject,

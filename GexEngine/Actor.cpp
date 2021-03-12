@@ -22,8 +22,7 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	, sprite_()
 	, direction_(Direction::Front)
 	, travelDistance_(0.f)
-	, directionIndex_(0)
-	, attack_(false)
+	, isAttacking_(false)
 {
 
 	if (type_ == Actor::Type::Hero) {
@@ -135,7 +134,7 @@ bool Actor::isMarkedForRemoval() const
 
 void Actor::attack()
 {
-	attack_ = true;
+	isAttacking_ = true;
 }
 
 bool Actor::isSpellCasting()

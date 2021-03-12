@@ -158,6 +158,8 @@
     <ClInclude Include="DialogMessage.h" />
     <ClInclude Include="DialogNode.h" />
     <ClInclude Include="DialogState.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnergyBolt.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FightingState.h" />
     <ClInclude Include="FriendlyNPC.h" />
@@ -203,6 +205,8 @@
     <ClCompile Include="DialogMessage.cpp" />
     <ClCompile Include="DialogNode.cpp" />
     <ClCompile Include="DialogState.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnergyBolt.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FightingState.cpp" />
     <ClCompile Include="FriendlyNPC.cpp" />

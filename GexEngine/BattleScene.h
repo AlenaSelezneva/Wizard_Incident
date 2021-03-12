@@ -1,4 +1,5 @@
 #include "World.h"
+#include "Enemy.h"
 
 #pragma once
 class BattleScene : public World
@@ -12,6 +13,8 @@ public:
 	void					draw();
 
 	bool					hasAlivePlayer() const;
+
+	void					guideEnergyBolts();
 
 protected:
 	void					loadTextures() override;
@@ -29,9 +32,12 @@ protected:
 	//void					adaptHeroPositionRelatingEntity(Entity* ent2, sf::Time dt, CommandQueue& commands);
 
 private:
-	TextureHolder_t						textures;
+	TextureHolder_t			textures;
 
 	sf::Vector2f			enemySpawnPoint;
+
+	Enemy*					enemy;
+
 	//sf::FloatRect			getBattlefieldBounds() const;
 
 };

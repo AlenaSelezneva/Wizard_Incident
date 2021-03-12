@@ -1,4 +1,5 @@
 #include "BattleScene.h"
+#include "EnergyBolt.h"
 
 BattleScene::BattleScene(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data)
     : World(outputTarget, fonts, sounds, data, 0)
@@ -9,10 +10,10 @@ BattleScene::BattleScene(sf::RenderTarget& outputTarget, const FontHolder_t& fon
 
 	worldBounds = sf::FloatRect(0.f, 0.f, 1000, 1000.f);
 
-	float spawnMargin = 150.f;
+	float spawnMargin = 300.f;
 
-	spawnPosition = sf::Vector2f(spawnMargin, spawnMargin);
-	enemySpawnPoint = sf::Vector2f(worldView.getSize().x - spawnMargin, worldBounds.height - spawnMargin);
+	enemySpawnPoint = sf::Vector2f(spawnMargin, spawnMargin);
+	spawnPosition = sf::Vector2f(worldView.getSize().x - 100.f - spawnMargin, worldBounds.height - 100.f - spawnMargin);
 
 	worldView.setCenter(sf::Vector2f(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f));
 
@@ -28,6 +29,8 @@ void BattleScene::update(sf::Time dt)
 	hero->setSpellCasting(false);
 	collidingToRedraw = std::list<SceneNode*>();
 
+	guideEnergyBolts();
+
 	while (!commandQueue.isEmpty()) {
 		sceneGraph.onCommand(commandQueue.pop(), dt);
 	}
@@ -36,7 +39,7 @@ void BattleScene::update(sf::Time dt)
 	adaptPlayerPositionRelatingBlocks(dt, getCommands());
 	handleCollisions(dt, commandQueue);
 
-	updateSounds();
+	//updateSounds();
 
 	sceneGraph.removeWrecks();
 
@@ -158,10 +161,12 @@ void BattleScene::buildScene()
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
 
-	/*std::unique_ptr<FriendlyNPC> archmage(new FriendlyNPC(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, textures, fonts));
-	archmage->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
-	archmage->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(archmage));*/
+	std::unique_ptr<Enemy> enemy_(new Enemy(Actor::Type::Archmage, textures, fonts));
+	enemy_->setPosition(enemySpawnPoint);
+	enemy_->setVelocity(0.f, 0.f);
+
+	enemy = enemy_.get();
+	sceneLayers[PlayerLayer]->attachChild(std::move(enemy_));
 }
 
 void BattleScene::handleCollisions(sf::Time dt, CommandQueue& commands)
@@ -234,4 +239,22 @@ void BattleScene::adaptPlayerPosition()
 		worldView.move(0, -scrollSpeed);
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
+}
+
+void BattleScene::guideEnergyBolts()
+{
+	Command heroBoltGuider;
+	heroBoltGuider.category = Category::BaseAttackAllied;
+	heroBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
+		missile.guideTowards(enemy->getWorldPoition());
+		});
+
+	Command enemyBoltGuider;
+	enemyBoltGuider.category = Category::baseAttackEnemy;
+	enemyBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
+		missile.guideTowards(hero->getWorldPoition());
+		});
+
+	commandQueue.push(heroBoltGuider);
+	commandQueue.push(enemyBoltGuider);
 }
