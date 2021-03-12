@@ -18,6 +18,7 @@ public:
 		MoveDown,
 
 		Attack,
+		CastShield,
 
 		ActionCound,
 	};

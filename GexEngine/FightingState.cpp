@@ -18,7 +18,7 @@ bool FightingState::update(sf::Time dt)
 	battleScene.update(dt);
 
 	CommandQueue& commands = battleScene.getCommands();
-	player.handleRealTimeInput(commands);
+	battlePlayer.handleRealTimeInput(commands);
 
 	return false;
 }

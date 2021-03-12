@@ -9,6 +9,7 @@ Alena Selezneva
 #include "Utility.h"
 #include "DataTables.h"
 #include "EnergyBolt.h"
+#include "UiNode.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -17,7 +18,7 @@ namespace
 	const std::map<Actor::Type, ActorData> TABLE = initializeActorData();
 }
 Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts)
-	: Entity(100)
+	: Entity(300)
 	, type_(type)
 	, state_(State::IdleFront)
 	, sprite_()
@@ -39,6 +40,12 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 			this->createEnergyBolt(node, textures);
 		};
 
+		std::unique_ptr<UiNode> shield_(new UiNode(textures.get(TextureID::ShieldSpell)));
+		shield_->setPosition(-50.f, -50.f);
+		shield_->setVisible(false);
+		shield = shield_.get();
+
+		attachChild(std::move(shield_));
 	}
 	else {
 		// change this when get more json!!!
@@ -182,6 +189,25 @@ void Actor::setSpellCasting(bool b)
 	isSpellcasting_ = b;
 }
 
+bool Actor::isCastingShield() const
+{
+	return isCastingShield_;
+}
+
+void Actor::setCastingShield(bool b)
+{
+	if (isAttacking_) {
+		isCastingShield_ = false;
+		return;
+	}
+
+	isCastingShield_ = b;
+
+	if (isCastingShield_ == true) {
+		isSpellcasting_ = true;
+	}
+}
+
 void Actor::setState(State state)
 {
 	state_ = state;
@@ -209,7 +235,7 @@ std::string Actor::getFightHealthDisplayString()
 
 void Actor::updateStates()
 {
-	if (isSpellcasting_) {
+	if (isSpellcasting_ || isAttacking_ || isSpellcasting_) {
 		switch (direction_)
 		{
 		case Direction::Front:
@@ -281,12 +307,13 @@ void Actor::updateDirections()
 
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	if (isSpellcasting_ || isAttacking_)
+	if (isSpellcasting_ || isAttacking_ || isCastingShield_)
 		setVelocity(0.f, 0.f);
 
 	updateDirections();
 	updateStates();
 
+	//isCastingShield_ = false;
 	Entity::updateCurrent(dt, commands);
 
 	auto rec = animations_.at(state_).update(dt);
@@ -296,6 +323,8 @@ void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	if (type_ == Type::Hero) {
 		checkCastingAttackingSpell(dt, commands);
+
+		shield->setVisible(isCastingShield_);
 	}
 
 }

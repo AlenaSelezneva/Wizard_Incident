@@ -163,6 +163,8 @@ void World::loadTextures() {
 	textures.load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");
 
 	textures.load(TextureID::Portal, "Media/Textures/portal.png");
+
+	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell.png");
 }
 
 void World::buildScene() {

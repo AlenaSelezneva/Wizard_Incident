@@ -9,6 +9,8 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+class UiNode;
+
 class Actor : public Entity
 {
 public:
@@ -59,6 +61,9 @@ public:
     bool            isSpellCasting();
     void            setSpellCasting(bool b);
 
+    bool            isCastingShield() const;
+    void            setCastingShield(bool b);
+
     void            setState(State state);
     Actor::State    getState() const;
 
@@ -88,9 +93,12 @@ protected:
     float                           travelDistance_;
     bool                            isAttacking_;
     bool                            isSpellcasting_;
+    bool                            isCastingShield_;
 
 
     const sf::Time                  ATTACKING_INTERVAL = sf::seconds(0.5f);
     sf::Time                        attackingCountDown;
     Command				            fireCommand;
+
+    UiNode*                         shield;
 };

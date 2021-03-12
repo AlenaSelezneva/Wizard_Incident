@@ -68,6 +68,8 @@ void BattlePlayer::initializeKeyBindings() {
 
 	keyBindings[sf::Keyboard::Space] = Action::Attack;
 
+	keyBindings[sf::Keyboard::RShift] = Action::CastShield;
+
 	//keyBindings[sf::Keyboard::Enter] = Action::Interact;
 	//keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
 }
@@ -103,6 +105,11 @@ void BattlePlayer::initializeActions()
 		[playerSpeed](Actor& a, sf::Time dt) {
 			a.attack();
 		});
+
+	actionBindings[Action::CastShield].action = derivedAction<Actor>(
+		[](Actor& a, sf::Time dt) {
+			a.setCastingShield(true);
+		});
 }
 
 bool BattlePlayer::isRealtimeAction(Action action)
@@ -113,8 +120,11 @@ bool BattlePlayer::isRealtimeAction(Action action)
 	case Action::MoveRight:
 	case Action::MoveDown:
 	case Action::MoveUp:
+	case Action::CastShield:
+
 		return true;
 	case Action::Attack:
+
 		return false;
 	default:
 		return false;
