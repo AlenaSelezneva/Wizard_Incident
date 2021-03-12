@@ -98,6 +98,7 @@ private:
 
 	std::vector< SpriteNode*>			walkOverTiles;
 	std::vector< SpriteNode*>			blockingTiles;
+	std::vector< SpriteNode*>			invisibleWallTiles;
 
 	std::list<SceneNode*>				collidingToRedraw;
 

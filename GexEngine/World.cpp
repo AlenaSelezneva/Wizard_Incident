@@ -182,6 +182,7 @@ void World::buildScene() {
 
 	walkOverTiles = std::vector<SpriteNode*>();
 	blockingTiles = std::vector<SpriteNode*>();
+	invisibleWallTiles = std::vector<SpriteNode*>();
 
 
 	// prepare background texture
@@ -215,6 +216,11 @@ void World::buildScene() {
 				sprite = new SpriteNode(wallTexture, wallRect);
 				sprite->setPosition(j * tileSize , i * tileSize - tileData[Tile::Wall].height + tileSize);
 				blockingTiles.push_back(sprite);
+				break;
+			case Tile::Type::InvisibleWall:
+				sprite = new SpriteNode(wallTexture, wallRect);
+				sprite->setPosition(j * tileSize, i * tileSize - tileData[Tile::Wall].height + tileSize);
+				invisibleWallTiles.push_back(sprite);
 				break;
 			default:
 				break;
@@ -553,6 +559,23 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 	for (auto t : blockingTiles) {
 		if (hero->getBoundingRect().intersects(t->getBoundingRect()) &&
 				hero->getBoundingRect().top + hero->getBoundingRect().height >= t->getBoundingRect().top + t->getBoundingRect().height)
+			collidingToRedraw.push_back(hero);
+
+		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
+			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
+				//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
+				adaptPosition(hero, t);
+			}
+			else {
+				hero->setVelocity(0, 0);
+			}
+			break;
+		}
+	}
+
+	for (auto t : invisibleWallTiles) {
+		if (hero->getBoundingRect().intersects(t->getBoundingRect()) &&
+			hero->getBoundingRect().top + hero->getBoundingRect().height >= t->getBoundingRect().top + t->getBoundingRect().height)
 			collidingToRedraw.push_back(hero);
 
 		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
