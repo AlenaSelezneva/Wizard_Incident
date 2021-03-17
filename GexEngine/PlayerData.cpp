@@ -91,3 +91,13 @@ void PlayerData::setIntersectsWithPortal(bool b)
 {
 	isIntersectsWithPortal_ = b;
 }
+
+bool PlayerData::isInFightState() const
+{
+	return isInFightState_;
+}
+
+void PlayerData::seInFughtState(bool b)
+{
+	isInFightState_ = b;
+}

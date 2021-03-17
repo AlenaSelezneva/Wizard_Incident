@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Quest">
       <UniqueIdentifier>{eda4d36e-e58b-45e9-a405-142d91d481e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Actors">
+      <UniqueIdentifier>{288e6003-9013-4c37-b638-eb74202ad784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actors">
+      <UniqueIdentifier>{255f3279-f23e-48a6-8d77-cd9d8a5ac74d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneNode.h">
@@ -73,9 +79,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
@@ -138,9 +141,6 @@
     <ClInclude Include="LevelsTilesSchema.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FriendlyNPC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -174,14 +174,26 @@
     <ClInclude Include="BattleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EnergyBolt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BattlePlayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="FightingCharacter.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="FriendlyNPC.h">
+      <Filter>Header Files\Actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +231,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Actor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -269,9 +278,6 @@
     <ClCompile Include="LevelsTilesSchema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FriendlyNPC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -305,14 +311,26 @@
     <ClCompile Include="BattleScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EnergyBolt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BattlePlayer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="FriendlyNPC.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="FightingCharacter.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Source Files\Actors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -56,13 +56,7 @@ public:
     float           getMaxSpeed() const;
 
     bool            isMarkedForRemoval() const override;
-    void            attack();
 
-    bool            isSpellCasting();
-    void            setSpellCasting(bool b);
-
-    bool            isCastingShield() const;
-    void            setCastingShield(bool b);
 
     void            setState(State state);
     Actor::State    getState() const;
@@ -73,14 +67,10 @@ public:
 
 
 protected:
-    void         updateStates();
+    virtual void   updateStates();
     void         updateDirections();
     void         updateCurrent(sf::Time dt, CommandQueue& commands) override;
     void         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-private:
-    void            checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands);
-    void            createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
 
 protected:
     Type                            type_;
@@ -91,14 +81,5 @@ protected:
     Direction                       direction_;
 
     float                           travelDistance_;
-    bool                            isAttacking_;
-    bool                            isSpellcasting_;
-    bool                            isCastingShield_;
 
-
-    const sf::Time                  ATTACKING_INTERVAL = sf::seconds(1.5f);
-    sf::Time                        attackingCountDown;
-    Command				            fireCommand;
-
-    UiNode*                         shield;
 };

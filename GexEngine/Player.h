@@ -24,7 +24,10 @@ public:
 		Interact,
 		//ContinueDialog,
 
-		SpellCast,
+		//SpellCast,
+
+		Attack,
+		CastShield,
 
 		ShowOrHideJournal,
 

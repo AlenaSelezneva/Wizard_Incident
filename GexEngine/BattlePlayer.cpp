@@ -1,4 +1,6 @@
 #include "BattlePlayer.h"
+#include "FightingCharacter.h"
+#include "Hero.h"
 
 BattlePlayer::BattlePlayer()
 	: currentMissionStatus(MissionStatus::Running)
@@ -101,13 +103,13 @@ void BattlePlayer::initializeActions()
 
 
 
-	actionBindings[Action::Attack].action = derivedAction<Actor>(
-		[playerSpeed](Actor& a, sf::Time dt) {
+	actionBindings[Action::Attack].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
 			a.attack();
 		});
 
-	actionBindings[Action::CastShield].action = derivedAction<Actor>(
-		[](Actor& a, sf::Time dt) {
+	actionBindings[Action::CastShield].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
 			a.setCastingShield(true);
 		});
 }

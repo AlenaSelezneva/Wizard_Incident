@@ -120,6 +120,6 @@ void Application::registerStates()
     stateStack.registerState<GameState>(StateID::Game);
     stateStack.registerState<PauseState>(StateID::Pause);
     stateStack.registerState<DialogState>(StateID::Dialog);
-    stateStack.registerState<FightingState>(StateID::Battle);
+    //stateStack.registerState<FightingState>(StateID::Battle);
     //stateStack.registerState<GameOverState>(StateID::GameOverState);
 }

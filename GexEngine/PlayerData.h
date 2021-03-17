@@ -29,6 +29,9 @@ public:
 	bool					isIntersectsWithPortal() const;
 	void					setIntersectsWithPortal(bool b);
 
+	bool isInFightState() const;
+	void seInFughtState(bool b);
+
 
 private:
 	DialogManager*				dialogManager;
@@ -42,6 +45,8 @@ private:
 	bool						isShowingJournal_;
 
 	bool						isIntersectsWithPortal_;
+
+	bool						isInFightState_;
 
 };
 

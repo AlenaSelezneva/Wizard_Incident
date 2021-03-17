@@ -1,28 +1,17 @@
 #include "Actor.h"
+#include "FightingCharacter.h"
 
 
 #pragma once
-class Enemy : public Actor
+class Enemy : public Actor, public FightingCharacter
 {
 public:
-    Enemy(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts);
+    Enemy(Actor::Type type, const TextureHolder_t& textures, const FontHolder_t& fonts);
     ~Enemy() = default;
 
     unsigned int    getCategory() const override;
-    //bool            isMarkedForRemoval() const override;
-
-    void            attack();
 
 private:
     void            updateCurrent(sf::Time dt, CommandQueue & commands) override;
-    void            checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands);
-    void            createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
-
-private:
-    const sf::Time  ATTACKING_INTERVAL = sf::seconds(3.5f);
-
-    sf::Time        attackingCountDown;
-
-    Command				fireCommand;
 };
 

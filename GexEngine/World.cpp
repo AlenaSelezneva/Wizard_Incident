@@ -11,6 +11,7 @@ Alena Selezneva
 #include "Utility.h"
 #include "InteractableObject.h"
 #include "ObjectWithQuest.h"
+#include "EnergyBolt.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
@@ -96,7 +97,7 @@ void World::update(sf::Time dt) {
 	handleCollisions(dt, commandQueue);
 
 	updateSounds();
-	updateUiElements();
+	updateCasualUiElements();
 
 	/*if (!playerData->getCurrentDialog().empty()) {
 		return;
@@ -118,7 +119,7 @@ void World::updateSounds()
 	sounds.removeStoppedSounds();
 }
 
-void World::updateUiElements()
+void World::updateCasualUiElements()
 {
 	questLog->setString(playerData->getQuestInstrunstionDisplay());
 	questsView->setVisible(playerData->isShowingJournal());
@@ -213,15 +214,11 @@ void World::buildScene() {
 	for (int i = 0; i < currentLevel.size(); ++i) {
 		for (int j = 0; j < currentLevel[0].size(); ++j) {
 
-			//std::unique_ptr<SpriteNode> sprite;
-			//SpriteNode sprite;
-
 			SpriteNode* sprite;
 
 			switch (currentLevel[i][j])
 			{
 			case Tile::Type::Floor:
-				//sprite = std::unique_ptr<SpriteNode>(new SpriteNode(floorTexture, floorRect));
 				sprite = new SpriteNode(floorTexture, floorRect);
 				sprite->setPosition(j * tileSize, i * tileSize);
 				walkOverTiles.push_back(sprite);
@@ -239,25 +236,12 @@ void World::buildScene() {
 			default:
 				break;
 			}
-
-			//sprite->setPosition(j * tileSize + 300.f, i * tileSize);
-			//sceneLayers[Floor]->attachChild(std::move(sprite));
 		}
 	}
 
-
-	//float viewHeight = worldView.getSize().y;
 	sf::IntRect textureRect(worldBounds);
-	//textureRect.height += static_cast<int>(viewHeight);
 
-	// background spriteNode
-	/*std::unique_ptr<SpriteNode> road(new SpriteNode(texture, textureRect));
-	road->setPosition(worldBounds.left / 2, worldBounds.top / 2);
-	sceneLayers[Floor]->attachChild(std::move(road));*/
-
-
-
-	std::unique_ptr<Actor> hero_(new Actor(Actor::Type::Hero, textures, fonts));
+	std::unique_ptr<Hero> hero_(new Hero(textures, fonts));
 	hero = hero_.get();
 	hero->setPosition(spawnPosition);
 	hero->setVelocity(0.f, 0.f);
@@ -296,7 +280,6 @@ void World::buildScene() {
 	portal = portal_.get();
 	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
 
-	/*addEnemies();*/
 	buildQuestView();
 	buildHintView();
 }
@@ -355,13 +338,44 @@ void World::buildHintView()
 	uiGraph->attachChild(std::move(hintBackground));
 }
 
+void World::buildFightingUiStats()
+{
+	float margin = 20.f;
+
+	uiGraph = new SceneNode(Category::None);
+
+	std::unique_ptr<UiNode> heroHealth(new UiNode(textures.get(TextureID::HealthDisplay)));
+	heroHealth->setPosition(margin, margin);
+	heroHealth->setVisible(true);
+
+	std::unique_ptr<TextNode> heroStats(new TextNode(fonts, "", 30));
+	heroStats->setString("Hero:\n");
+	heroStats->setPosition(heroHealth.get()->getBoundingRect().width / 2, heroHealth.get()->getBoundingRect().height / 2);
+
+	heroStatText = heroStats.get();
+
+	heroHealth->attachChild(std::move(heroStats));
+	uiGraph->attachChild(std::move(heroHealth));
+
+
+
+	std::unique_ptr<UiNode> enemyHealth(new UiNode(textures.get(TextureID::HealthDisplay)));
+	enemyHealth->setPosition(worldView.getSize().x - enemyHealth->getBoundingRect().width - margin, margin);
+	enemyHealth->setVisible(true);
+
+	std::unique_ptr<TextNode> enemyStats(new TextNode(fonts, "", 30));
+	enemyStats->setString("Enemy:\n");
+	enemyStats->setPosition(enemyHealth.get()->getBoundingRect().width / 2, enemyHealth.get()->getBoundingRect().height / 2);
+
+	enemyStatsText = enemyStats.get();
+
+	enemyHealth->attachChild(std::move(enemyStats));
+	uiGraph->attachChild(std::move(enemyHealth));
+}
+
 
 void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 {
-
-	//handleCollisionsWithTiles();
-
-	// get all colliding pairs
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
 
@@ -370,135 +384,80 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 		playerData->setIntersectsWithPortal(true);
 	}
 
-	for (auto pair : collisionPairs) {
-		/*if (matchesCategories(pair, Category::Hero, Category::QuestObject) && playerData->hasPendingQuest((static_cast<ObjectWithQuest&>(*pair.second)).getQuestObjectType())) {
 
-		}*/
-		bool goOnQuest = false;
+	if (playerData->isInFightState()) {
+		for (auto pair : collisionPairs) {
 
-		if (matchesCategories(pair, Category::Hero, Category::QuestObject)) {
-			auto& hero = static_cast<Actor&>(*pair.first);
+			bool goOnQuest = false;
 
-			if ((*pair.second).getCategory() == Category::TalkingNPC) {
-				auto& obj = static_cast<FriendlyNPC&>(*pair.second);
+			if (matchesCategories(pair, Category::Hero, Category::QuestObject)) {
+				auto& hero = static_cast<Actor&>(*pair.first);
 
-				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
-					goOnQuest = true;
-					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
-					hintView->setVisible(true);
+				if ((*pair.second).getCategory() == Category::TalkingNPC) {
+					auto& obj = static_cast<FriendlyNPC&>(*pair.second);
+
+					if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+						goOnQuest = true;
+						playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+						hintView->setVisible(true);
+					}
+
+					adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
 				}
+				else {
+					auto& obj = static_cast<InteractableObject&>(*pair.second);
+
+					if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+						goOnQuest = true;
+						playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+						hintView->setVisible(true);
+					}
+
+					adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+				}
+			}
+
+			if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
+				auto& npc = static_cast<FriendlyNPC&>(*pair.second);
+				npc.setCanTalkToHero(true);
+
+				playerData->setCurrentDialog(npc.getType());
+
+				auto& hero = static_cast<Actor&>(*pair.first);
 
 				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
 
-				/*if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
-					adaptPosition(&hero, &obj);
-				}
-
-				if (hero.getPosition().y >= obj.getPosition().y) {
-					collidingToRedraw.push_back(&hero);
-				}*/
-			}
-			else {
-				auto& obj = static_cast<InteractableObject&>(*pair.second);
-
-				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
-					goOnQuest = true;
-					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
-					hintView->setVisible(true);
-				}
-
-				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-
-				/*if (hero.getBaseTileRect().intersects(obj.getBaseTileRect())) {
-					adaptPosition(&hero, &obj);
-				}
-
-				if (hero.getPosition().y >= obj.getPosition().y) {
-					collidingToRedraw.push_back(&hero);
-				}*/
+				hintText->setString("Press ENTER to talk");
+				hintView->setVisible(true);
 			}
 		}
-
-		if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
-			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
-			npc.setCanTalkToHero(true);
-
-			playerData->setCurrentDialog(npc.getType());
-
-			auto& hero = static_cast<Actor&>(*pair.first);
-
-			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-
-			/*if (hero.getBaseTileRect().intersects(npc.getBaseTileRect())) {
-				adaptPosition(&hero, &npc);
-			}
-
-			if (hero.getPosition().y >= npc.getPosition().y) {
-				collidingToRedraw.push_back(&hero);
-			}*/
-
-			hintText->setString("Press ENTER to talk");
-			hintView->setVisible(true);
-		}
-		
-		//else if (matchesCategories(pair, Category::Hero, Category::InteractableObject)) {
-		//	auto& interactableObject = static_cast<InteractableObject&>(*pair.second);
-		//	//playerData->setCurrentDialog(npc.getDialog());
-		//	//playerData->setCurrentDialog(interactableObject.getType());
-
-		//	auto& hero = static_cast<Actor&>(*pair.first);
-
-
-		//	if (hero.getBaseTileRect().intersects(interactableObject.getBaseTileRect())) {
-		//		adaptPosition(&hero, &interactableObject);
-		//	}
-
-		//	if (hero.getBaseTileRect().top + hero.getBaseTileRect().height >= 
-		//				interactableObject.getBaseTileRect().top + interactableObject.getBaseTileRect().height) {
-		//		collidingToRedraw.push_back(&hero);
-		//	}
-		//}
-		
-				
 	}
+	else {
+		for (auto pair : collisionPairs) {
 
-	/*
-	for (auto pair : collisionPairs) {
-		if (matchesCategories(pair, Category::Hero, Category::Zombie)) {
-			auto& hero = static_cast<Actor&>(*pair.first);
-			auto& zombie = static_cast<Actor&>(*pair.second);
+			if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
+				auto& hero_ = static_cast<Actor&>(*pair.first);
+				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
 
-			if (hero.getState() == Actor::State::Attack)
-				zombie.damage(1);
-			else
-				hero.damage(1);
+				if (!hero->isCastingShield())
+					hero_.damage(bolt.getDamage());
 
+				bolt.destroy();
+			}
+
+			if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
+				auto& enemy_ = static_cast<Actor&>(*pair.first);
+				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+
+				enemy_.damage(bolt.getDamage());
+				bolt.destroy();
+			}
+
+			if (matchesCategories(pair, Category::Hero, Category::FightingNPC)) {
+				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+			}
 		}
-
-		if (matchesCategories(pair, Category::Actor, Category::Actor)) {
-			auto& first = static_cast<Actor&>(*pair.first);
-			auto& second = static_cast<Actor&>(*pair.second);
-
-			if (first.getPosition().x < second.getPosition().x) {
-				first.move(sf::Vector2f(-1.f, 0.f));
-				second.move(sf::Vector2f(1.f, 0.f));
-			}
-			else {
-				first.move(sf::Vector2f(1.f, 0.f));
-				second.move(sf::Vector2f(-1.f, 0.f));
-			}
-
-			if (first.getPosition().y < second.getPosition().y) {
-				first.move(sf::Vector2f(0.f, -1.f));
-				second.move(sf::Vector2f(0.f, 1.f));
-			}
-			else {
-				first.move(sf::Vector2f(0.f, 1.f));
-				second.move(sf::Vector2f(0.f, -1.f));
-			}
-
-		}
-	}*/
+	}
 }
 
 bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
@@ -516,6 +475,10 @@ bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, 
 	else {
 		return false;
 	}
+}
+
+void World::destroyEntitiesOutsideView()
+{
 }
 
 //void World::destroyEntitiesOutsideView()
@@ -662,6 +625,15 @@ void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, Command
 	}
 }
 
+void World::updateFightingStatTexts()
+{
+	std::string enemyString = "Enemy:\nHP:" + std::to_string(enemy->getHitpoints());
+	std::string heroHealth = hero->getFightHealthDisplayString();
+
+	heroStatText->setString(heroHealth);
+	enemyStatsText->setString(enemyString);
+}
+
 void World::resetNPCsCanTalk()
 {
 	playerData->setCurrentDialog(Actor::Type::None);
@@ -670,6 +642,24 @@ void World::resetNPCsCanTalk()
 sf::FloatRect World::getViewBounds() const
 {
 	return sf::FloatRect(worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize());
+}
+
+void World::guideEnergyBolts()
+{
+	Command heroBoltGuider;
+	heroBoltGuider.category = Category::BaseAttackAllied;
+	heroBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
+		missile.guideTowards(enemy->getWorldPoition());
+		});
+
+	Command enemyBoltGuider;
+	enemyBoltGuider.category = Category::baseAttackEnemy;
+	enemyBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
+		missile.guideTowards(hero->getWorldPoition());
+		});
+
+	commandQueue.push(heroBoltGuider);
+	commandQueue.push(enemyBoltGuider);
 }
 
 //sf::FloatRect World::getBattlefieldBounds() const

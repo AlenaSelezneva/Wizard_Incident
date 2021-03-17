@@ -24,7 +24,6 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	, sprite_()
 	, direction_(Direction::Front)
 	, travelDistance_(0.f)
-	, isAttacking_(false)
 {
 
 	if (type_ == Actor::Type::Hero) {
@@ -33,19 +32,6 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 		{
 			animations_[a.first] = a.second;
 		}
-
-		fireCommand.category = Category::Hero;
-		fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
-		{
-			this->createEnergyBolt(node, textures);
-		};
-
-		std::unique_ptr<UiNode> shield_(new UiNode(textures.get(TextureID::ShieldSpell)));
-		shield_->setPosition(-50.f, -50.f);
-		shield_->setVisible(false);
-		shield = shield_.get();
-
-		attachChild(std::move(shield_));
 	}
 	else {
 		// change this when get more json!!!
@@ -56,26 +42,6 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 		}
 	}
 
-
-	/*for (auto a : TABLE.at(type).animations)
-	{
-		animations_[a.first] = a.second;
-	}
-
-	if (Actor::getCategory() == Category::Zombie)
-		state_ = State::Rise;  // zombies spawn in rise state
-
-	sprite_.setTextureRect(sf::IntRect());
-	centerOrigin(sprite_);
-
-	//
-	// set up text for health and missiles
-	// 
-	std::unique_ptr<TextNode> health(new TextNode(fonts, ""));
-	healthDisplay_ = health.get();
-	attachChild(std::move(health));
-
-	updateTexts();*/
 }
 
 unsigned int Actor::getCategory() const
@@ -147,67 +113,6 @@ bool Actor::isMarkedForRemoval() const
 	return false; // (state_ == State::Dead && animations_.at(state_).isFinished());
 }
 
-void Actor::attack()
-{
-	//isAttacking_ = true;
-	if (!isAttacking_) {
-		isAttacking_ = true;
-		isSpellcasting_ = true;
-		attackingCountDown = ATTACKING_INTERVAL;
-	}
-}
-
-void Actor::checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands)
-{
-	if (isAttacking_ && attackingCountDown <= sf::Time::Zero) {
-		commands.push(fireCommand);
-		isAttacking_ = false;
-	}
-	else if (isAttacking_ && attackingCountDown > sf::Time::Zero) {
-		attackingCountDown -= dt;
-	}
-}
-
-void Actor::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
-{
-	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::AlliedBolt, 10, textures));
-
-	bolt->setPosition(0.f, 0.f);
-	//bolt->setPosition(getWorldPoition());
-	bolt->setVelocity(0.f, 0.f);
-
-	node.attachChild(std::move(bolt));
-}
-
-bool Actor::isSpellCasting()
-{
-	return isSpellcasting_;
-}
-
-void Actor::setSpellCasting(bool b)
-{
-	isSpellcasting_ = b;
-}
-
-bool Actor::isCastingShield() const
-{
-	return isCastingShield_;
-}
-
-void Actor::setCastingShield(bool b)
-{
-	if (isAttacking_) {
-		isCastingShield_ = false;
-		return;
-	}
-
-	isCastingShield_ = b;
-
-	if (isCastingShield_ == true) {
-		isSpellcasting_ = true;
-	}
-}
-
 void Actor::setState(State state)
 {
 	state_ = state;
@@ -235,29 +140,6 @@ std::string Actor::getFightHealthDisplayString()
 
 void Actor::updateStates()
 {
-	if (isSpellcasting_ || isAttacking_ || isSpellcasting_) {
-		switch (direction_)
-		{
-		case Direction::Front:
-			state_ = Actor::State::SpellCastFront;
-			break;
-		case Direction::Back:
-			state_ = Actor::State::SpellCastBack;
-			break;
-		case Direction::Right:
-			state_ = Actor::State::SpellCastRight;
-			break;
-		case Direction::Left:
-			state_ = Actor::State::SpellCastLeft;
-			break;
-		default:
-			break;
-		}
-	}
-
-	if (isAttacking_)
-		return;
-
 	float delta = 0.01f;
 	if (abs(getVelocity().x) < delta && abs(getVelocity().y) <= delta) {
 		switch (direction_)
@@ -307,9 +189,6 @@ void Actor::updateDirections()
 
 void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	if (isSpellcasting_ || isAttacking_ || isCastingShield_)
-		setVelocity(0.f, 0.f);
-
 	updateDirections();
 	updateStates();
 
@@ -320,13 +199,6 @@ void Actor::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	sprite_.setTextureRect(rec);
 	centerOrigin(sprite_);
-
-	if (type_ == Type::Hero) {
-		checkCastingAttackingSpell(dt, commands);
-
-		shield->setVisible(isCastingShield_);
-	}
-
 }
 
 void Actor::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

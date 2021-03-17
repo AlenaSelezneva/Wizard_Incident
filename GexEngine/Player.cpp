@@ -1,6 +1,8 @@
 
 
 #include "Player.h"
+#include "Hero.h"
+
 #include <algorithm>
 #include "CommandQueue.h"
 #include "Actor.h"
@@ -77,7 +79,11 @@ void Player::initializeKeyBindings() {
 
 	keyBindings[sf::Keyboard::J] = Action::ShowOrHideJournal;
 
-	keyBindings[sf::Keyboard::Space] = Action::SpellCast;
+	keyBindings[sf::Keyboard::Space] = Action::Attack;
+
+	keyBindings[sf::Keyboard::RShift] = Action::CastShield;
+
+	//keyBindings[sf::Keyboard::Space] = Action::SpellCast;
 
 	//keyBindings[sf::Keyboard::Enter] = Action::Interact;
 	//keyBindings[sf::Keyboard::Space] = Action::ContinueDialog;
@@ -108,15 +114,28 @@ void Player::initializeActions()
 			a.accelerate(sf::Vector2f(0.f, playerSpeed));
 		});
 
-	actionBindings[Action::SpellCast].action = derivedAction<Actor>(
-		[playerSpeed](Actor& a, sf::Time dt) {
-			a.setSpellCasting(true);
-		});
-
 	actionBindings[Action::ShowOrHideJournal].action = derivedAction<Actor>(
 		[this](Actor& a, sf::Time dt) {
 			playerData->flipShowingJournal();
 		});
+
+
+	actionBindings[Action::Attack].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
+			a.attack();
+		});
+
+	actionBindings[Action::CastShield].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
+			a.setCastingShield(true);
+		});
+
+
+		//actionBindings[Action::SpellCast].action = derivedAction<Hero>(
+	//	[playerSpeed](Hero& a, sf::Time dt) {
+	//		a.setSpellCasting(true);
+	//	});
+
 
 	/*actionBindings[Action::Interact].action = derivedAction<FriendlyNPC>(
 		[this](FriendlyNPC& npc, sf::Time dt) {
@@ -148,7 +167,7 @@ bool Player::isRealtimeAction(Action action)
 	case Action::MoveRight:
 	case Action::MoveDown:
 	case Action::MoveUp:
-	case Action::SpellCast:
+	case Action::CastShield:
 		return true;
 	case Action::Interact:
 		return false;

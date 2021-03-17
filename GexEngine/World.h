@@ -14,6 +14,8 @@
 #include "PlayerData.h"
 #include "TextNode.h"
 #include "UiNode.h"
+#include "Hero.h"
+#include "Enemy.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -51,7 +53,8 @@ protected:
 
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
-	//void					destroyEntitiesOutsideView();
+	
+	void					destroyEntitiesOutsideView();
 
 	void					adaptPlayerVelocity();
 	void					adaptPlayerPosition();
@@ -63,12 +66,16 @@ protected:
 
 	sf::FloatRect			getViewBounds() const;
 
+	void					guideEnergyBolts();
+
 private:
 
 	void					buildQuestView();
 	void					buildHintView();
+	void					buildFightingUiStats();
 
-	void					updateUiElements();
+	void					updateCasualUiElements();
+	void					updateFightingStatTexts();
 
 	//void					adaptNPCPosition();
 	void					resetNPCsCanTalk();
@@ -99,8 +106,8 @@ protected:
 	sf::RenderTarget&					target;
 	sf::RenderTexture					sceneTexture;
 	sf::View							worldView;
-	const FontHolder_t& fonts;
-	SoundPlayer& sounds;
+	const FontHolder_t&					fonts;
+	SoundPlayer&						sounds;
 
 	SceneNode							sceneGraph;
 
@@ -114,7 +121,8 @@ protected:
 	std::array<SceneNode*, LayerCount>	sceneLayers;
 	CommandQueue						commandQueue;
 
-	Actor* hero;
+	Hero*								hero;
+	Enemy*								enemy;
 
 	sf::FloatRect						worldBounds;
 	sf::Vector2f						spawnPosition;
@@ -125,16 +133,23 @@ protected:
 
 	PlayerData*							playerData;
 
+
 private:
 	TextureHolder_t						textures;
 	SceneNode*							uiGraph;
 	SpriteNode*							portal;
-
-	std::string							currentDialog;
 
 	UiNode*								questsView;
 	UiNode*								hintView;
 
 	TextNode*							questLog;
 	TextNode*							hintText;
+
+	SceneNode*							fightingUiGraph;
+
+	UiNode*								heroStatsView;
+	UiNode*								enemyStatsView;
+
+	TextNode*							heroStatText;
+	TextNode*							enemyStatsText;
 };
