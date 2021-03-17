@@ -26,8 +26,9 @@ void PlayerData::setCurrentDialog(Actor::Type npc)
 		return;
 	}
 		
-
 	currentDialog = dialogManager->getDialog(npc);
+
+	currentQuestObject = ObjectWithQuest::Type::None;
 	currentTalkingNPC = npc;
 }
 
@@ -48,6 +49,7 @@ void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)
 
 	currentDialog = questManager->getQuestDialog(obj);
 	currentQuestObject = obj;
+	currentTalkingNPC = Actor::Type::None;
 }
 
 void PlayerData::onCurrectQuestDialogComplete()
