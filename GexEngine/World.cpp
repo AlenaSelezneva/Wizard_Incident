@@ -388,7 +388,7 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 	}
 
 
-	if (playerData->isInFightState()) {
+	if (!playerData->isInFightState()) {
 		for (auto pair : collisionPairs) {
 
 			bool goOnQuest = false;

@@ -433,3 +433,5 @@ GexEngine/Debug/World.obj
 *.ipch
 *.obj
 *.tlog
+*.pdb
+*.tlog
