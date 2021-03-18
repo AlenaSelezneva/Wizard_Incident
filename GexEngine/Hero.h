@@ -13,6 +13,8 @@ public:
     bool            isCastingShield() const;
     void            setCastingShield(bool b);
 
+    virtual void    attack() override;
+
 
 private:
     void            updateStates() override;
@@ -23,6 +25,8 @@ private:
     bool                            isSpellcasting_;
     bool                            isCastingShield_;
 
+    const sf::Time                  ATTACKING_CASTING_TIME = sf::seconds(1.75f);
+    sf::Time                        attackingCastingCountDown;
 
     UiNode*                         shield;
 };

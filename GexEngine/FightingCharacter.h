@@ -15,7 +15,7 @@ public:
 
     FightingCharacter(Type t);
 
-    void    attack();
+    virtual void    attack();
 
 protected:
     void            checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands);
@@ -28,6 +28,6 @@ protected:
     const sf::Time  ATTACKING_INTERVAL = sf::seconds(3.5f);
 
     sf::Time        attackingCountDown;
-    Command				fireCommand;
+    Command			fireCommand;
 };
 

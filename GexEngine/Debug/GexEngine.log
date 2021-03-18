@@ -1,13 +1,2 @@
-﻿  BattlePlayer.cpp
-  BattleScene.cpp
-  GameState.cpp
-  Hero.cpp
-  Player.cpp
-  StateStack.cpp
-  World.cpp
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(214,20): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(215,21): warning C4018: '<': signed/unsigned mismatch
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(619,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\GexEngine\World.cpp(619,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  Hero.cpp
   GexEngine.vcxproj -> D:\studies_Winter_2\Dev_Proj_C++\Wizard_Incident\Debug\GexEngine.exe

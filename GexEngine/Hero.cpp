@@ -5,7 +5,11 @@
 Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts)
 	:Actor(Actor::Type::Hero, textures, fonts)
 	, FightingCharacter(FightingCharacter::Type::Hero)
+	, attackingCastingCountDown(ATTACKING_CASTING_TIME)
 {
+
+	//ATTACKING_INTERVAL
+	/*fireCommand.category = Category::SpellLayer;*/
 	fireCommand.category = Category::Hero;
 	fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
@@ -48,6 +52,12 @@ void Hero::setCastingShield(bool b)
 	if (isCastingShield_ == true) {
 		isSpellcasting_ = true;
 	}
+}
+
+void Hero::attack()
+{
+	isAttacking_ = true;
+	attackingCastingCountDown = ATTACKING_CASTING_TIME;
 }
 
 void Hero::updateStates()
@@ -113,6 +123,12 @@ void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 	updateDirections();
 	updateStates();
 
+	if (isAttacking_ && attackingCastingCountDown <= sf::Time::Zero) {
+		commands.push(fireCommand);
+		isAttacking_ = false;
+		attackingCastingCountDown = ATTACKING_CASTING_TIME;
+	}
+
 	//isCastingShield_ = false;
 	Entity::updateCurrent(dt, commands);
 
@@ -121,8 +137,8 @@ void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 	sprite_.setTextureRect(rec);
 	centerOrigin(sprite_);
 
-	checkCastingAttackingSpell(dt, commands);
+	//checkCastingAttackingSpell(dt, commands);
 
 	shield->setVisible(isCastingShield_);
-
+	attackingCastingCountDown -= dt;
 }

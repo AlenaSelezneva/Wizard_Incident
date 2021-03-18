@@ -170,6 +170,7 @@ bool Player::isRealtimeAction(Action action)
 	case Action::CastShield:
 		return true;
 	case Action::Interact:
+	case Action::Attack:
 		return false;
 	default:
 		return false;

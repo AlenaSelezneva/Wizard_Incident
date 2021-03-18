@@ -76,6 +76,7 @@ void World::update(sf::Time dt) {
 	// reset player velocity
 	hero->setVelocity(0.f, 0.f);
 	hero->setSpellCasting(false);
+	hero->setCastingShield(false);
 	resetNPCsCanTalk();
 	playerData->setIntersectsWithPortal(false);
 	hintView->setVisible(false);
@@ -168,7 +169,9 @@ void World::loadTextures() {
 
 	textures.load(TextureID::Portal, "Media/Textures/portal.png");
 
-	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell.png");
+	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell_no_glitter.png");
+	textures.load(TextureID::EnergyBallHero, "Media/Textures/energy_ball_hero.png");
+	textures.load(TextureID::EnergyBallEnemy, "Media/Textures/energy_ball_enemy.png");
 }
 
 void World::buildScene() {
@@ -649,7 +652,8 @@ void World::guideEnergyBolts()
 	Command heroBoltGuider;
 	heroBoltGuider.category = Category::BaseAttackAllied;
 	heroBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
-		missile.guideTowards(enemy->getWorldPoition());
+		if (enemy != nullptr)
+			missile.guideTowards(enemy->getWorldPoition());
 		});
 
 	Command enemyBoltGuider;

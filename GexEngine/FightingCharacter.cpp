@@ -34,7 +34,7 @@ void FightingCharacter::createEnergyBolt(SceneNode& node, const TextureHolder_t&
 
 	bolt->setPosition(0.f, 0.f);
 	//bolt->setPosition(getWorldPoition());
-	bolt->setVelocity(0.f, 0.f);
+	bolt->setVelocity(0.f, -40.f);
 
 	node.attachChild(std::move(bolt));
 }
