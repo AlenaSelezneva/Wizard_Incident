@@ -184,8 +184,10 @@ void World::buildScene() {
 		case Walls:
 			category = Category::Type::Wall;
 			break;
-		case PlayerLayer:
 		case SpellsLayer:
+			category = Category::Type::SpellLayer;
+			break;
+		case PlayerLayer:
 		default:
 			category = Category::Type::None;
 			break;

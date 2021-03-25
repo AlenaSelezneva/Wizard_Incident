@@ -11,6 +11,8 @@ public:
 
     unsigned int    getCategory() const override;
 
+    virtual void    createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const override;
+
 private:
     void            updateCurrent(sf::Time dt, CommandQueue & commands) override;
 };

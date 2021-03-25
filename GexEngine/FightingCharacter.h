@@ -19,7 +19,7 @@ public:
 
 protected:
     void            checkCastingAttackingSpell(sf::Time dt, CommandQueue& commands);
-    void            createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
+    virtual void    createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const;
 
 protected:
     Type            type;

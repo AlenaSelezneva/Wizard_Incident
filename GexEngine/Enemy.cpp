@@ -18,6 +18,21 @@ unsigned int Enemy::getCategory() const
 	return Category::FightingNPC;
 }
 
+void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
+{
+	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::EnemyBolt, 10, textures));
+
+	sf::Vector2f offset(sprite_.getGlobalBounds().width,
+		sprite_.getGlobalBounds().height);
+
+
+	bolt->setPosition(getWorldPoition() + offset);
+	//bolt->setPosition(getWorldPoition());
+	bolt->setVelocity(0.f, -40.f);
+
+	node.attachChild(std::move(bolt));
+}
+
 void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	Actor::updateCurrent(dt, commands);

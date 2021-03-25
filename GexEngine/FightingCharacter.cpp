@@ -29,12 +29,4 @@ void FightingCharacter::checkCastingAttackingSpell(sf::Time dt, CommandQueue& co
 
 void FightingCharacter::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
 {
-	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(
-		type == Type::Enemy ? EnergyBolt::Type::EnemyBolt : EnergyBolt::Type::AlliedBolt, 10, textures));
-
-	bolt->setPosition(0.f, 0.f);
-	//bolt->setPosition(getWorldPoition());
-	bolt->setVelocity(0.f, -40.f);
-
-	node.attachChild(std::move(bolt));
 }

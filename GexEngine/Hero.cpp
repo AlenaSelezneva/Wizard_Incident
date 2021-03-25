@@ -1,6 +1,7 @@
 #include "Hero.h"
 #include "UiNode.h"
 #include "Utility.h"
+#include "EnergyBolt.h"
 
 Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts)
 	:Actor(Actor::Type::Hero, textures, fonts)
@@ -10,7 +11,7 @@ Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts)
 
 	//ATTACKING_INTERVAL
 	/*fireCommand.category = Category::SpellLayer;*/
-	fireCommand.category = Category::Hero;
+	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
 		this->createEnergyBolt(node, textures);
@@ -58,6 +59,45 @@ void Hero::attack()
 {
 	isAttacking_ = true;
 	attackingCastingCountDown = ATTACKING_CASTING_TIME;
+}
+
+void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
+{
+	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::AlliedBolt, 10, textures));
+
+	/*sf::Vector2f offset(sprite_.getGlobalBounds().width / 2,
+		sprite_.getGlobalBounds().height);*/
+
+	sf::Vector2f offset(0.f, -20.f);
+	sf::Vector2f velocity(0.f, 0.f);
+
+	//float widthCenter = sprite_.getLocalBounds().width / 2;
+
+	float velocity_ = 20.f;
+
+	switch (direction_) {
+	case Direction::Back:
+		offset = sf::Vector2f(-15.f, -30.f);
+		velocity = sf::Vector2f(0.f, -velocity_);
+		break;
+	case Direction::Front:
+		offset = sf::Vector2f(15.f, -10.f);
+		velocity = sf::Vector2f(0.f, velocity_);
+		break;
+	case Direction::Left:
+		offset = sf::Vector2f(-35.f, -10.f);
+		velocity = sf::Vector2f(-velocity_, 0.f);
+		break;
+	case Direction::Right:
+		offset = sf::Vector2f(35.f, -30.f);
+		velocity = sf::Vector2f(velocity_, 0.f);
+		break;
+	}
+
+	bolt->setPosition(getWorldPoition() + offset);
+	bolt->setVelocity(velocity);
+
+	node.attachChild(std::move(bolt));
 }
 
 void Hero::updateStates()

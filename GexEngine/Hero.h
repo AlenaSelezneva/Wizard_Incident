@@ -15,6 +15,8 @@ public:
 
     virtual void    attack() override;
 
+    virtual void    createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const override;
+
 
 private:
     void            updateStates() override;
