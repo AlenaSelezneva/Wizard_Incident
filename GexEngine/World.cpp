@@ -70,9 +70,6 @@ bool World::hasAlivePlayer() const
 
 void World::update(sf::Time dt) {
 	
-	// scroll view 
-	//worldView.move(0.f, scrollSpeed * dt.asSeconds());
-
 	// reset player velocity
 	hero->setVelocity(0.f, 0.f);
 	hero->setSpellCasting(false);
@@ -83,11 +80,8 @@ void World::update(sf::Time dt) {
 	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
 
-	//handleCollisions(dt, commandQueue);
 
-	//destroyEntitiesOutsideView();
-
-	//adaptNPCPosition();
+	guideEnergyBolts();
 
 	while (!commandQueue.isEmpty()) {
 		sceneGraph.onCommand(commandQueue.pop(), dt);
@@ -100,18 +94,12 @@ void World::update(sf::Time dt) {
 	updateSounds();
 	updateCasualUiElements();
 
-	/*if (!playerData->getCurrentDialog().empty()) {
-		return;
-	}*/
-
-	//adaptPlyerVelocity();
-	//sceneGraph.removeWrecks();
+	sceneGraph.removeWrecks();
 
 	sceneGraph.update(dt, getCommands());
 	adaptPlayerPosition();
 
-	//sceneLayers[UiLevel]->setPosition(worldView.getCenter());
-
+	destroyEntitiesOutsideView();
 }
 
 void World::updateSounds()
@@ -143,11 +131,6 @@ void World::draw() {
 		target.draw(*r);
 	}
 
-	//if (playerData->isShowingJournal())
-	//	target.draw(*questsView);
-
-	//uiGraph.setPosition(worldView.getViewport().left, worldView.getViewport().top);
-	
 	target.draw(*uiGraph);
 }
 
@@ -204,10 +187,6 @@ void World::buildScene() {
 	blockingTiles = std::vector<SpriteNode*>();
 	invisibleWallTiles = std::vector<SpriteNode*>();
 
-
-	// prepare background texture
-	/*sf::Texture& texture = textures.get(TextureID::Road);
-	texture.setRepeated(true);*/
 	sf::Texture& floorTexture = textures.get(TextureID::Floor);
 	sf::Texture& wallTexture = textures.get(TextureID::Wall);
 
@@ -311,8 +290,6 @@ void World::buildQuestView()
 	questTextNode->setTextColor(sf::Color(125, 120, 186));
 	questTextNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 130.f);
 	questLog = questTextNode.get();
-
-	//questHeaderNode.get()->attachChild(std::move(questTextNode));
 
 	qJournalBackground.get()->attachChild(std::move(questHeaderNode));
 
@@ -484,19 +461,15 @@ bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, 
 
 void World::destroyEntitiesOutsideView()
 {
+	Command command;
+	command.category = Category::AttackingSpell;
+	command.action = derivedAction<Entity>([this](Entity& e, sf::Time t) {
+		if (!getViewBounds().intersects(e.getBoundingRect())) {
+			e.destroy();
+		}
+		});
+	commandQueue.push(command);
 }
-
-//void World::destroyEntitiesOutsideView()
-//{
-//	Command command;
-//	command.category = Category::NPC;
-//	command.action = derivedAction<Entity>([this](Entity& e, sf::Time t) {
-//		if (!getBattlefieldBounds().intersects(e.getBoundingRect())) {
-//			e.destroy();
-//		}
-//		});
-//	commandQueue.push(command);
-//}
 
 void World::adaptPlayerVelocity()
 {
@@ -545,7 +518,6 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 
 		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
 			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
-				//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
 				adaptPosition(hero, t);
 			}
 			else {
@@ -562,7 +534,6 @@ void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& command
 
 		if (heroCopy->getBaseTileRect().intersects(t->getBaseTileRect())) {
 			if (hero->getBaseTileRect().intersects(t->getBaseTileRect())) {
-				//hero->accelerate(-1.75 * hero->getVelocity().x, -1.75 * hero->getVelocity().y);
 				adaptPosition(hero, t);
 			}
 			else {
@@ -578,7 +549,6 @@ void World::adaptPosition(Entity* ent1, SceneNode* sceneNode)
 	float speed = 2.f;
 
 	if (ent1->getPosition().x < sceneNode->getPosition().x) {
-		/*hero.move(sf::Vector2f(-1.f, 0.f));*/
 		ent1->move(sf::Vector2f(-speed, 0.f));
 	}
 	else {
@@ -598,7 +568,6 @@ void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, Command
 	auto copy = new Actor(Actor::Type::Hero, textures, fonts);
 	copy->setPosition(hero->getPosition());
 	copy->setVelocity(hero->getVelocity());
-	/*copy->update(dt, commands);*/
 
 	size_t deltaTime = 20;
 	copy->update(sf::milliseconds(dt.asMilliseconds() + deltaTime), commands);
@@ -611,7 +580,6 @@ void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, Command
 	else {
 		obj = static_cast<InteractableObject*>(entity);
 	}
-
 
 	if (hero->getBoundingRect().intersects(obj->getBoundingRect()) &&
 		hero->getBoundingRect().top + hero->getBoundingRect().height >= obj->getBoundingRect().top + obj->getBoundingRect().height)
@@ -653,26 +621,27 @@ void World::guideEnergyBolts()
 {
 	Command heroBoltGuider;
 	heroBoltGuider.category = Category::BaseAttackAllied;
-	heroBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
+	heroBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& bolt, sf::Time dt) {
 		if (enemy != nullptr)
-			missile.guideTowards(enemy->getWorldPoition());
+			bolt.guideTowards(enemy->getWorldPoition());
 		});
 
 	Command enemyBoltGuider;
 	enemyBoltGuider.category = Category::baseAttackEnemy;
-	enemyBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& missile, sf::Time dt) {
-		missile.guideTowards(hero->getWorldPoition());
+	enemyBoltGuider.action = derivedAction<EnergyBolt>([this](EnergyBolt& bolt, sf::Time dt) {
+		bolt.guideTowards(hero->getWorldPoition());
 		});
+
+	Command collideWithWalls;
+	collideWithWalls.category = Category::AttackingSpell;
+	collideWithWalls.action = derivedAction<EnergyBolt>([this](EnergyBolt& bolt, sf::Time dt) {
+		for (auto wall : blockingTiles) {
+			if (bolt.getBoundingRect().intersects(wall->getBoundingRect()))
+				bolt.destroy();
+		}
+	});
 
 	commandQueue.push(heroBoltGuider);
 	commandQueue.push(enemyBoltGuider);
+	commandQueue.push(collideWithWalls);
 }
-
-//sf::FloatRect World::getBattlefieldBounds() const
-//{
-//	auto bounds = getViewBounds();
-//	bounds.top -= 100.f;
-//	bounds.height += 100.f;
-//
-//	return bounds;
-//}

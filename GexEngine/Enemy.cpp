@@ -22,13 +22,35 @@ void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) c
 {
 	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::EnemyBolt, 10, textures));
 
-	sf::Vector2f offset(sprite_.getGlobalBounds().width,
-		sprite_.getGlobalBounds().height);
 
+	sf::Vector2f offset(0.f, -20.f);
+	sf::Vector2f velocity(0.f, 0.f);
+
+	//float widthCenter = sprite_.getLocalBounds().width / 2;
+
+	float velocity_ = 20.f;
+
+	switch (direction_) {
+	case Direction::Back:
+		offset = sf::Vector2f(-15.f, -30.f);
+		velocity = sf::Vector2f(0.f, -velocity_);
+		break;
+	case Direction::Front:
+		offset = sf::Vector2f(15.f, -10.f);
+		velocity = sf::Vector2f(0.f, velocity_);
+		break;
+	case Direction::Left:
+		offset = sf::Vector2f(-35.f, -10.f);
+		velocity = sf::Vector2f(-velocity_, 0.f);
+		break;
+	case Direction::Right:
+		offset = sf::Vector2f(35.f, -30.f);
+		velocity = sf::Vector2f(velocity_, 0.f);
+		break;
+	}
 
 	bolt->setPosition(getWorldPoition() + offset);
-	//bolt->setPosition(getWorldPoition());
-	bolt->setVelocity(0.f, -40.f);
+	bolt->setVelocity(velocity);
 
 	node.attachChild(std::move(bolt));
 }

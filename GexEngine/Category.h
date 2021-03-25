@@ -35,7 +35,7 @@ namespace Category
 
 		BaseAttack = BaseAttackAllied | baseAttackEnemy,
 		NPC = TalkingNPC | FightingNPC,
-		Spell = ShieldSpell | LightningSpell | BaseAttack,
+		AttackingSpell = LightningSpell | BaseAttack,
 		QuestObject = TalkingNPC | InteractableObject,
 		//InteractableObject = BookshelfQuest | BookshelfNotQuest
 	};
