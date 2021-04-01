@@ -8,6 +8,14 @@
 class PlayerData
 {
 public:
+	enum class Attribute {
+		None = 0,
+		Intelligence = 1,
+		Wisdom = 1 << 1,
+		Arrogance = 1 << 2
+	};
+
+public:
 	PlayerData();
 
 	DialogNode*				getCurrentDialog() const;
@@ -30,7 +38,10 @@ public:
 	void					setIntersectsWithPortal(bool b);
 
 	bool isInFightState() const;
-	void seInFughtState(bool b);
+	void seInFightState(bool b);
+
+	size_t					getHeroAttribute(Attribute a);
+	std::string				getHeroAttributesString();
 
 
 private:
@@ -47,6 +58,8 @@ private:
 	bool						isIntersectsWithPortal_;
 
 	bool						isInFightState_;
+
+	std::map<Attribute, size_t> heroStats;
 
 };
 

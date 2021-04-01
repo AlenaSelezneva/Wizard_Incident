@@ -72,6 +72,8 @@ private:
 
 	void					buildQuestView();
 	void					buildHintView();
+	void					buildHeroStatsView();
+	void					buildUiGraph();
 	void					buildFightingUiStats();
 
 	void					updateCasualUiElements();
@@ -136,15 +138,16 @@ protected:
 
 private:
 	TextureHolder_t						textures;
-	SceneNode*							uiGraph;
 	SpriteNode*							portal;
 
 	UiNode*								questsView;
 	UiNode*								hintView;
+	UiNode*								heroAttributesView;
 
 	TextNode*							questLog;
 	TextNode*							hintText;
 
+	SceneNode* uiGraph;
 	SceneNode*							fightingUiGraph;
 
 	UiNode*								heroStatsView;
@@ -152,4 +155,5 @@ private:
 
 	TextNode*							heroStatText;
 	TextNode*							enemyStatsText;
+	TextNode*							heroAttributesText;
 };

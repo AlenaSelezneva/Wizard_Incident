@@ -112,6 +112,7 @@ void World::updateCasualUiElements()
 {
 	questLog->setString(playerData->getQuestInstrunstionDisplay());
 	questsView->setVisible(playerData->isShowingJournal());
+	heroAttributesText->setString(playerData->getHeroAttributesString());
 }
 
 void World::draw() {
@@ -264,8 +265,7 @@ void World::buildScene() {
 	portal = portal_.get();
 	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
 
-	buildQuestView();
-	buildHintView();
+	buildUiGraph();
 }
 
 void World::buildQuestView()
@@ -276,7 +276,7 @@ void World::buildQuestView()
 
 	std::unique_ptr<UiNode> qJournalBackground(new UiNode(textures.get(TextureID::QuestJournal)));
 	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
-	qJournalBackground->setPosition(margin, margin);
+	qJournalBackground->setPosition(margin, 150.f);
 	questsView = qJournalBackground.get();
 
 	std::unique_ptr<TextNode> questHeaderNode(new TextNode(fonts, "", 30));
@@ -307,6 +307,7 @@ void World::buildHintView()
 		worldView.getSize().y - hintBackground->getBoundingRect().height - margin);
 
 	hintView = hintBackground.get();
+	hintView->setVisible(false);
 
 	std::unique_ptr<TextNode> hint(new TextNode(fonts, "", 20));
 	hint->setString("Press ENTER to interact");
@@ -318,6 +319,35 @@ void World::buildHintView()
 	hintBackground->attachChild(std::move(hint));
 
 	uiGraph->attachChild(std::move(hintBackground));
+}
+
+void World::buildHeroStatsView()
+{
+	float margin = 20.f;
+
+	std::unique_ptr<UiNode> statsBackground(new UiNode(textures.get(TextureID::HintBackground)));
+	statsBackground->setPosition(margin, margin);
+
+	heroAttributesView = statsBackground.get();
+	heroAttributesView->setVisible(true);
+
+	std::unique_ptr<TextNode> stats(new TextNode(fonts, "", 20));
+	stats->setString(playerData->getHeroAttributesString());
+	//questHeaderNode->setTextColor(sf::Color(125, 120, 186));
+
+	stats->setPosition(statsBackground.get()->getBoundingRect().width / 2, statsBackground.get()->getBoundingRect().height / 2);
+	heroAttributesText = stats.get();
+
+	heroAttributesView->attachChild(std::move(stats));
+
+	uiGraph->attachChild(std::move(statsBackground));
+}
+
+void World::buildUiGraph()
+{
+	buildQuestView();
+	buildHintView();
+	buildHeroStatsView();
 }
 
 void World::buildFightingUiStats()

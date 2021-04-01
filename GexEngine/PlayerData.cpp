@@ -2,8 +2,7 @@
 
 
 PlayerData::PlayerData()
-	//: dialogManager()
-	//, currentDialog()
+	: heroStats()
 {
 	dialogManager = new DialogManager();
 	questManager = new QuestManager();
@@ -12,6 +11,10 @@ PlayerData::PlayerData()
 	currentTalkingNPC = Actor::Type::None;
 
 	currentDialog = nullptr;
+
+	heroStats[Attribute::Intelligence] = 1;
+	heroStats[Attribute::Wisdom] = 1;
+	heroStats[Attribute::Arrogance] = 1;
 }
 
 DialogNode* PlayerData::getCurrentDialog() const
@@ -97,7 +100,23 @@ bool PlayerData::isInFightState() const
 	return isInFightState_;
 }
 
-void PlayerData::seInFughtState(bool b)
+void PlayerData::seInFightState(bool b)
 {
 	isInFightState_ = b;
+}
+
+size_t PlayerData::getHeroAttribute(Attribute a)
+{
+	if (heroStats.count(a) > 0)
+		return heroStats[a];
+	return 0;
+}
+
+std::string PlayerData::getHeroAttributesString()
+{
+	std::string res = "Int " + std::to_string(heroStats[Attribute::Intelligence]) +
+		"\nWis " + std::to_string(heroStats[Attribute::Wisdom]) +
+		"\nArr " + std::to_string(heroStats[Attribute::Arrogance]);
+
+	return res;
 }
