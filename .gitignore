@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,c++
 
+*.tlog
+*.obj
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -390,5 +393,4 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
-*.tlog
-*.obj
+
