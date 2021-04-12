@@ -166,3 +166,27 @@ std::map<Tile::Type, TileData> initializeTileData()
 
     return map;
 }
+
+std::map<Level, std::vector<ActorLevelData>> getLevelActorData()
+{
+    auto map = std::map<Level, std::vector<ActorLevelData>>();
+
+    map[Level::First] = std::vector<ActorLevelData>();
+    map[Level::First].push_back(ActorLevelData(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, +200.f, -200.f));
+    map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
+
+
+    return map;
+}
+
+std::map<Level, std::vector<ObjectLevelData>> getLevelObjectData()
+{
+    auto map = std::map<Level, std::vector<ObjectLevelData>>();
+
+    map[Level::First] = std::vector<ObjectLevelData>();
+    map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, -100.f, -1100.f));
+    map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, +300.f, -1100.f));
+    map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, +700.f, -1100.f));
+
+    return map;
+}

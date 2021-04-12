@@ -30,6 +30,7 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 	, uiGraph()
 	, sceneLayers()
 	, commandQueue()
+	, currentLevel(Level::First)
 	, worldBounds(0.f, 0.f, 1500.f, 1500.f)
 	, spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f)
 {
@@ -38,7 +39,7 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 
 	worldView.setCenter(spawnPosition);
 
-	currentLevel = LevelsTilesSchema::getLevelLayout();
+	//currentLevelLayout = LevelsTilesSchema::getLevelLayout(currentLevel);
 	tileData = initializeTileData();
 
 	buildScene();
@@ -184,6 +185,29 @@ void World::buildScene() {
 		sceneGraph.attachChild(std::move(layer));
 	}
 
+	buildLevel();
+	buildLevelObjects();
+
+	sf::IntRect textureRect(worldBounds);
+
+	std::unique_ptr<Hero> hero_(new Hero(textures, fonts));
+	hero = hero_.get();
+	hero->setPosition(spawnPosition);
+	hero->setVelocity(0.f, 0.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
+
+
+
+	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
+	portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);
+	portal = portal_.get();
+	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
+
+	buildUiGraph();
+}
+
+void World::buildLevel()
+{
 	walkOverTiles = std::vector<SpriteNode*>();
 	blockingTiles = std::vector<SpriteNode*>();
 	invisibleWallTiles = std::vector<SpriteNode*>();
@@ -196,12 +220,14 @@ void World::buildScene() {
 
 	float tileSize = 50.f;
 
-	for (int i = 0; i < currentLevel.size(); ++i) {
-		for (int j = 0; j < currentLevel[0].size(); ++j) {
+	auto currentLevelLayout = LevelsTilesSchema::getLevelLayout(currentLevel);
+
+	for (int i = 0; i < currentLevelLayout.size(); ++i) {
+		for (int j = 0; j < currentLevelLayout[0].size(); ++j) {
 
 			SpriteNode* sprite;
 
-			switch (currentLevel[i][j])
+			switch (currentLevelLayout[i][j])
 			{
 			case Tile::Type::Floor:
 				sprite = new SpriteNode(floorTexture, floorRect);
@@ -210,7 +236,7 @@ void World::buildScene() {
 				break;
 			case Tile::Type::Wall:
 				sprite = new SpriteNode(wallTexture, wallRect);
-				sprite->setPosition(j * tileSize , i * tileSize - tileData[Tile::Wall].height + tileSize);
+				sprite->setPosition(j * tileSize, i * tileSize - tileData[Tile::Wall].height + tileSize);
 				blockingTiles.push_back(sprite);
 				break;
 			case Tile::Type::InvisibleWall:
@@ -223,49 +249,26 @@ void World::buildScene() {
 			}
 		}
 	}
+}
 
-	sf::IntRect textureRect(worldBounds);
+void World::buildLevelObjects()
+{
+	auto actors = getLevelActorData().at(currentLevel);
+	auto objects = getLevelObjectData().at(currentLevel);
 
-	std::unique_ptr<Hero> hero_(new Hero(textures, fonts));
-	hero = hero_.get();
-	hero->setPosition(spawnPosition);
-	hero->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
+	for (auto a : actors) {
+		std::unique_ptr<FriendlyNPC> actor(new FriendlyNPC(a.type, a.questType, textures, fonts));
+		actor->setPosition(spawnPosition.x + a.x, spawnPosition.y + a.y);
+		actor->setVelocity(0.f, 0.f);
+		sceneLayers[PlayerLayer]->attachChild(std::move(actor));
+	}
 
+	for (auto o : objects) {
 
-	std::unique_ptr<FriendlyNPC> archmage(new FriendlyNPC(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, textures, fonts));
-	archmage->setPosition(spawnPosition.x + 200.f, spawnPosition.y - 200.f);
-	archmage->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(archmage));
-
-
-	std::unique_ptr<FriendlyNPC> gazan(new FriendlyNPC(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, textures, fonts));
-	gazan->setPosition(spawnPosition.x + 500.f, spawnPosition.y - 500.f);
-	gazan->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(gazan));
-
-
-
-	std::unique_ptr<InteractableObject> shelf1(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, textures, fonts));
-	shelf1->setPosition(spawnPosition.x - 100.f, spawnPosition.y - 1100.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(shelf1));
-
-	std::unique_ptr<InteractableObject> shelf2(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
-	shelf2->setPosition(spawnPosition.x + 300.f, spawnPosition.y - 1100.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(shelf2));
-
-	std::unique_ptr<InteractableObject> shelf3(new InteractableObject(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, textures, fonts));
-	shelf3->setPosition(spawnPosition.x + 700.f, spawnPosition.y - 1100.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(shelf3));
-
-
-
-	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
-	portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);
-	portal = portal_.get();
-	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
-
-	buildUiGraph();
+		std::unique_ptr<InteractableObject> object(new InteractableObject(o.type, o.questType, textures, fonts));
+		object->setPosition(spawnPosition.x + o.x, spawnPosition.y + o.y);
+		sceneLayers[PlayerLayer]->attachChild(std::move(object));
+	}
 }
 
 void World::buildQuestView()
@@ -275,7 +278,6 @@ void World::buildQuestView()
 	uiGraph = new SceneNode(Category::None);
 
 	std::unique_ptr<UiNode> qJournalBackground(new UiNode(textures.get(TextureID::QuestJournal)));
-	//qJournalBackground->setPosition(worldView.getViewport().left + 20.f, worldView.getViewport().top + 200.f);
 	qJournalBackground->setPosition(margin, 150.f);
 	questsView = qJournalBackground.get();
 

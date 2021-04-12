@@ -16,6 +16,7 @@
 #include "UiNode.h"
 #include "Hero.h"
 #include "Enemy.h"
+#include "Level.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -50,6 +51,8 @@ public:
 protected:
 	virtual void			loadTextures();
 	void					buildScene();
+	void					buildLevel();
+	void					buildLevelObjects();
 
 	void					handleCollisions(sf::Time dt, CommandQueue& commands);
 	bool					matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
@@ -123,6 +126,8 @@ protected:
 	std::array<SceneNode*, LayerCount>	sceneLayers;
 	CommandQueue						commandQueue;
 
+	Level								currentLevel;
+
 	Hero*								hero;
 	Enemy*								enemy;
 
@@ -130,7 +135,7 @@ protected:
 	sf::Vector2f						spawnPosition;
 	float								scrollSpeed;
 
-	std::vector<std::vector<Tile::Type> > currentLevel;
+	//std::vector<std::vector<Tile::Type> > currentLevelLayout;
 	std::map<Tile::Type, TileData>		tileData;
 
 	PlayerData*							playerData;
