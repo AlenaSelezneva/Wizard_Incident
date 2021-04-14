@@ -49,6 +49,7 @@ public:
 public:
     Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fonts);
     ~Actor() = default;
+    Actor(Actor&&) = default;
 
     unsigned int    getCategory() const override;
     sf::FloatRect   getBoundingRect() const override;
@@ -65,6 +66,8 @@ public:
 
     std::string     getFightHealthDisplayString();
 
+    const TextureHolder_t& getTextures() const;
+    const FontHolder_t&   getFonts() const;
 
 protected:
     virtual void   updateStates();
@@ -81,5 +84,8 @@ protected:
     Direction                       direction_;
 
     float                           travelDistance_;
+    const FontHolder_t&       fonts;
+    const TextureHolder_t&    textures;
 
 };
+

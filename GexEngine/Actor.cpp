@@ -24,6 +24,8 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	, sprite_()
 	, direction_(Direction::Front)
 	, travelDistance_(0.f)
+	, textures(textures)
+	, fonts(fonts)
 {
 
 	if (type_ == Actor::Type::Hero) {
@@ -137,6 +139,17 @@ std::string Actor::getFightHealthDisplayString()
 
 	return heroString;
 }
+
+const TextureHolder_t& Actor::getTextures() const
+{
+	return textures;
+}
+
+const FontHolder_t& Actor::getFonts() const
+{
+	return fonts;
+}
+
 
 void Actor::updateStates()
 {

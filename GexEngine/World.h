@@ -29,6 +29,7 @@
 namespace sf {
 	class RenderTarget;
 }
+class FriendlyNPC;
 
 class World : private sf::NonCopyable {
 
@@ -47,6 +48,9 @@ public:
 	CommandQueue&			getCommands();
 
 	bool					hasAlivePlayer() const;
+
+	void					startFight(Actor::Type type);
+	void					stopFight(Actor* en);
 
 protected:
 	virtual void			loadTextures();
@@ -130,6 +134,7 @@ protected:
 
 	Hero*								hero;
 	Enemy*								enemy;
+	std::vector<FriendlyNPC* >			npcs;
 
 	sf::FloatRect						worldBounds;
 	sf::Vector2f						spawnPosition;
@@ -139,6 +144,7 @@ protected:
 	std::map<Tile::Type, TileData>		tileData;
 
 	PlayerData*							playerData;
+	bool								isFighting;
 
 
 private:
@@ -152,7 +158,7 @@ private:
 	TextNode*							questLog;
 	TextNode*							hintText;
 
-	SceneNode* uiGraph;
+	SceneNode*							uiGraph;
 	SceneNode*							fightingUiGraph;
 
 	UiNode*								heroStatsView;

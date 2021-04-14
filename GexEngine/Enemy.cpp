@@ -13,6 +13,21 @@ Enemy::Enemy(Actor::Type type, const TextureHolder_t& textures, const FontHolder
 	};
 }
 
+Enemy::Enemy(Actor* actor)
+	:Actor(actor->getType(), actor->getTextures(), actor->getFonts())
+	, FightingCharacter(FightingCharacter::Type::Enemy)
+{
+	this->setPosition(actor->getPosition());
+	this->setState(actor->getState());
+	this->setVelocity(actor->getVelocity());
+
+	fireCommand.category = Category::SpellLayer;
+	fireCommand.action = [this](SceneNode& node, sf::Time)
+	{
+		this->createEnergyBolt(node, textures);
+	};
+}
+
 unsigned int Enemy::getCategory() const
 {
 	return Category::FightingNPC;

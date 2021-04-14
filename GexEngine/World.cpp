@@ -68,6 +68,33 @@ bool World::hasAlivePlayer() const
 	return true;
 }
 
+void World::startFight(Actor::Type type)
+{
+	Actor* en = nullptr;
+	for (int i = 0; i < npcs.size(); ++i) {
+		if (npcs[i]->getType() == type)
+			en = npcs[i];
+	}
+
+	if (en == nullptr)
+		return;
+
+	isFighting = true;
+	std::unique_ptr<Enemy> enemyPtr(new Enemy(en));
+	sceneLayers[PlayerLayer]->detachChild(*en);
+
+	enemy = enemyPtr.get();
+
+	sceneLayers[PlayerLayer]->attachChild(std::move(enemyPtr));
+
+	buildFightingUiStats();
+}
+
+void World::stopFight(Actor* en)
+{
+	isFighting = true;
+}
+
 
 void World::update(sf::Time dt) {
 	
@@ -93,7 +120,15 @@ void World::update(sf::Time dt) {
 	handleCollisions(dt, commandQueue);
 
 	updateSounds();
-	updateCasualUiElements();
+
+
+	if (!isFighting) {
+		updateCasualUiElements();
+	}
+	else {
+		updateFightingStatTexts();
+	}
+	
 
 	sceneGraph.removeWrecks();
 
@@ -133,7 +168,10 @@ void World::draw() {
 		target.draw(*r);
 	}
 
-	target.draw(*uiGraph);
+	if (isFighting)
+		target.draw(*fightingUiGraph);
+	else 
+		target.draw(*uiGraph);
 }
 
 void World::loadTextures() {
@@ -154,13 +192,17 @@ void World::loadTextures() {
 
 	textures.load(TextureID::Portal, "Media/Textures/portal.png");
 
+	textures.load(TextureID::HealthDisplay, "Media/Textures/helth_display.png");
+
 	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell_no_glitter.png");
 	textures.load(TextureID::EnergyBallHero, "Media/Textures/energy_ball_hero.png");
 	textures.load(TextureID::EnergyBallEnemy, "Media/Textures/energy_ball_enemy.png");
 }
 
 void World::buildScene() {
-	
+	sceneGraph.clearChildren();
+	npcs = std::vector< FriendlyNPC*>();
+
 	for (std::size_t i = 0; i < LayerCount; ++i) {
 		Category::Type category;
 		switch (i) {
@@ -260,6 +302,7 @@ void World::buildLevelObjects()
 		std::unique_ptr<FriendlyNPC> actor(new FriendlyNPC(a.type, a.questType, textures, fonts));
 		actor->setPosition(spawnPosition.x + a.x, spawnPosition.y + a.y);
 		actor->setVelocity(0.f, 0.f);
+		npcs.push_back(actor.get());
 		sceneLayers[PlayerLayer]->attachChild(std::move(actor));
 	}
 
@@ -356,7 +399,7 @@ void World::buildFightingUiStats()
 {
 	float margin = 20.f;
 
-	uiGraph = new SceneNode(Category::None);
+	fightingUiGraph = new SceneNode(Category::None);
 
 	std::unique_ptr<UiNode> heroHealth(new UiNode(textures.get(TextureID::HealthDisplay)));
 	heroHealth->setPosition(margin, margin);
@@ -369,7 +412,7 @@ void World::buildFightingUiStats()
 	heroStatText = heroStats.get();
 
 	heroHealth->attachChild(std::move(heroStats));
-	uiGraph->attachChild(std::move(heroHealth));
+	fightingUiGraph->attachChild(std::move(heroHealth));
 
 
 
@@ -384,7 +427,7 @@ void World::buildFightingUiStats()
 	enemyStatsText = enemyStats.get();
 
 	enemyHealth->attachChild(std::move(enemyStats));
-	uiGraph->attachChild(std::move(enemyHealth));
+	fightingUiGraph->attachChild(std::move(enemyHealth));
 }
 
 
@@ -530,7 +573,10 @@ void World::adaptPlayerPosition()
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
 
-	uiGraph->setPosition(viewBounds.left, viewBounds.top);
+	if (isFighting)
+		fightingUiGraph->setPosition(viewBounds.left, viewBounds.top);
+	else
+		uiGraph->setPosition(viewBounds.left, viewBounds.top);
 }
 
 void World::adaptPlayerPositionRelatingBlocks(sf::Time dt, CommandQueue& commands)
