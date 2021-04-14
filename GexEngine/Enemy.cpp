@@ -75,25 +75,25 @@ void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
 	Actor::updateCurrent(dt, commands);
 	
 	attack();
-	checkCastingAttackingSpell(dt, commands);
-
 	if (isAttacking_) {
+		playLocalSound(commands, EffectID::EnemyAttack);
 		switch (direction_)
 		{
-			case Actor::Direction::Back:
-				state_ = Actor::State::SpellCastBack;
-				break;
-			case Actor::Direction::Front:
-				state_ = Actor::State::SpellCastFront;
-				break;
-			case Actor::Direction::Left:
-				state_ = Actor::State::SpellCastLeft;
-				break;
-			case Actor::Direction::Right:
-				state_ = Actor::State::SpellCastRight;
-				break;
+		case Actor::Direction::Back:
+			state_ = Actor::State::SpellCastBack;
+			break;
+		case Actor::Direction::Front:
+			state_ = Actor::State::SpellCastFront;
+			break;
+		case Actor::Direction::Left:
+			state_ = Actor::State::SpellCastLeft;
+			break;
+		case Actor::Direction::Right:
+			state_ = Actor::State::SpellCastRight;
+			break;
 		default:
 			break;
 		}
 	}
+	checkCastingAttackingSpell(dt, commands);
 }

@@ -165,6 +165,7 @@ void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	if (isAttacking_ && attackingCastingCountDown <= sf::Time::Zero) {
 		commands.push(fireCommand);
+		playLocalSound(commands, EffectID::AlliedAttack);
 		isAttacking_ = false;
 		attackingCastingCountDown = ATTACKING_CASTING_TIME;
 	}

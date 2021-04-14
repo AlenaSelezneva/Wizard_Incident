@@ -16,6 +16,7 @@ Alena Selezneva
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Shape.hpp>
 #include <iostream>
+#include "SoundNode.h"
 
 
 World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data)
@@ -226,6 +227,9 @@ void World::buildScene() {
 
 		sceneGraph.attachChild(std::move(layer));
 	}
+
+	std::unique_ptr<SoundNode> soundNode(new SoundNode(sounds));
+	sceneGraph.attachChild(std::move(soundNode));
 
 	buildLevel();
 	buildLevelObjects();

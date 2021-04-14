@@ -22,6 +22,12 @@ SoundPlayer::SoundPlayer()
 	: soundBuffers()
 	, sounds()
 {
+	soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/attack1.wav");
+	soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/attack2.wav");
+
+	//soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/AlliedGunfire.wav");
+	//soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/EnemyGunfire.wav");
+
 	/*soundBuffers.load(EffectID::AlliedGunfire, "Media/Sound/AlliedGunfire.wav");
 	soundBuffers.load(EffectID::EnemyGunfire, "Media/Sound/EnemyGunfire.wav");
 	soundBuffers.load(EffectID::Explosion1, "Media/Sound/Explosion1.wav");

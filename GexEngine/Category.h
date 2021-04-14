@@ -31,7 +31,7 @@ namespace Category
 		Portal				= 1 << 12,
 
 		//ParticleSystem = 1 << 7,
-		//SoundEffect = 1 << 4,
+		SoundEffect = 1 << 13,
 
 		BaseAttack = BaseAttackAllied | baseAttackEnemy,
 		NPC = TalkingNPC | FightingNPC,

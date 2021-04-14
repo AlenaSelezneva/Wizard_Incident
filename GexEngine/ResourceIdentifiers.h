@@ -12,19 +12,21 @@ namespace sf
 
 enum class EffectID
 {
-	AlliedGunfire,
-	EnemyGunfire,
-	Explosion1,
-	Explosion2,
-	LaunchMissile,
-	CollectPickup,
+
+	AlliedAttack,
+	EnemyAttack,
+	//Explosion1,
+	//Explosion2,
+	//LaunchMissile,
+	//CollectPickup,
 	Button,
 };
 
 enum class MusicID
 {
 	MenuTheme,
-	MissionTheme,
+	GameTheme,
+	FightTheme
 };
 
 enum class TextureID

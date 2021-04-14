@@ -10,6 +10,7 @@ Alena Selezneva
 #include "DataTables.h"
 #include "EnergyBolt.h"
 #include "UiNode.h"
+#include "SoundNode.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -113,6 +114,19 @@ float Actor::getMaxSpeed() const
 bool Actor::isMarkedForRemoval() const
 {
 	return false; // (state_ == State::Dead && animations_.at(state_).isFinished());
+}
+
+void Actor::playLocalSound(CommandQueue& commands, EffectID effect)
+{
+	auto worldPosition = getWorldPoition();
+
+	Command command;
+	command.category = Category::SoundEffect;
+	command.action = derivedAction<SoundNode>(
+		[effect, worldPosition](SoundNode& node, sf::Time dt) {
+			node.playSound(effect, worldPosition);
+		});
+	commands.push(command);
 }
 
 void Actor::setState(State state)
