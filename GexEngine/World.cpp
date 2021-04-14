@@ -236,7 +236,7 @@ void World::buildScene() {
 
 	sf::IntRect textureRect(worldBounds);
 
-	std::unique_ptr<Hero> hero_(new Hero(textures, fonts));
+	std::unique_ptr<Hero> hero_(new Hero(textures, fonts, playerData));
 	hero = hero_.get();
 	hero->setPosition(spawnPosition);
 	hero->setVelocity(0.f, 0.f);

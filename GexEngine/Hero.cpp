@@ -3,10 +3,14 @@
 #include "Utility.h"
 #include "EnergyBolt.h"
 
-Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts)
+#include <math.h>
+
+Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts, PlayerData* data)
 	:Actor(Actor::Type::Hero, textures, fonts)
 	, FightingCharacter(FightingCharacter::Type::Hero)
+	, playerData(data)
 	, attackingCastingCountDown(ATTACKING_CASTING_TIME)
+	, manapoints(MAX_MANA_POINTS)
 {
 
 	//ATTACKING_INTERVAL
@@ -55,15 +59,36 @@ void Hero::setCastingShield(bool b)
 	}
 }
 
+void Hero::finishFight()
+{
+	manapoints = MAX_MANA_POINTS;
+	hitPoints = MAX_HITPOINTS;
+}
+
+std::string Hero::getFightHealthDisplayString()
+{
+	std::string heroString = "Hero: \n";
+	heroString += "HP: ";
+	heroString += std::to_string(getHitpoints());
+	heroString += "\nMana: " + std::to_string((int)floor(manapoints));
+
+	return heroString;
+}
+
 void Hero::attack()
 {
-	isAttacking_ = true;
-	attackingCastingCountDown = ATTACKING_CASTING_TIME;
+	int cost = getSpellManaCost(HeroManaCost::BaseAttack);
+	if (manapoints >= cost) {
+		isAttacking_ = true;
+		attackingCastingCountDown = ATTACKING_CASTING_TIME;
+		manapoints -= cost;
+	}
 }
 
 void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
 {
-	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::AlliedBolt, 10, textures));
+	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt
+		(EnergyBolt::Type::AlliedBolt, 10 + playerData->getHeroAttribute(PlayerData::Attribute::Arrogance), textures));
 
 	/*sf::Vector2f offset(sprite_.getGlobalBounds().width / 2,
 		sprite_.getGlobalBounds().height);*/
@@ -157,8 +182,16 @@ void Hero::updateStates()
 
 void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
+	manapoints = std::min(MAX_MANA_POINTS, manapoints + dt.asSeconds() * getSpellManaCost(HeroManaCost::RegeneratePerSecond));
+
+	if (manapoints < 10.f)
+		isCastingShield_ = false;
+
 	if (isSpellcasting_ || isAttacking_ || isCastingShield_)
 		setVelocity(0.f, 0.f);
+
+	if (isCastingShield_) 
+		manapoints -= dt.asSeconds() * getSpellManaCost(HeroManaCost::ShieldPerSecond);
 
 	updateDirections();
 	updateStates();
@@ -182,4 +215,24 @@ void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	shield->setVisible(isCastingShield_);
 	attackingCastingCountDown -= dt;
+}
+
+int Hero::getSpellManaCost(HeroManaCost spell) const
+{
+	int res = 0;
+	switch (spell)
+	{
+	case HeroManaCost::BaseAttack:
+		res = 10;
+		break;
+	case HeroManaCost::ShieldPerSecond:
+		res = 30 - playerData->getHeroAttribute(PlayerData::Attribute::Intelligence);
+		if (res < 5) res = 5;
+		break;
+	case HeroManaCost::RegeneratePerSecond:
+		res = 5 + playerData->getHeroAttribute(PlayerData::Attribute::Wisdom);
+		break;
+	}
+
+	return res;
 }

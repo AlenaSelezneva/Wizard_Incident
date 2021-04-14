@@ -24,7 +24,7 @@ public:
 protected:
 	virtual void	updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
-private:
+protected:
 	sf::Vector2f	velocity;
 	int				hitPoints;
 

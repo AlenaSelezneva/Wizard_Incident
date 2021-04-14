@@ -65,7 +65,7 @@ public:
 
     Actor::Type     getType() const;
 
-    std::string     getFightHealthDisplayString();
+    virtual std::string   getFightHealthDisplayString();
 
     const TextureHolder_t& getTextures() const;
     const FontHolder_t&   getFonts() const;
