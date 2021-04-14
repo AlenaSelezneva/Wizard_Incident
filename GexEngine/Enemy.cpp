@@ -45,24 +45,24 @@ void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) c
 
 	float velocity_ = 20.f;
 
-	switch (direction_) {
-	case Direction::Back:
-		offset = sf::Vector2f(-15.f, -30.f);
-		velocity = sf::Vector2f(0.f, -velocity_);
-		break;
-	case Direction::Front:
-		offset = sf::Vector2f(15.f, -10.f);
-		velocity = sf::Vector2f(0.f, velocity_);
-		break;
-	case Direction::Left:
-		offset = sf::Vector2f(-35.f, -10.f);
-		velocity = sf::Vector2f(-velocity_, 0.f);
-		break;
-	case Direction::Right:
-		offset = sf::Vector2f(35.f, -30.f);
-		velocity = sf::Vector2f(velocity_, 0.f);
-		break;
-	}
+	//switch (direction_) {
+	//case Direction::Back:
+	//	offset = sf::Vector2f(-15.f, -30.f);
+	//	velocity = sf::Vector2f(0.f, -velocity_);
+	//	break;
+	//case Direction::Front:
+	//	offset = sf::Vector2f(15.f, -10.f);
+	//	velocity = sf::Vector2f(0.f, velocity_);
+	//	break;
+	//case Direction::Left:
+	//	offset = sf::Vector2f(-35.f, -10.f);
+	//	velocity = sf::Vector2f(-velocity_, 0.f);
+	//	break;
+	//case Direction::Right:
+	//	offset = sf::Vector2f(35.f, -30.f);
+	//	velocity = sf::Vector2f(velocity_, 0.f);
+	//	break;
+	//}
 
 	bolt->setPosition(getWorldPoition() + offset);
 	bolt->setVelocity(velocity);

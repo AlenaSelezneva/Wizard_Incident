@@ -487,6 +487,24 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 				hintText->setString("Press ENTER to talk");
 				hintView->setVisible(true);
 			}
+
+			if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
+				auto& hero_ = static_cast<Actor&>(*pair.first);
+				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+				
+				if(!hero->isCastingShield())
+					hero_.damage(bolt.getDamage());
+				
+				bolt.destroy();
+			}
+				
+			if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
+				auto& enemy_ = static_cast<Actor&>(*pair.first);
+				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+				
+				enemy_.damage(bolt.getDamage());
+				bolt.destroy();
+			}
 		}
 	}
 	else {
