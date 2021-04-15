@@ -115,6 +115,8 @@ void World::moveToLevel(Level l)
 
 	hero->setPosition(portal->getPosition().x + portal->getBoundingRect().width / 2,
 		portal->getPosition().y + portal->getBoundingRect().height + 40.f);
+
+	hero->playLocalSound(commandQueue, EffectID::Portal);
 }
 
 void World::startFight(Actor::Type type)
@@ -172,6 +174,11 @@ void World::stopFight()
 
 	//buildUiGraph();
 	music.play(MusicID::GameTheme);
+}
+
+Level World::getCurrentLevel()
+{
+	return currentLevel;
 }
 
 

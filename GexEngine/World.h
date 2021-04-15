@@ -53,6 +53,8 @@ public:
 	void					startFight(Actor::Type type);
 	void					stopFight();
 
+	Level					getCurrentLevel();
+
 protected:
 	virtual void			loadTextures();
 	void					buildScene();

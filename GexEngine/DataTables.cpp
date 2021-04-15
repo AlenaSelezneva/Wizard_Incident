@@ -175,6 +175,7 @@ std::map<Level, std::vector<ActorLevelData>> getLevelActorData()
     map[Level::First].push_back(ActorLevelData(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, -100.f, -400.f));
     map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
 
+    map[Level::Second].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
 
     return map;
 }
@@ -188,6 +189,9 @@ std::map<Level, std::vector<ObjectLevelData>> getLevelObjectData()
     map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, +300.f, -1100.f));
     map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, +700.f, -1100.f));
 
+
+    map[Level::Second].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, -100.f, -1100.f));
+
     return map;
 }
 
@@ -196,7 +200,7 @@ std::map<Level, sf::Vector2f> getLevelportalData()
     auto map = std::map<Level, sf::Vector2f>();
 
     map[Level::First] = sf::Vector2f(-550.f, -800.f);
-    map[Level::Second] = sf::Vector2f(-600.f, -800.f);
+    map[Level::Second] = sf::Vector2f(-500.f, -800.f);
 
     return map;
 }

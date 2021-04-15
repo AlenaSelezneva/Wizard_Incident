@@ -48,6 +48,13 @@ bool GameState::handleEvent(const sf::Event& event)
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
 			context.playerData->isIntersectsWithPortal()) {
+
+		Level l = Level::First;
+		if (world.getCurrentLevel() == Level::First)
+			l = Level::Second;
+
+		world.moveToLevel(l);
+
 		//requestStackPop();
 		//requestStackPush(StateID::Battle);
 	}
