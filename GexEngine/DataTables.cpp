@@ -211,6 +211,75 @@ std::map<Actor::Type, ActorData> initializeActorData()
     data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastLeft].setRepeating(true);
 
 
+    /////////////////////////////////////////// Elony ///////////////////////////////////////////////
+
+    data[Actor::Type::Elony].textureID = TextureID::Elony;
+
+    data[Actor::Type::Elony].npcName = "Elony";
+    frames = JsonFrameParser("Media/Textures/elony.json");
+
+    data[Actor::Type::Elony].animations[Actor::State::MoveBack].addFrameSet(frames.getFramesFor("back_walk"));
+    data[Actor::Type::Elony].animations[Actor::State::MoveBack].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Elony].animations[Actor::State::MoveBack].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::MoveRight].addFrameSet(frames.getFramesFor("right_walk"));
+    data[Actor::Type::Elony].animations[Actor::State::MoveRight].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Elony].animations[Actor::State::MoveRight].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::MoveFront].addFrameSet(frames.getFramesFor("front_walk"));
+    data[Actor::Type::Elony].animations[Actor::State::MoveFront].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Elony].animations[Actor::State::MoveFront].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::MoveLeft].addFrameSet(frames.getFramesFor("left_walk"));
+    data[Actor::Type::Elony].animations[Actor::State::MoveLeft].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::Elony].animations[Actor::State::MoveLeft].setRepeating(true);
+
+    idleBack = frames.getFramesFor("back_cast1");
+    idleBack.push_back(frames.getFramesFor("back_cast2")[0]);
+
+    data[Actor::Type::Elony].animations[Actor::State::IdleBack].addFrameSet(idleBack);
+    data[Actor::Type::Elony].animations[Actor::State::IdleBack].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::IdleBack].setRepeating(true);
+
+    idleRight = frames.getFramesFor("right_cast1");
+    idleRight.push_back(frames.getFramesFor("right_cast2")[0]);
+
+    data[Actor::Type::Elony].animations[Actor::State::IdleRight].addFrameSet(idleRight);
+    data[Actor::Type::Elony].animations[Actor::State::IdleRight].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::IdleRight].setRepeating(true);
+
+    idleFront = frames.getFramesFor("front_cast1");
+    idleFront.push_back(frames.getFramesFor("front_cast2")[0]);
+
+    data[Actor::Type::Elony].animations[Actor::State::IdleFront].addFrameSet(idleFront);
+    data[Actor::Type::Elony].animations[Actor::State::IdleFront].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::IdleFront].setRepeating(true);
+
+    idleLeft = frames.getFramesFor("left_cast1");
+    idleLeft.push_back(frames.getFramesFor("left_cast2")[0]);
+
+    data[Actor::Type::Elony].animations[Actor::State::IdleLeft].addFrameSet(idleLeft);
+    data[Actor::Type::Elony].animations[Actor::State::IdleLeft].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::IdleLeft].setRepeating(true);
+
+
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastBack].addFrameSet(frames.getFramesFor("back_cast"));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastBack].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastBack].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastRight].addFrameSet(frames.getFramesFor("right_cast"));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastRight].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastRight].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastFront].addFrameSet(frames.getFramesFor("front_cast"));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastFront].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastFront].setRepeating(true);
+
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastLeft].addFrameSet(frames.getFramesFor("left_cast"));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastLeft].setDuration(sf::seconds(1.f));
+    data[Actor::Type::Elony].animations[Actor::State::SpellCastLeft].setRepeating(true);
+
+
     return data;
 }
 
@@ -240,13 +309,15 @@ std::map<Level, std::vector<ActorLevelData>> getLevelActorData()
     auto map = std::map<Level, std::vector<ActorLevelData>>();
 
     map[Level::First] = std::vector<ActorLevelData>();
-    map[Level::First].push_back(ActorLevelData(Actor::Type::MysteriousFigure, ObjectWithQuest::Type::MysteriousFigure, -400.f, -500.f));
-
     map[Level::First].push_back(ActorLevelData(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, -100.f, -400.f));
-    
     map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
 
+    map[Level::Second].push_back(ActorLevelData(Actor::Type::Elony, ObjectWithQuest::Type::Elony, -50.f, -300.f));
     map[Level::Second].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
+    map[Level::Second].push_back(ActorLevelData(Actor::Type::MysteriousFigure, ObjectWithQuest::Type::MysteriousFigure, -100.f, -900.f));
+
+
+    
 
     return map;
 }
@@ -261,7 +332,7 @@ std::map<Level, std::vector<ObjectLevelData>> getLevelObjectData()
     map[Level::First].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfNotQuest, +700.f, -1100.f));
 
 
-    map[Level::Second].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, -100.f, -1100.f));
+    map[Level::Second].push_back(ObjectLevelData(InteractableObject::Type::BookshelfNotQuest, ObjectWithQuest::Type::BookshelfQuest, 400.f, -1100.f));
 
     return map;
 }
@@ -285,11 +356,11 @@ bool isValidActorType(Actor::Type t)
     case Actor::Type::Hero:
     case Actor::Type::Archmage:
     case Actor::Type::MysteriousFigure:
+    case Actor::Type::Elony:
         res = true;
         break;
 
     case Actor::Type::Dgery:
-    case Actor::Type::Elony:
     case Actor::Type::Gazan:
     case Actor::Type::Lunars:
     case Actor::Type::Semrid:

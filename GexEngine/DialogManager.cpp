@@ -11,7 +11,7 @@ DialogManager::DialogManager()
 	endFightDialogs = {};
 
 	buildWelcomeDialog();
-	//buildFightDialogs();
+	buildFightDialogs();
 }
 
 DialogNode* DialogManager::getDialog(Actor::Type npc)
@@ -132,8 +132,8 @@ void DialogManager::buildFightDialogs()
 	fightProposal->attachChild(new DialogAnswer("Yes, let\'s fight", true));
 	fightProposal->attachChild(new DialogAnswer("Some other time"));
 
-	startFightDialogs[Actor::Type::Gazan] = fightProposal;
+	startFightDialogs[Actor::Type::MysteriousFigure] = fightProposal;
 
 	DialogNode* endFight = new DialogMessage("It was a good fight!");
-	endFightDialogs[Actor::Type::Gazan] = endFight;
+	endFightDialogs[Actor::Type::MysteriousFigure] = endFight;
 }

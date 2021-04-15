@@ -60,6 +60,7 @@ enum class TextureID
 	Hero,
 	Archmage,
 	MisteriousFigure,
+	Elony,
 
 	BookShelf,
 

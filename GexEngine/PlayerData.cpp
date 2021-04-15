@@ -132,7 +132,7 @@ void PlayerData::startFight()
 void PlayerData::finishFight(Actor::Type t)
 {
 	isInFightState_ = false;
-	isRequiredTalking_ = true;
+	//isRequiredTalking_ = true;
 	currentDialog = dialogManager->getEndFightDialog(t);
 }
 

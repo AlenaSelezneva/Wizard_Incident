@@ -274,6 +274,7 @@ void World::loadTextures() {
 	
 
 	textures.load(TextureID::Hero, "Media/Textures/Hero.png");
+	textures.load(TextureID::Elony, "Media/Textures/elony.png");
 	textures.load(TextureID::Archmage, "Media/Textures/Archmage_sheet.png");
 	textures.load(TextureID::MisteriousFigure, "Media/Textures/summoning_figure.png");
 
