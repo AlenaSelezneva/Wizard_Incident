@@ -58,10 +58,10 @@ enum class TextureID
 	ShieldSpell,
 
 	Hero,
+	Archmage,
+	MisteriousFigure,
 
 	BookShelf,
-
-	Archmage,
 
 	Eagle,
 	Raptor,

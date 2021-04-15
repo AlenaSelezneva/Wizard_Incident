@@ -72,6 +72,9 @@ std::map<Level, std::vector<ActorLevelData> > getLevelActorData();
 std::map<Level, std::vector<ObjectLevelData> > getLevelObjectData();
 std::map<Level, sf::Vector2f>	getLevelportalData();
 
+std::vector<Actor::Type>		getValidActorTypes();
+bool							isValidActorType(Actor::Type t);
+
 ObjectWithQuest::Type			transformToQuestObjectType(Actor::Type t);
 
 //std::vector<ActorLevelData>			 getActorLevelData(Level l);

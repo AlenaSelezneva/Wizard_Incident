@@ -29,21 +29,36 @@ Actor::Actor(Type type, const TextureHolder_t& textures, const FontHolder_t& fon
 	, fonts(fonts)
 {
 
-	if (type_ == Actor::Type::Hero) {
-		sprite_.setTexture(textures.get( TABLE.at(type).textureID));
+	if (isValidActorType(type)) {
+		sprite_.setTexture(textures.get(TABLE.at(type).textureID));
 		for (auto a : TABLE.at(type).animations)
 		{
 			animations_[a.first] = a.second;
 		}
 	}
 	else {
-		// change this when get more json!!!
 		sprite_.setTexture(textures.get(TABLE.at(Actor::Type::Archmage).textureID));
 		for (auto a : TABLE.at(Actor::Type::Archmage).animations)
 		{
 			animations_[a.first] = a.second;
 		}
 	}
+
+	//if (type_ == Actor::Type::Hero) {
+	//	sprite_.setTexture(textures.get( TABLE.at(type).textureID));
+	//	for (auto a : TABLE.at(type).animations)
+	//	{
+	//		animations_[a.first] = a.second;
+	//	}
+	//}
+	//else {
+	//	// change this when get more json!!!
+	//	sprite_.setTexture(textures.get(TABLE.at(Actor::Type::Archmage).textureID));
+	//	for (auto a : TABLE.at(Actor::Type::Archmage).animations)
+	//	{
+	//		animations_[a.first] = a.second;
+	//	}
+	//}
 
 }
 

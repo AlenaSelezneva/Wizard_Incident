@@ -142,6 +142,74 @@ std::map<Actor::Type, ActorData> initializeActorData()
     data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].setDuration(sf::seconds(1.f));
     data[Actor::Type::Hero].animations[Actor::State::SpellCastLeft].setRepeating(true);
 
+    /////////////////////////////////////////// Summoning Figure ///////////////////////////////////////////////
+
+    data[Actor::Type::MysteriousFigure].textureID = TextureID::MisteriousFigure;
+    data[Actor::Type::MysteriousFigure].npcName = "IwAnNaFiGhT";
+
+    frames = JsonFrameParser("Media/Textures/summoning_figure.json");
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveBack].addFrameSet(frames.getFramesFor("back_walk"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveBack].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveBack].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveRight].addFrameSet(frames.getFramesFor("right_walk"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveRight].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveRight].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveFront].addFrameSet(frames.getFramesFor("front_walk"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveFront].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveFront].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveLeft].addFrameSet(frames.getFramesFor("left_walk"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveLeft].setDuration(sf::seconds(1.5f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveLeft].setRepeating(true);
+
+    idleBack = frames.getFramesFor("back_cast/back_cast0.png");
+    idleBack.push_back(frames.getFramesFor("back_cast/back_cast1.png")[0]);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleBack].addFrameSet(idleBack);
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleBack].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleBack].setRepeating(true);
+
+    idleRight = frames.getFramesFor("right_cast/right_cast0.png");
+    idleRight.push_back(frames.getFramesFor("right_cast/right_cast1.png")[0]);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleRight].addFrameSet(idleRight);
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleRight].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleRight].setRepeating(true);
+
+    idleFront = frames.getFramesFor("front_cast/front_cast0.png");
+    idleFront.push_back(frames.getFramesFor("front_cast/front_cast1.png")[0]);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleFront].addFrameSet(idleFront);
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleFront].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleFront].setRepeating(true);
+
+    idleLeft = frames.getFramesFor("left_cast/left_cast0.png");
+    idleLeft.push_back(frames.getFramesFor("left_cast/left_cast1.png")[0]);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleLeft].addFrameSet(idleLeft);
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleLeft].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::IdleLeft].setRepeating(true);
+
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastBack].addFrameSet(frames.getFramesFor("back_cast"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastBack].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastBack].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastRight].addFrameSet(frames.getFramesFor("right_cast"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastRight].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastRight].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastFront].addFrameSet(frames.getFramesFor("front_cast"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastFront].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastFront].setRepeating(true);
+
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastLeft].addFrameSet(frames.getFramesFor("left_cast"));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastLeft].setDuration(sf::seconds(1.f));
+    data[Actor::Type::MysteriousFigure].animations[Actor::State::SpellCastLeft].setRepeating(true);
+
 
     return data;
 }
@@ -172,7 +240,10 @@ std::map<Level, std::vector<ActorLevelData>> getLevelActorData()
     auto map = std::map<Level, std::vector<ActorLevelData>>();
 
     map[Level::First] = std::vector<ActorLevelData>();
+    map[Level::First].push_back(ActorLevelData(Actor::Type::MysteriousFigure, ObjectWithQuest::Type::MysteriousFigure, -400.f, -500.f));
+
     map[Level::First].push_back(ActorLevelData(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, -100.f, -400.f));
+    
     map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
 
     map[Level::Second].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
@@ -203,6 +274,29 @@ std::map<Level, sf::Vector2f> getLevelportalData()
     map[Level::Second] = sf::Vector2f(-500.f, -800.f);
 
     return map;
+}
+
+bool isValidActorType(Actor::Type t)
+{
+    bool res = false;
+
+    switch (t)
+    {
+    case Actor::Type::Hero:
+    case Actor::Type::Archmage:
+    case Actor::Type::MysteriousFigure:
+        res = true;
+        break;
+
+    case Actor::Type::Dgery:
+    case Actor::Type::Elony:
+    case Actor::Type::Gazan:
+    case Actor::Type::Lunars:
+    case Actor::Type::Semrid:
+        break;
+    }
+
+    return res;
 }
 
 ObjectWithQuest::Type transformToQuestObjectType(Actor::Type t)
