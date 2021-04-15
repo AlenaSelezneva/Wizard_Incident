@@ -114,9 +114,15 @@ size_t PlayerData::getHeroAttribute(Attribute a)
 
 std::string PlayerData::getHeroAttributesString()
 {
-	std::string res = "Int " + std::to_string(heroStats[Attribute::Intelligence]) +
-		"\nWis " + std::to_string(heroStats[Attribute::Wisdom]) +
-		"\nArr " + std::to_string(heroStats[Attribute::Arrogance]);
+	std::string res = "Int: " + std::to_string(heroStats[Attribute::Intelligence]) +
+		"\nWis: " + std::to_string(heroStats[Attribute::Wisdom]) +
+		"\nArr: " + std::to_string(heroStats[Attribute::Arrogance]);
 
 	return res;
+}
+
+void PlayerData::increaseHeroAttribute(Attribute a)
+{
+	if (a != Attribute::None)
+		heroStats[a]++;
 }

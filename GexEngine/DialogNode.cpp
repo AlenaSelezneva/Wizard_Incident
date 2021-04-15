@@ -7,7 +7,7 @@ Alena Selezneva
 DialogNode::DialogNode(DialogNode::Type type, std::string text)
 	: type(type)
 	, text(text)
-
+	, attribute(Attribute::None)
 {
 	children = std::vector<DialogNode*>();
 }
@@ -15,6 +15,7 @@ DialogNode::DialogNode(DialogNode::Type type, std::string text)
 DialogNode::DialogNode()
 	: type(Type::Message)
 	, text("")
+	, attribute(Attribute::None)
 {
 }
 
@@ -46,4 +47,9 @@ void DialogNode::attachChild(DialogNode* child)
 std::vector<DialogNode*>* DialogNode::getChildren()
 {
 	return &children;
+}
+
+Attribute DialogNode::getAttribute()
+{
+	return attribute;
 }

@@ -3,18 +3,11 @@
 #include "DialogNode.h"
 #include "DialogManager.h"
 #include "QuestManager.h"
+#include "Attribute.h"
 
 #pragma once
 class PlayerData
 {
-public:
-	enum class Attribute {
-		None = 0,
-		Intelligence = 1,
-		Wisdom = 1 << 1,
-		Arrogance = 1 << 2
-	};
-
 public:
 	PlayerData();
 
@@ -43,6 +36,7 @@ public:
 	size_t					getHeroAttribute(Attribute a);
 	std::string				getHeroAttributesString();
 
+	void					increaseHeroAttribute(Attribute a);
 
 private:
 	DialogManager*				dialogManager;

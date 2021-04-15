@@ -41,10 +41,6 @@ public:
 								MusicPlayer& music,
 								PlayerData* data);
 
-	explicit				World(sf::RenderTarget& window,
-								const FontHolder_t& fonts,
-								SoundPlayer& sounds, PlayerData* data, int n);
-
 	void					update(sf::Time dt);
 	void					draw();
 
@@ -82,7 +78,7 @@ private:
 
 	void					buildQuestView();
 	void					buildHintView();
-	void					buildHeroStatsView();
+	//void					buildHeroStatsView();
 	void					buildUiGraph();
 	void					buildFightingUiStats();
 
@@ -170,5 +166,4 @@ private:
 
 	TextNode*							heroStatText;
 	TextNode*							enemyStatsText;
-	TextNode*							heroAttributesText;
 };

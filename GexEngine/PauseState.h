@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+class UiNode;
+
 class PauseState :
 	public State
 {
@@ -17,9 +19,11 @@ public:
 	virtual bool		handleEvent(const sf::Event& event) override;
 
 private:
+	TextureHolder_t*		textures;
 	sf::Sprite			backgroundSprite;
 	sf::Text			pausedText;
 	sf::Text			instructionText;
 
+	UiNode*				heroAttributes;
 };
 

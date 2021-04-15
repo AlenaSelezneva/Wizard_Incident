@@ -16,6 +16,7 @@ DialogState::DialogState(StateStack& stack, Context context)
 	: State(stack, context)
 	, optionIndex(0)
 	, textures()
+	, playerData(context.playerData)
 	, optionNodes()
 	, dialogView()
 {
@@ -65,6 +66,10 @@ void DialogState::updateChosenDialogOption()
 
 void DialogState::moveToNextDialogMessage(int childIndex)
 {
+	if (currentDialog->getAttribute() != Attribute::None) {
+		playerData->increaseHeroAttribute(currentDialog->getAttribute());
+	}
+
 	if (currentDialog->getChildren() > 0) {
 		currentDialog = currentDialog->getChildren()->at(childIndex);
 	}

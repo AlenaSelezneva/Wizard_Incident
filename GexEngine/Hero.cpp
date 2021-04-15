@@ -88,7 +88,7 @@ void Hero::attack()
 void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
 {
 	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt
-		(EnergyBolt::Type::AlliedBolt, 10 + playerData->getHeroAttribute(PlayerData::Attribute::Arrogance), textures));
+		(EnergyBolt::Type::AlliedBolt, 10 + playerData->getHeroAttribute(Attribute::Arrogance), textures));
 
 	/*sf::Vector2f offset(sprite_.getGlobalBounds().width / 2,
 		sprite_.getGlobalBounds().height);*/
@@ -226,11 +226,11 @@ int Hero::getSpellManaCost(HeroManaCost spell) const
 		res = 10;
 		break;
 	case HeroManaCost::ShieldPerSecond:
-		res = 30 - playerData->getHeroAttribute(PlayerData::Attribute::Intelligence);
+		res = 30 - playerData->getHeroAttribute(Attribute::Intelligence);
 		if (res < 5) res = 5;
 		break;
 	case HeroManaCost::RegeneratePerSecond:
-		res = 5 + playerData->getHeroAttribute(PlayerData::Attribute::Wisdom);
+		res = 5 + playerData->getHeroAttribute(Attribute::Wisdom);
 		break;
 	}
 

@@ -148,6 +148,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Attribute.h" />
     <ClInclude Include="BattlePlayer.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="Category.h" />

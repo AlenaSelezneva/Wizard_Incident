@@ -40,6 +40,7 @@ private:
 
 private:
 	TextureHolder_t				textures;
+	PlayerData*					playerData;
 	DialogNode*					currentDialog;
 	std::vector<SpriteNode*>	optionNodes;
 	sf::Text					currentMessage;

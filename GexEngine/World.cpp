@@ -140,7 +140,7 @@ void World::updateCasualUiElements()
 {
 	questLog->setString(playerData->getQuestInstrunstionDisplay());
 	questsView->setVisible(playerData->isShowingJournal());
-	heroAttributesText->setString(playerData->getHeroAttributesString());
+	//heroAttributesText->setString(playerData->getHeroAttributesString());
 }
 
 void World::draw() {
@@ -363,33 +363,13 @@ void World::buildHintView()
 	uiGraph->attachChild(std::move(hintBackground));
 }
 
-void World::buildHeroStatsView()
-{
-	float margin = 20.f;
 
-	std::unique_ptr<UiNode> statsBackground(new UiNode(textures.get(TextureID::HintBackground)));
-	statsBackground->setPosition(margin, margin);
-
-	heroAttributesView = statsBackground.get();
-	heroAttributesView->setVisible(true);
-
-	std::unique_ptr<TextNode> stats(new TextNode(fonts, "", 20));
-	stats->setString(playerData->getHeroAttributesString());
-	//questHeaderNode->setTextColor(sf::Color(125, 120, 186));
-
-	stats->setPosition(statsBackground.get()->getBoundingRect().width / 2, statsBackground.get()->getBoundingRect().height / 2);
-	heroAttributesText = stats.get();
-
-	heroAttributesView->attachChild(std::move(stats));
-
-	uiGraph->attachChild(std::move(statsBackground));
-}
 
 void World::buildUiGraph()
 {
 	buildQuestView();
 	buildHintView();
-	buildHeroStatsView();
+	//buildHeroStatsView();
 }
 
 void World::buildFightingUiStats()

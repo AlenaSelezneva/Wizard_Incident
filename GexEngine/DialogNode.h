@@ -7,6 +7,8 @@ Alena Selezneva
 #include <vector>
 #include <list>
 
+#include "Attribute.h"
+
 class DialogNode
 {
 public:
@@ -26,10 +28,12 @@ public:
 	void				attachChild(DialogNode* child);
 	std::vector<DialogNode*>* getChildren();
 
+	Attribute			getAttribute();
 
 protected:
 	Type						type;
 	std::string					text;
+	Attribute					attribute;
 	std::vector<DialogNode*>	children;
 
 
