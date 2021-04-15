@@ -70,6 +70,7 @@ std::map<Tile::Type, TileData> initializeTileData();
 
 std::map<Level, std::vector<ActorLevelData> > getLevelActorData();
 std::map<Level, std::vector<ObjectLevelData> > getLevelObjectData();
+std::map<Level, sf::Vector2f>	getLevelportalData();
 
 ObjectWithQuest::Type			transformToQuestObjectType(Actor::Type t);
 

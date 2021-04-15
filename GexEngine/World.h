@@ -48,6 +48,8 @@ public:
 
 	bool					hasAlivePlayer() const;
 
+	void					moveToLevel(Level l);
+
 	void					startFight(Actor::Type type);
 	void					stopFight();
 

@@ -42,7 +42,8 @@ Ptr	SceneNode::detachChild(const SceneNode& node) {
 
 void SceneNode::clearChildren()
 {
-	children.clear();
+	if (children.size() > 0)
+		children.clear();
 }
 
 sf::FloatRect SceneNode::getBoundingRect() const

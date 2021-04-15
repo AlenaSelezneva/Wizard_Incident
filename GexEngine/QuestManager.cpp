@@ -15,7 +15,7 @@ QuestManager::QuestManager()
 	newId = 0;
 	lastRetrievedQuestId = -1;
 
-	//buildBookQuest();
+	buildBookQuest();
 }
 
 DialogNode* QuestManager::getQuestDialog(ObjectWithQuest::Type type)

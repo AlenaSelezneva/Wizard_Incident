@@ -11,7 +11,7 @@ DialogManager::DialogManager()
 	endFightDialogs = {};
 
 	buildWelcomeDialog();
-	buildFightDialogs();
+	//buildFightDialogs();
 }
 
 DialogNode* DialogManager::getDialog(Actor::Type npc)
@@ -20,7 +20,6 @@ DialogNode* DialogManager::getDialog(Actor::Type npc)
 
 	if (mainDialogs.count(npc) > 0 && mainDialogs[npc].size() > 0) {
 		auto dialog = mainDialogs[npc].front();
-		//mainDialogs[npc].pop_front();
 		return dialog;
 	}
 

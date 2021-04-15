@@ -13,6 +13,7 @@ public:
         None = 0,
         BookshelfQuest = 1,
         BookshelfNotQuest = 1 << 1,
+        Portal,
 
         Bookshelf = BookshelfQuest | BookshelfNotQuest,
         Count

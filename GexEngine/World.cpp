@@ -58,6 +58,65 @@ bool World::hasAlivePlayer() const
 	return true;
 }
 
+void World::moveToLevel(Level l)
+{
+	currentLevel = l;
+
+	sceneGraph.clearChildren();
+	sceneLayers = {};
+
+	for (std::size_t i = 0; i < LayerCount; ++i) {
+		Category::Type category;
+		switch (i) {
+		case Floor:
+			category = Category::Type::Background;
+		case Walls:
+			category = Category::Type::Wall;
+			break;
+		case SpellsLayer:
+			category = Category::Type::SpellLayer;
+			break;
+		case PlayerLayer:
+		default:
+			category = Category::Type::None;
+			break;
+		}
+
+		SceneNode::Ptr layer(new SceneNode(category));
+
+		sceneLayers[i] = layer.get();
+
+		sceneGraph.attachChild(std::move(layer));
+	}
+
+	//npcs = std::vector< FriendlyNPC*>();
+	enemy = nullptr;
+
+	std::unique_ptr<SoundNode> soundNode(new SoundNode(sounds));
+	sceneGraph.attachChild(std::move(soundNode));
+
+	buildLevel();
+	buildLevelObjects();
+
+	sf::IntRect textureRect(worldBounds);
+
+	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
+	/*portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);*/
+	portal_->setPosition(spawnPosition.x + getLevelportalData().at(currentLevel).x, spawnPosition.y + getLevelportalData().at(currentLevel).y);
+	portal = portal_.get();
+	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
+
+
+	std::unique_ptr<Hero> hero_(new Hero(textures, fonts, playerData));
+	hero = hero_.get();
+	//hero->setPosition(spawnPosition);
+	hero->setVelocity(0.f, 0.f);
+	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
+
+	hero->setPosition(portal->getPosition().x + portal->getBoundingRect().width / 2,
+		portal->getPosition().y + portal->getBoundingRect().height + 40.f);
+}
+
 void World::startFight(Actor::Type type)
 {
 	Actor* en = nullptr;
@@ -215,7 +274,10 @@ void World::loadTextures() {
 	textures.load(TextureID::QuestJournal, "Media/Textures/QuestJournal.png");
 	textures.load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");
 
-	textures.load(TextureID::Portal, "Media/Textures/portal.png");
+	/*textures.load(TextureID::Portal, "Media/Textures/portal.png");*/
+	textures.load(TextureID::Portal, "Media/Textures/portal_Small.png");
+
+	
 
 	textures.load(TextureID::HealthDisplay, "Media/Textures/helth_display.png");
 
@@ -225,7 +287,7 @@ void World::loadTextures() {
 }
 
 void World::buildScene() {
-	sceneGraph.clearChildren();
+	/*sceneGraph.clearChildren();
 	npcs = std::vector< FriendlyNPC*>();
 
 	for (std::size_t i = 0; i < LayerCount; ++i) {
@@ -260,6 +322,7 @@ void World::buildScene() {
 
 	sf::IntRect textureRect(worldBounds);
 
+	
 	std::unique_ptr<Hero> hero_(new Hero(textures, fonts, playerData));
 	hero = hero_.get();
 	hero->setPosition(spawnPosition);
@@ -267,11 +330,12 @@ void World::buildScene() {
 	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
 
 
-
 	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
 	portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);
 	portal = portal_.get();
-	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));
+	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));*/
+
+	moveToLevel(Level::First);
 
 	buildUiGraph();
 }
@@ -327,6 +391,8 @@ void World::buildLevelObjects()
 {
 	auto actors = getLevelActorData().at(currentLevel);
 	auto objects = getLevelObjectData().at(currentLevel);
+
+	npcs = std::vector<FriendlyNPC* >();
 
 	for (auto a : actors) {
 		std::unique_ptr<FriendlyNPC> actor(new FriendlyNPC(a.type, a.questType, textures, fonts));
