@@ -190,3 +190,38 @@ std::map<Level, std::vector<ObjectLevelData>> getLevelObjectData()
 
     return map;
 }
+
+ObjectWithQuest::Type transformToQuestObjectType(Actor::Type t)
+{
+    ObjectWithQuest::Type res = ObjectWithQuest::Type::None;
+
+    switch (t)
+    {
+    case Actor::Type::Archmage:
+        res = ObjectWithQuest::Type::Archmage;
+        break;
+    case Actor::Type::Dgery:
+        res = ObjectWithQuest::Type::Dgery;
+        break;
+    case Actor::Type::Elony:
+        res = ObjectWithQuest::Type::Elony;
+        break;
+    case Actor::Type::Gazan:
+        res = ObjectWithQuest::Type::Gazan;
+        break;
+    case Actor::Type::Lunars:
+        res = ObjectWithQuest::Type::Lunars;
+        break;
+    case Actor::Type::Semrid:
+        res = ObjectWithQuest::Type::Semrid;
+        break;
+    case Actor::Type::MysteriousFigure:
+        res = ObjectWithQuest::Type::MysteriousFigure;
+        break;
+    case Actor::Type::TalkingNPC:
+        res = ObjectWithQuest::Type::TalkingNPC;
+        break;
+    }
+
+    return res;
+}

@@ -6,7 +6,7 @@ Enemy::Enemy(Actor::Type type, const TextureHolder_t& textures, const FontHolder
 	: Actor(type, textures, fonts)
 	, FightingCharacter(FightingCharacter::Type::Enemy)
 {
-	hitPoints = 100;
+	hitPoints = 40;
 
 	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
@@ -23,7 +23,7 @@ Enemy::Enemy(Actor* actor)
 	this->setState(actor->getState());
 	this->setVelocity(actor->getVelocity());
 
-	hitPoints = 100;
+	hitPoints = 40;
 
 	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this](SceneNode& node, sf::Time)

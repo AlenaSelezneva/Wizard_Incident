@@ -201,12 +201,12 @@ bool DialogState::handleEvent(const sf::Event& event)
 	else if (event.key.code == sf::Keyboard::Up) {
 		--optionIndex;
 		optionIndex += currentDialog->getChildren()->size();
-		optionIndex %= currentDialog->getChildren()->size();
+		optionIndex %= (currentDialog->getChildren()->size() > 0 ? currentDialog->getChildren()->size() : 1);
 		updateChosenDialogOption();
 	}
 	else if (event.key.code == sf::Keyboard::Down) {
 		++optionIndex;
-		optionIndex %= currentDialog->getChildren()->size();
+		optionIndex %= (currentDialog->getChildren()->size() > 0 ? currentDialog->getChildren()->size() : 1);
 		updateChosenDialogOption();
 	}
 

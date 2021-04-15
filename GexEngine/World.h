@@ -49,7 +49,7 @@ public:
 	bool					hasAlivePlayer() const;
 
 	void					startFight(Actor::Type type);
-	void					stopFight(Actor* en);
+	void					stopFight();
 
 protected:
 	virtual void			loadTextures();
@@ -140,11 +140,10 @@ protected:
 	sf::Vector2f						spawnPosition;
 	float								scrollSpeed;
 
-	//std::vector<std::vector<Tile::Type> > currentLevelLayout;
 	std::map<Tile::Type, TileData>		tileData;
 
 	PlayerData*							playerData;
-	bool								isFighting;
+	//bool								isFighting;
 
 
 private:

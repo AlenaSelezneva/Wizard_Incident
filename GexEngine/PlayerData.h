@@ -32,15 +32,16 @@ public:
 
 	bool					isInFightState() const;
 	Actor::Type				getCurrentActor() const;
-	void					seInFightState(bool b);
+	//void					setInFightState(bool b);
+	void					startFight();
+	void					finishFight(Actor::Type t);
+
+	bool					isRequiredTalking();
 
 	size_t					getHeroAttribute(Attribute a);
 	std::string				getHeroAttributesString();
 
 	void					increaseHeroAttribute(Attribute a);
-
-	/*bool					isProposingFight();
-	bool					isProposingQuest();*/
 
 private:
 	DialogManager*				dialogManager;
@@ -53,6 +54,7 @@ private:
 
 	bool						isProposingFight_;
 	bool						isProposingQuest_;
+	bool						isRequiredTalking_;
 
 	bool						isShowingJournal_;
 	bool						isIntersectsWithPortal_;

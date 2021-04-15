@@ -28,6 +28,9 @@ void PlayerData::setCurrentDialog(Actor::Type npc)
 		currentDialog = nullptr;
 		return;
 	}
+
+	if (isRequiredTalking_)
+		return;
 		
 	currentDialog = dialogManager->getDialog(npc);
 
@@ -46,6 +49,12 @@ void PlayerData::onCurrentDialogComplete(bool agree)
 
 		dialogManager->onCurrentDialogComplete(currentTalkingNPC);
 	}
+
+	currentDialog = nullptr;
+
+	isRequiredTalking_ = false;
+	isProposingFight_ = false;
+	isProposingQuest_ = false;
 }
 
 void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)
@@ -110,9 +119,26 @@ Actor::Type PlayerData::getCurrentActor() const
 	return currentTalkingNPC;
 }
 
-void PlayerData::seInFightState(bool b)
+//void PlayerData::setInFightState(bool b)
+//{
+//	isInFightState_ = b;
+//}
+
+void PlayerData::startFight()
 {
-	isInFightState_ = b;
+	isInFightState_ = true;
+}
+
+void PlayerData::finishFight(Actor::Type t)
+{
+	isInFightState_ = false;
+	isRequiredTalking_ = true;
+	currentDialog = dialogManager->getEndFightDialog(t);
+}
+
+bool PlayerData::isRequiredTalking()
+{
+	return isRequiredTalking_;
 }
 
 size_t PlayerData::getHeroAttribute(Attribute a)

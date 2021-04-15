@@ -39,13 +39,17 @@ bool GameState::handleEvent(const sf::Event& event)
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		requestStackPush(StateID::Pause);
 
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
-		world.startFight(Actor::Type::Archmage);
+	if (context.playerData->isRequiredTalking()) {
+		requestStackPush(StateID::Dialog);
+	}
+
+	/*if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+		world.startFight(Actor::Type::Archmage);*/
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&
 			context.playerData->isIntersectsWithPortal()) {
-		requestStackPop();
-		requestStackPush(StateID::Battle);
+		//requestStackPop();
+		//requestStackPush(StateID::Battle);
 	}
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&

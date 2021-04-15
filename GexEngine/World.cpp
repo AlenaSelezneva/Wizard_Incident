@@ -62,14 +62,19 @@ void World::startFight(Actor::Type type)
 {
 	Actor* en = nullptr;
 	for (int i = 0; i < npcs.size(); ++i) {
-		if (npcs[i]->getType() == type)
+		if (npcs[i]->getType() == type) {
 			en = npcs[i];
+			//npcs[i] = nullptr;
+			npcs.erase(npcs.begin() + i);
+		}
 	}
 
 	if (en == nullptr)
 		return;
 
-	isFighting = true;
+	//playerData->setInFightState(true);
+	playerData->startFight();
+
 	std::unique_ptr<Enemy> enemyPtr(new Enemy(en));
 	sceneLayers[PlayerLayer]->detachChild(*en);
 
@@ -81,9 +86,32 @@ void World::startFight(Actor::Type type)
 	music.play(MusicID::FightTheme);
 }
 
-void World::stopFight(Actor* en)
+void World::stopFight()
 {
-	isFighting = false;
+	//playerData->setInFightState(false);
+	playerData->finishFight(enemy->getType());
+	fightingUiGraph = nullptr;
+	hero->finishFight();
+
+	Actor* a = enemy;
+
+	std::unique_ptr<FriendlyNPC> npc(new FriendlyNPC(a));
+	sceneLayers[PlayerLayer]->detachChild(*enemy);
+	enemy = nullptr;
+
+	npcs.push_back(npc.get());
+	sceneLayers[PlayerLayer]->attachChild(std::move(npc));
+
+	Command destroySpells;
+	destroySpells.category = Category::BaseAttack;
+	destroySpells.action = derivedAction<EnergyBolt>([this](EnergyBolt& bolt, sf::Time dt) {
+		if (enemy != nullptr)
+			bolt.destroy();
+		});
+
+	commandQueue.push(destroySpells);
+
+	//buildUiGraph();
 	music.play(MusicID::GameTheme);
 }
 
@@ -100,10 +128,6 @@ void World::update(sf::Time dt) {
 	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
 
-	if (playerData->isInFightState()) {
-		startFight(playerData->getCurrentActor());
-	}
-
 	guideEnergyBolts();
 
 	while (!commandQueue.isEmpty()) {
@@ -116,14 +140,20 @@ void World::update(sf::Time dt) {
 
 	updateSounds();
 
+	//if (playerData->isInFightState() && enemy != nullptr && enemy->getHitpoints() <= 0) {
+	//	stopFight();
+	//}
 
-	if (!isFighting) {
+	if (playerData->isInFightState() && enemy == nullptr) {
+		startFight(playerData->getCurrentActor());
+	}
+
+	if (!playerData->isInFightState()) {
 		updateCasualUiElements();
 	}
 	else {
 		updateFightingStatTexts();
 	}
-	
 
 	sceneGraph.removeWrecks();
 
@@ -163,7 +193,7 @@ void World::draw() {
 		target.draw(*r);
 	}
 
-	if (isFighting)
+	if (playerData->isInFightState() && fightingUiGraph != nullptr)
 		target.draw(*fightingUiGraph);
 	else 
 		target.draw(*uiGraph);
@@ -488,6 +518,9 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 			enemy_.damage(bolt.getDamage());
 			enemy_.playLocalSound(commands, EffectID::EnemyHurt);
 			bolt.destroy();
+
+			if (enemy->getHitpoints() <= 0)
+				stopFight();
 		}
 	}	
 }
@@ -548,7 +581,7 @@ void World::adaptPlayerPosition()
 	if (hero->getPosition().y + hero->getBoundingRect().height >= viewBounds.top + viewBounds.height - borderDistance)
 		worldView.move(0, scrollSpeed);
 
-	if (isFighting)
+	if (playerData->isInFightState() && fightingUiGraph != nullptr)
 		fightingUiGraph->setPosition(viewBounds.left, viewBounds.top);
 	else
 		uiGraph->setPosition(viewBounds.left, viewBounds.top);
@@ -653,6 +686,9 @@ void World::adaptHeroPositionRelatingEntity(Entity* entity, sf::Time dt, Command
 
 void World::updateFightingStatTexts()
 {
+	if (fightingUiGraph == nullptr || enemy == nullptr)
+		return;
+
 	std::string enemyString = "Enemy:\nHP:" + std::to_string(enemy->getHitpoints());
 	std::string heroHealth = hero->getFightHealthDisplayString();
 

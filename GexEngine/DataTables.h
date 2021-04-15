@@ -71,6 +71,8 @@ std::map<Tile::Type, TileData> initializeTileData();
 std::map<Level, std::vector<ActorLevelData> > getLevelActorData();
 std::map<Level, std::vector<ObjectLevelData> > getLevelObjectData();
 
+ObjectWithQuest::Type			transformToQuestObjectType(Actor::Type t);
+
 //std::vector<ActorLevelData>			 getActorLevelData(Level l);
 //std::vector<ObjectLevelData>		 getObjectLevelData(Level l);
 

@@ -17,6 +17,25 @@ FriendlyNPC::FriendlyNPC(Actor::Type type, ObjectWithQuest::Type questType, cons
 
 }
 
+FriendlyNPC::FriendlyNPC(Actor* actor) 
+    :Actor(actor->getType(), actor->getTextures(), actor->getFonts())
+    , ObjectWithQuest(transformToQuestObjectType(actor->getType()))
+{
+    this->setPosition(actor->getPosition());
+    this->setState(actor->getState());
+    this->setVelocity(actor->getVelocity());
+
+    hitPoints = 100;
+
+    name = initializeActorData().at(actor->getType()).npcName;
+
+    std::unique_ptr<TextNode> nameText(new TextNode(fonts, name, 14));
+    nameText.get()->setString(name);
+    nameText->setPosition(0.f, -40.f);
+
+    attachChild(std::move(nameText));
+}
+
 void FriendlyNPC::setCanTalkToHero(bool canTalk)
 {
     canTalkToHero_ = canTalk;
