@@ -30,13 +30,16 @@ namespace sf {
 	class RenderTarget;
 }
 class FriendlyNPC;
+class MusicPlayer;
 
 class World : private sf::NonCopyable {
 
 public:
 	explicit				World(sf::RenderTarget& window,
 								const FontHolder_t& fonts,
-								SoundPlayer& sounds, PlayerData* data);
+								SoundPlayer& sounds,
+								MusicPlayer& music,
+								PlayerData* data);
 
 	explicit				World(sf::RenderTarget& window,
 								const FontHolder_t& fonts,
@@ -117,6 +120,7 @@ protected:
 	sf::View							worldView;
 	const FontHolder_t&					fonts;
 	SoundPlayer&						sounds;
+	MusicPlayer&						music;
 
 	SceneNode							sceneGraph;
 

@@ -9,7 +9,7 @@ Alena Selezneva
 
 GameState::GameState(StateStack& stack, Context context)
 	: State(stack, context)
-	, world(*context.window, *context.fonts, *context.sounds, context.playerData)
+	, world(*context.window, *context.fonts, *context.sounds, *context.music, context.playerData)
 	, player(*context.player)
 {
 	//context.music->play(MusicID::MissionTheme);

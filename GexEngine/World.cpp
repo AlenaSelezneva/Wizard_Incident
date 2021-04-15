@@ -17,15 +17,17 @@ Alena Selezneva
 #include <SFML/Graphics/Shape.hpp>
 #include <iostream>
 #include "SoundNode.h"
+#include "MusicPlayer.h"
 
 
-World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data)
+World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, MusicPlayer& music, PlayerData* data)
 	: target(outputTarget)
 	, sceneTexture()
 	, worldView(outputTarget.getDefaultView())
 	, textures()
 	, fonts(fonts)
 	, sounds(sounds)
+	, music(music)
 	, playerData(data)
 	, sceneGraph()
 	, uiGraph()
@@ -45,19 +47,6 @@ World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPla
 
 	buildScene();
 }
-
-World::World(sf::RenderTarget& outputTarget, const FontHolder_t& fonts, SoundPlayer& sounds, PlayerData* data, int n)
-	: target(outputTarget)
-	, sceneTexture()
-	, worldView(outputTarget.getDefaultView())
-	, textures()
-	, fonts(fonts)
-	, sounds(sounds)
-	, playerData(data)
-	, sceneGraph()
-	, sceneLayers()
-	, commandQueue()
-{}
 
 CommandQueue& World::getCommands()
 {
@@ -89,11 +78,13 @@ void World::startFight(Actor::Type type)
 	sceneLayers[PlayerLayer]->attachChild(std::move(enemyPtr));
 
 	buildFightingUiStats();
+	music.play(MusicID::FightTheme);
 }
 
 void World::stopFight(Actor* en)
 {
-	isFighting = true;
+	isFighting = false;
+	music.play(MusicID::GameTheme);
 }
 
 
@@ -254,6 +245,8 @@ void World::buildScene() {
 
 void World::buildLevel()
 {
+	music.play(MusicID::GameTheme);
+
 	walkOverTiles = std::vector<SpriteNode*>();
 	blockingTiles = std::vector<SpriteNode*>();
 	invisibleWallTiles = std::vector<SpriteNode*>();
