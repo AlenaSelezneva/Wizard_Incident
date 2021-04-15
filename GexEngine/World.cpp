@@ -100,6 +100,9 @@ void World::update(sf::Time dt) {
 	hintText->setString("Press ENTER to interact");
 	collidingToRedraw = std::list<SceneNode*>();
 
+	if (playerData->isInFightState()) {
+		startFight(playerData->getCurrentActor());
+	}
 
 	guideEnergyBolts();
 
@@ -418,104 +421,75 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 		playerData->setIntersectsWithPortal(true);
 	}
 
+	for (auto pair : collisionPairs) {
 
-	if (!playerData->isInFightState()) {
-		for (auto pair : collisionPairs) {
+		bool goOnQuest = false;
 
-			bool goOnQuest = false;
+		if (matchesCategories(pair, Category::Hero, Category::QuestObject)) {
+			auto& hero = static_cast<Actor&>(*pair.first);
 
-			if (matchesCategories(pair, Category::Hero, Category::QuestObject)) {
-				auto& hero = static_cast<Actor&>(*pair.first);
+			if ((*pair.second).getCategory() == Category::TalkingNPC) {
+				auto& obj = static_cast<FriendlyNPC&>(*pair.second);
 
-				if ((*pair.second).getCategory() == Category::TalkingNPC) {
-					auto& obj = static_cast<FriendlyNPC&>(*pair.second);
-
-					if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
-						goOnQuest = true;
-						playerData->setCurrentQuestDialog(obj.getQuestObjectType());
-						hintView->setVisible(true);
-					}
-
-					adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+					goOnQuest = true;
+					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+					hintView->setVisible(true);
 				}
-				else {
-					auto& obj = static_cast<InteractableObject&>(*pair.second);
-
-					if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
-						goOnQuest = true;
-						playerData->setCurrentQuestDialog(obj.getQuestObjectType());
-						hintView->setVisible(true);
-					}
-
-					adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-				}
-			}
-
-			if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
-				auto& npc = static_cast<FriendlyNPC&>(*pair.second);
-				npc.setCanTalkToHero(true);
-
-				playerData->setCurrentDialog(npc.getType());
-
-				auto& hero = static_cast<Actor&>(*pair.first);
 
 				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-
-				hintText->setString("Press ENTER to talk");
-				hintView->setVisible(true);
 			}
+			else {
+				auto& obj = static_cast<InteractableObject&>(*pair.second);
 
-			if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
-				auto& hero_ = static_cast<Actor&>(*pair.first);
-				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
-				
-				if (!hero->isCastingShield()) {
-					hero_.damage(bolt.getDamage());
-					hero_.playLocalSound(commands, EffectID::HeroHurt);
+				if (playerData->hasPendingQuest(obj.getQuestObjectType())) {
+					goOnQuest = true;
+					playerData->setCurrentQuestDialog(obj.getQuestObjectType());
+					hintView->setVisible(true);
 				}
-				else {
-					hero_.playLocalSound(commands, EffectID::AttackBlocked);
-				}
-				
-				bolt.destroy();
-			}
-				
-			if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
-				auto& enemy_ = static_cast<Actor&>(*pair.first);
-				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
-				
-				enemy_.damage(bolt.getDamage());
-				enemy_.playLocalSound(commands, EffectID::EnemyHurt);
-				bolt.destroy();
+
+				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
 			}
 		}
-	}
-	//else {
-	//	for (auto pair : collisionPairs) {
 
-	//		if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
-	//			auto& hero_ = static_cast<Actor&>(*pair.first);
-	//			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+		if (!goOnQuest && matchesCategories(pair, Category::Hero, Category::TalkingNPC)) {
+			auto& npc = static_cast<FriendlyNPC&>(*pair.second);
+			npc.setCanTalkToHero(true);
 
-	//			if (!hero->isCastingShield())
-	//				hero_.damage(bolt.getDamage());
+			playerData->setCurrentDialog(npc.getType());
 
-	//			bolt.destroy();
-	//		}
+			auto& hero = static_cast<Actor&>(*pair.first);
 
-	//		if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
-	//			auto& enemy_ = static_cast<Actor&>(*pair.first);
-	//			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
 
-	//			enemy_.damage(bolt.getDamage());
-	//			bolt.destroy();
-	//		}
+			hintText->setString("Press ENTER to talk");
+			hintView->setVisible(true);
+		}
 
-	//		if (matchesCategories(pair, Category::Hero, Category::FightingNPC)) {
-	//			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-	//		}
-	//	}
-	//}
+		if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
+			auto& hero_ = static_cast<Actor&>(*pair.first);
+			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+				
+			if (!hero->isCastingShield()) {
+				hero_.damage(bolt.getDamage());
+				hero_.playLocalSound(commands, EffectID::HeroHurt);
+			}
+			else {
+				hero_.playLocalSound(commands, EffectID::AttackBlocked);
+			}
+				
+			bolt.destroy();
+		}
+				
+		if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
+			auto& enemy_ = static_cast<Actor&>(*pair.first);
+			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+				
+			enemy_.damage(bolt.getDamage());
+			enemy_.playLocalSound(commands, EffectID::EnemyHurt);
+			bolt.destroy();
+		}
+	}	
 }
 
 bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)

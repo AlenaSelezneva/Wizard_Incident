@@ -10,11 +10,12 @@ QuestManager::QuestManager()
 	currectQuests = {};
 	possibleQuests = {};
 	completedQuests = {};
+	refusedQuests = {};
 
 	newId = 0;
 	lastRetrievedQuestId = -1;
 
-	buildBookQuest();
+	//buildBookQuest();
 }
 
 DialogNode* QuestManager::getQuestDialog(ObjectWithQuest::Type type)
@@ -36,7 +37,7 @@ DialogNode* QuestManager::getQuestDialog(ObjectWithQuest::Type type)
 	return nullptr;
 }
 
-void QuestManager::onCurrentQuestDialogComplete()
+void QuestManager::onCurrentQuestDialogComplete(bool agree)
 {
 	Quest* quest = getQuestById(lastRetrievedQuestId);
 
@@ -44,6 +45,12 @@ void QuestManager::onCurrentQuestDialogComplete()
 		return;
 
 	quest->onDialogShowed();
+
+	if (!agree) {
+		refusedQuests.push_back(quest);
+		removeQuestFromArray(&currectQuests, quest->getId());
+		removeQuestFromArray(&possibleQuests, quest->getId());
+	}
 
 	if (quest->isCompleted())
 		moveToCompleted(quest);
@@ -105,7 +112,6 @@ void QuestManager::removeQuestFromArray(std::vector<Quest*>* arr, int questId)
 			arr->erase(arr->begin() + i);
 		}
 	}
-
 }
 
 void QuestManager::buildBookQuest()
@@ -113,7 +119,8 @@ void QuestManager::buildBookQuest()
 	auto bookQuest = new Quest(++newId, "Monstrous Bestiary");
 
 	DialogNode* gazanRequest = new DialogMessage( "I am looking for the Monstrous Bestiary, could you help me find it please?");
-	gazanRequest->attachChild(new DialogAnswer("I will see what I can do."));
+	gazanRequest->attachChild(new DialogAnswer("I will see what I can do.", true));
+	gazanRequest->attachChild(new DialogAnswer("Do I look like I have \ntime for this?", false));
 
 	auto initialNode = QuestNode(ObjectWithQuest::Type::Gazan, gazanRequest, false);
 

@@ -35,12 +35,17 @@ void PlayerData::setCurrentDialog(Actor::Type npc)
 	currentTalkingNPC = npc;
 }
 
-void PlayerData::onCurrentDialogComplete()
+void PlayerData::onCurrentDialogComplete(bool agree)
 {
 	if (currentQuestObject != ObjectWithQuest::Type::None && questManager->getQuestDialog(currentQuestObject) != nullptr)
-		onCurrectQuestDialogComplete();
-	else
+		onCurrectQuestDialogComplete(agree);
+	else {
+
+		if (dialogManager->isStartFight() && agree)
+			isInFightState_ = true;
+
 		dialogManager->onCurrentDialogComplete(currentTalkingNPC);
+	}
 }
 
 void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)
@@ -55,7 +60,7 @@ void PlayerData::setCurrentQuestDialog(ObjectWithQuest::Type obj)
 	currentTalkingNPC = Actor::Type::None;
 }
 
-void PlayerData::onCurrectQuestDialogComplete()
+void PlayerData::onCurrectQuestDialogComplete(bool agree)
 {
 	questManager->onCurrentQuestDialogComplete();
 }
@@ -98,6 +103,11 @@ void PlayerData::setIntersectsWithPortal(bool b)
 bool PlayerData::isInFightState() const
 {
 	return isInFightState_;
+}
+
+Actor::Type PlayerData::getCurrentActor() const
+{
+	return currentTalkingNPC;
 }
 
 void PlayerData::seInFightState(bool b)

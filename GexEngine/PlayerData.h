@@ -14,10 +14,10 @@ public:
 	DialogNode*				getCurrentDialog() const;
 
 	void					setCurrentDialog(Actor::Type npc);
-	void					onCurrentDialogComplete();
+	void					onCurrentDialogComplete(bool agree = true);
 
 	void					setCurrentQuestDialog(ObjectWithQuest::Type obj);
-	void					onCurrectQuestDialogComplete();
+	void					onCurrectQuestDialogComplete(bool agree);
 
 	bool					hasPendingQuest(ObjectWithQuest::Type obj);
 
@@ -30,13 +30,17 @@ public:
 	bool					isIntersectsWithPortal() const;
 	void					setIntersectsWithPortal(bool b);
 
-	bool isInFightState() const;
-	void seInFightState(bool b);
+	bool					isInFightState() const;
+	Actor::Type				getCurrentActor() const;
+	void					seInFightState(bool b);
 
 	size_t					getHeroAttribute(Attribute a);
 	std::string				getHeroAttributesString();
 
 	void					increaseHeroAttribute(Attribute a);
+
+	/*bool					isProposingFight();
+	bool					isProposingQuest();*/
 
 private:
 	DialogManager*				dialogManager;
@@ -47,10 +51,11 @@ private:
 
 	DialogNode*					currentDialog;
 
+	bool						isProposingFight_;
+	bool						isProposingQuest_;
+
 	bool						isShowingJournal_;
-
 	bool						isIntersectsWithPortal_;
-
 	bool						isInFightState_;
 
 	std::map<Attribute, size_t> heroStats;

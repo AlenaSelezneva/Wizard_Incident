@@ -4,18 +4,20 @@ Alena Selezneva
 
 #include "DialogNode.h"
 
-DialogNode::DialogNode(DialogNode::Type type, std::string text)
+DialogNode::DialogNode(DialogNode::Type type, std::string text, bool isAgr)
 	: type(type)
 	, text(text)
 	, attribute(Attribute::None)
+	, isAgreeing_(isAgr)
 {
 	children = std::vector<DialogNode*>();
 }
 
-DialogNode::DialogNode()
+DialogNode::DialogNode(bool isAgr)
 	: type(Type::Message)
 	, text("")
 	, attribute(Attribute::None)
+	, isAgreeing_(isAgr)
 {
 }
 
@@ -52,4 +54,9 @@ std::vector<DialogNode*>* DialogNode::getChildren()
 Attribute DialogNode::getAttribute()
 {
 	return attribute;
+}
+
+bool DialogNode::isAgreeing()
+{
+	return isAgreeing_;
 }

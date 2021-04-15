@@ -193,7 +193,7 @@ bool DialogState::handleEvent(const sf::Event& event)
 			buildView();
 		}
 		else {
-			context.playerData->onCurrentDialogComplete();
+			context.playerData->onCurrentDialogComplete(currentDialog->isAgreeing());
 			requestStackPop();
 		}
 

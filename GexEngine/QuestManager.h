@@ -12,7 +12,7 @@ public:
 	QuestManager();
 
 	DialogNode* getQuestDialog(ObjectWithQuest::Type);
-	void		onCurrentQuestDialogComplete();
+	void		onCurrentQuestDialogComplete(bool agree = true);
 
 	std::string	getAllQuestInstructions() const;
 
@@ -28,6 +28,7 @@ private:
 	std::vector<Quest*> currectQuests;
 	std::vector<Quest*> possibleQuests;
 	std::vector<Quest*> completedQuests;
+	std::vector<Quest*> refusedQuests;
 
 	size_t				newId;
 

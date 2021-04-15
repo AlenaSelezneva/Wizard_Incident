@@ -18,8 +18,8 @@ public:
 
 
 public:
-						DialogNode( DialogNode::Type type, std::string text);
-						DialogNode();
+						DialogNode( DialogNode::Type type, std::string text, bool isAgr = false);
+						DialogNode(bool isAgr = false);
 
 	std::string			getText();
 	void				setText(std::string t);
@@ -30,12 +30,15 @@ public:
 
 	Attribute			getAttribute();
 
+	bool				isAgreeing();
+
 protected:
 	Type						type;
 	std::string					text;
 	Attribute					attribute;
 	std::vector<DialogNode*>	children;
 
+	bool						isAgreeing_;
 
 };
 

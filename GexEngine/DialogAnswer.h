@@ -8,8 +8,8 @@ Alena Selezneva
 class DialogAnswer : public DialogNode
 {
 public:
-	DialogAnswer(std::string text);
-	DialogAnswer(std::string text, Attribute attr);
+	DialogAnswer(std::string text, bool isAgr = false);
+	DialogAnswer(std::string text, Attribute attr, bool isAgr = false);
 
 private:
 	// add stats change

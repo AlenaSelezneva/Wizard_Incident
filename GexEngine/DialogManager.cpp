@@ -4,30 +4,41 @@
 
 DialogManager::DialogManager()
 {
-	/*mainDialogs = std::map<Actor::Type, std::list<DialogNode*> >;
-	defaultDialogs = std::map<Actor::Type, DialogNode>();*/
 	mainDialogs = {};
 	defaultDialogs = {};
 
-	//mainInterations = {};
-	//defaultInteractions = {};
+	startFightDialogs = {};
+	endFightDialogs = {};
 
 	buildWelcomeDialog();
+	buildFightDialogs();
 }
 
 DialogNode* DialogManager::getDialog(Actor::Type npc)
 {
+	isStartFightDialog_ = false;
+
 	if (mainDialogs.count(npc) > 0 && mainDialogs[npc].size() > 0) {
 		auto dialog = mainDialogs[npc].front();
 		//mainDialogs[npc].pop_front();
 		return dialog;
 	}
-	else if (defaultDialogs.count(npc)) {
+
+	if (startFightDialogs.count(npc) > 0) {
+		isStartFightDialog_ = true;
+		return startFightDialogs[npc];
+	}
+	
+	if (defaultDialogs.count(npc)) {
 		return new DialogNode(defaultDialogs[npc].getType(), defaultDialogs[npc].getText());
 	}
-	else {
-		return new DialogNode(DialogNode::Type::Message, "");
-	}
+	
+	return new DialogNode(DialogNode::Type::Message, "");
+}
+
+DialogNode* DialogManager::getEndFightDialog(Actor::Type npc)
+{
+	return endFightDialogs[npc];
 }
 
 void DialogManager::onCurrentDialogComplete(Actor::Type npc)
@@ -35,6 +46,21 @@ void DialogManager::onCurrentDialogComplete(Actor::Type npc)
 	if (mainDialogs.count(npc) > 0 && mainDialogs[npc].size() > 0) {
 		mainDialogs[npc].pop_front();
 	}
+
+	isStartFightDialog_ = false;
+
+	/*if (isStartFightDialog_) {
+		isStartFightDialog_ = false;
+	}
+
+	if (!isStartFightDialog_ && startFightDialogs.count(npc) > 0) {
+		isStartFightDialog_ = true;
+	}*/
+}
+
+bool DialogManager::isStartFight()
+{
+	return isStartFightDialog_;
 }
 
 void DialogManager::buildWelcomeDialog()
@@ -99,4 +125,16 @@ void DialogManager::buildWelcomeDialog()
 
 	defaultDialogs[Actor::Type::Archmage] = DialogMessage("Run along, I am busy...");
 	defaultDialogs[Actor::Type::Gazan] = DialogMessage("Morning! Nice day for reading, isn\'t it?");
+}
+
+void DialogManager::buildFightDialogs()
+{
+	DialogNode* fightProposal = new DialogMessage("Do you want to have a training fight with me?");
+	fightProposal->attachChild(new DialogAnswer("Yes, let\'s fight", true));
+	fightProposal->attachChild(new DialogAnswer("Some other time"));
+
+	startFightDialogs[Actor::Type::Gazan] = fightProposal;
+
+	DialogNode* endFight = new DialogMessage("It was a good fight!");
+	endFightDialogs[Actor::Type::Gazan] = endFight;
 }
