@@ -58,8 +58,6 @@ public:
 
     bool            isMarkedForRemoval() const override;
 
-    void			playLocalSound(CommandQueue& commands, EffectID effect);
-
     void            setState(State state);
     Actor::State    getState() const;
 

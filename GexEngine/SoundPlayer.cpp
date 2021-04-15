@@ -22,8 +22,16 @@ SoundPlayer::SoundPlayer()
 	: soundBuffers()
 	, sounds()
 {
-	soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/attack1.wav");
-	soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/attack2.wav");
+	soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/attack3.wav");
+	soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/attack4.wav");
+
+	soundBuffers.load(EffectID::BoltDestroyed, "Media/Sound/magic_strikes.wav");
+	soundBuffers.load(EffectID::AttackBlocked, "Media/Sound/attack_blocked.wav");
+	soundBuffers.load(EffectID::Portal, "Media/Sound/portal.wav");
+	soundBuffers.load(EffectID::QuestCompleted, "Media/Sound/quest_done.wav");
+	soundBuffers.load(EffectID::EnemyHurt, "Media/Sound/hurt2.wav");
+	soundBuffers.load(EffectID::HeroHurt, "Media/Sound/hurt3.wav");
+	
 
 	//soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/AlliedGunfire.wav");
 	//soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/EnemyGunfire.wav");

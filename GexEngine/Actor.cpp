@@ -116,19 +116,6 @@ bool Actor::isMarkedForRemoval() const
 	return false; // (state_ == State::Dead && animations_.at(state_).isFinished());
 }
 
-void Actor::playLocalSound(CommandQueue& commands, EffectID effect)
-{
-	auto worldPosition = getWorldPoition();
-
-	Command command;
-	command.category = Category::SoundEffect;
-	command.action = derivedAction<SoundNode>(
-		[effect, worldPosition](SoundNode& node, sf::Time dt) {
-			node.playSound(effect, worldPosition);
-		});
-	commands.push(command);
-}
-
 void Actor::setState(State state)
 {
 	state_ = state;

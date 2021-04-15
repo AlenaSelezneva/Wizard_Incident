@@ -5,6 +5,8 @@ Alena Selezneva
 #include "Entity.h"
 
 #include <cassert>
+#include "CommandQueue.h"
+#include "SoundNode.h"
 
 Entity::Entity(int hitPoints)
 	: hitPoints(hitPoints)
@@ -61,4 +63,17 @@ bool Entity::isDestroyed() const
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue& commands) {
 	move(velocity * dt.asSeconds());
+}
+
+void Entity::playLocalSound(CommandQueue& commands, EffectID effect)
+{
+	auto worldPosition = getWorldPoition();
+
+	Command command;
+	command.category = Category::SoundEffect;
+	command.action = derivedAction<SoundNode>(
+		[effect, worldPosition](SoundNode& node, sf::Time dt) {
+			node.playSound(effect, worldPosition);
+		});
+	commands.push(command);
 }

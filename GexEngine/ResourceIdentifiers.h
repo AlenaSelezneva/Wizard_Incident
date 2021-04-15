@@ -15,6 +15,14 @@ enum class EffectID
 
 	AlliedAttack,
 	EnemyAttack,
+	BoltDestroyed,
+	AttackBlocked,
+	Portal,
+	QuestCompleted,
+	HeroHurt,
+	EnemyHurt,
+
+
 	//Explosion1,
 	//Explosion2,
 	//LaunchMissile,

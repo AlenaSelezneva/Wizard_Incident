@@ -1,5 +1,8 @@
 
 #include "SceneNode.h"
+#include "ResourceIdentifiers.h"
+
+class CommandQueue;
 
 #pragma once
 class Entity : public SceneNode
@@ -20,6 +23,7 @@ public:
 	void			destroy();
 	virtual bool	isDestroyed() const;
 
+	void			playLocalSound(CommandQueue& commands, EffectID effect);
 
 protected:
 	virtual void	updateCurrent(sf::Time dt, CommandQueue& commands) override;

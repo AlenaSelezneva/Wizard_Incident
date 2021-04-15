@@ -496,8 +496,13 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 				auto& hero_ = static_cast<Actor&>(*pair.first);
 				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
 				
-				if(!hero->isCastingShield())
+				if (!hero->isCastingShield()) {
 					hero_.damage(bolt.getDamage());
+					hero_.playLocalSound(commands, EffectID::HeroHurt);
+				}
+				else {
+					hero_.playLocalSound(commands, EffectID::AttackBlocked);
+				}
 				
 				bolt.destroy();
 			}
@@ -507,36 +512,37 @@ void World::handleCollisions(sf::Time dt, CommandQueue& commands)
 				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
 				
 				enemy_.damage(bolt.getDamage());
+				enemy_.playLocalSound(commands, EffectID::EnemyHurt);
 				bolt.destroy();
 			}
 		}
 	}
-	else {
-		for (auto pair : collisionPairs) {
+	//else {
+	//	for (auto pair : collisionPairs) {
 
-			if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
-				auto& hero_ = static_cast<Actor&>(*pair.first);
-				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+	//		if (matchesCategories(pair, Category::Hero, Category::baseAttackEnemy)) {
+	//			auto& hero_ = static_cast<Actor&>(*pair.first);
+	//			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
 
-				if (!hero->isCastingShield())
-					hero_.damage(bolt.getDamage());
+	//			if (!hero->isCastingShield())
+	//				hero_.damage(bolt.getDamage());
 
-				bolt.destroy();
-			}
+	//			bolt.destroy();
+	//		}
 
-			if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
-				auto& enemy_ = static_cast<Actor&>(*pair.first);
-				auto& bolt = static_cast<EnergyBolt&>(*pair.second);
+	//		if (matchesCategories(pair, Category::FightingNPC, Category::BaseAttackAllied)) {
+	//			auto& enemy_ = static_cast<Actor&>(*pair.first);
+	//			auto& bolt = static_cast<EnergyBolt&>(*pair.second);
 
-				enemy_.damage(bolt.getDamage());
-				bolt.destroy();
-			}
+	//			enemy_.damage(bolt.getDamage());
+	//			bolt.destroy();
+	//		}
 
-			if (matchesCategories(pair, Category::Hero, Category::FightingNPC)) {
-				adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
-			}
-		}
-	}
+	//		if (matchesCategories(pair, Category::Hero, Category::FightingNPC)) {
+	//			adaptHeroPositionRelatingEntity(static_cast<Entity*>(pair.second), dt, commands);
+	//		}
+	//	}
+	//}
 }
 
 bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
@@ -736,8 +742,9 @@ void World::guideEnergyBolts()
 	collideWithWalls.category = Category::AttackingSpell;
 	collideWithWalls.action = derivedAction<EnergyBolt>([this](EnergyBolt& bolt, sf::Time dt) {
 		for (auto wall : blockingTiles) {
-			if (bolt.getBoundingRect().intersects(wall->getBoundingRect()))
+			if (bolt.getBoundingRect().intersects(wall->getBoundingRect())) {
 				bolt.destroy();
+			}
 		}
 	});
 
