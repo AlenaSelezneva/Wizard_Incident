@@ -9,10 +9,13 @@ namespace sf
 	class Text;
 }
 
+class TextNode;
+
 class Animation;
 
 void			centerOrigin(sf::Sprite& sprite);
 void			centerOrigin(sf::Text& text);
+//void			centerOriginHorizontally(TextNode* text);
 //void			centerOrigin(Animation& animation);
 
 

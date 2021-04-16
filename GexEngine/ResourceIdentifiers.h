@@ -55,6 +55,9 @@ enum class TextureID
 	HintBackground,
 	HealthDisplay,
 
+	AttributesBackground,
+	InstrucitonsBackground,
+
 	Portal,
 
 	EnergyBallHero,

@@ -22,8 +22,8 @@ private:
 	TextureHolder_t*		textures;
 	sf::Sprite			backgroundSprite;
 	sf::Text			pausedText;
-	sf::Text			instructionText;
 
 	UiNode*				heroAttributes;
+	UiNode*				instructions;
 };
 

@@ -21,7 +21,6 @@ PauseState::PauseState(StateStack& stack, Context context)
 	, textures()
 	, backgroundSprite()
 	, pausedText()
-	, instructionText()
 	, heroAttributes()
 {
 	sf::Font& font = context.fonts->get(FontID::Main);
@@ -31,28 +30,35 @@ PauseState::PauseState(StateStack& stack, Context context)
 	pausedText.setString("Game Paused");
 	pausedText.setCharacterSize(70);
 	centerOrigin(pausedText);
-	pausedText.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
+	pausedText.setPosition(0.35f * viewSize.x, 0.4f * viewSize.y);
 
-	instructionText.setFont(font);
-	/*instructionText.setString("(Press Backspace to return to the main menu)");*/
-	instructionText.setString(
-		"W or Up\t\t\tgo forward\nS or Down\t\tgo backward\nA or Left\t\t\tgo left\nD or Right\t\t\tgo Right\nJ\t\t\t\t\t\t\tQuests\nSpace\t\t\t\tAttack\nH\t\t\t\t\t\t\tHeal\nP\t\t\t\t\t\t\tPower Attack\nR.Shift\t\t\t\tShield");
-	centerOrigin(instructionText);
-	instructionText.setPosition(0.8f * viewSize.x, 0.7f * viewSize.y);
+
+	textures = new TextureHolder_t();
+	textures->load(TextureID::AttributesBackground, "Media/Textures/attributesView.png");
+	textures->load(TextureID::InstrucitonsBackground, "Media/Textures/instructionsView.png");
 
 	float margin = 20.f;
 
-	textures = new TextureHolder_t();
-	textures->load(TextureID::HintBackground, "Media/Textures/Hint_Action.png");
+	instructions = new UiNode(textures->get(TextureID::InstrucitonsBackground));
+	instructions->setPosition(0.67f * viewSize.x, 0.42f * viewSize.y);
+	instructions->setVisible(true);
 
-	heroAttributes = new UiNode(textures->get(TextureID::HintBackground));
+	std::unique_ptr<TextNode> instr(new TextNode(*context.fonts, "", 26));
+	instr->setString("W or Up\t\t\tgo forward\nS or Down\t\tgo backward\nA or Left\t\t\tgo left\nD or Right\t\t\tgo Right\nJ\t\t\t\t\t\t\tQuests\n\nSpace\t\t\t\tAttack\nH\t\t\t\t\t\t\tHeal\nP\t\t\t\t\t\t\tPower Attack\nR.Shift\t\t\t\tShield");
+	instr->setTextColor(sf::Color(125, 120, 186));
+
+	instr->setPosition(instructions->getBoundingRect().width / 2, instructions->getBoundingRect().height / 2);
+	instructions->attachChild(std::move(instr));
+
+
+
+	heroAttributes = new UiNode(textures->get(TextureID::AttributesBackground));
 	heroAttributes->setPosition(margin, margin);
 	heroAttributes->setVisible(true);
-	//heroAttributes = statsBackground;
 
 	std::unique_ptr<TextNode> stats(new TextNode(*context.fonts, "", 26));
 	stats->setString(context.playerData->getHeroAttributesString());
-	//stats->setTextColor(sf::Color(125, 120, 186));
+	stats->setTextColor(sf::Color(125, 120, 186));
 
 	stats->setPosition(heroAttributes->getBoundingRect().width / 2, heroAttributes->getBoundingRect().height / 2);
 	heroAttributes->attachChild(std::move(stats));
@@ -72,7 +78,7 @@ void PauseState::draw()
 
 	window.draw(backgroundShape);
 	window.draw(pausedText);
-	window.draw(instructionText);
+	window.draw(*instructions);
 	window.draw(*heroAttributes);
 }
 
@@ -87,15 +93,12 @@ bool PauseState::handleEvent(const sf::Event& event)
 		return false;
 	if (event.key.code == sf::Keyboard::Escape)
 	{
-		// Escape pressed, remove itself to return to the game
 		context.music->setPaused(false);
 		requestStackPop();
 	}
 	if (event.key.code == sf::Keyboard::BackSpace)
 	{
-		// Escape pressed, remove itself to return to the game
 		requestStateClear();
-		//requestStackPush(StateID::Menu);
 	}
 	return false;
 }

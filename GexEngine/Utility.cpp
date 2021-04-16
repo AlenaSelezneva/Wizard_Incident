@@ -4,6 +4,7 @@ Alena Selezneva
 
 #include "Utility.h"
 #include "Animation.h"
+#include "TextNode.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -34,6 +35,12 @@ void centerOrigin(sf::Text& text)
 	sf::FloatRect bounds = text.getLocalBounds();
 	text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
 }
+
+//void centerOriginHorizontally(TextNode* text)
+//{
+//	sf::FloatRect bounds = text->getText()->getLocalBounds();
+//	text->getText()->setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
+//}
 
 /*void centerOrigin(Animation& animation)
 {

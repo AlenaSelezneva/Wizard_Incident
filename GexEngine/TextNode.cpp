@@ -31,6 +31,11 @@ void TextNode::setCharacterSize(size_t size)
 	text.setCharacterSize(size);
 }
 
+sf::Text* TextNode::getText()
+{
+	return &text;
+}
+
 void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(text, states);

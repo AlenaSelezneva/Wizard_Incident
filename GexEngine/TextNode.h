@@ -19,6 +19,8 @@ public:
 	void			setTextColor(sf::Color color);
 	void			setCharacterSize(size_t size);
 
+	sf::Text*		getText();
+
 private:
 	virtual void	drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
