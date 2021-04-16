@@ -55,7 +55,7 @@ CommandQueue& World::getCommands()
 
 bool World::hasAlivePlayer() const
 {
-	return true;
+	return hero != nullptr && hero->getHitpoints() > 0;
 }
 
 void World::moveToLevel(Level l)
@@ -438,7 +438,7 @@ void World::buildQuestView()
 	std::unique_ptr<TextNode> questTextNode(new TextNode(fonts, "", 16));
 	questTextNode->setString("Some Quest: Do this");
 	questTextNode->setTextColor(sf::Color(125, 120, 186));
-	questTextNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, 130.f);
+	questTextNode->setPosition(qJournalBackground.get()->getBoundingRect().width / 2, qJournalBackground.get()->getBoundingRect().height / 2);
 	questLog = questTextNode.get();
 
 	qJournalBackground.get()->attachChild(std::move(questHeaderNode));

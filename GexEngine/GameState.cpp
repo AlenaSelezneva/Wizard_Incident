@@ -43,6 +43,11 @@ bool GameState::handleEvent(const sf::Event& event)
 		requestStackPush(StateID::Dialog);
 	}
 
+	if (!world.hasAlivePlayer()) {
+		requestStateClear();
+		requestStackPush(StateID::Title);
+	}
+
 	/*if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
 		world.startFight(Actor::Type::Archmage);*/
 
@@ -54,9 +59,6 @@ bool GameState::handleEvent(const sf::Event& event)
 			l = Level::Second;
 
 		world.moveToLevel(l);
-
-		//requestStackPop();
-		//requestStackPush(StateID::Battle);
 	}
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter &&

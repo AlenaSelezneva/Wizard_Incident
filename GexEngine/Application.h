@@ -37,11 +37,12 @@ private:
 	TextureHolder_t			textures;
 	FontHolder_t			fonts;
 	Player					player;
-	PlayerData				playerData;
 	MusicPlayer				music;
 	SoundPlayer				sounds;
 
 	StateStack				stateStack;
+
+	PlayerData				playerData;
 
 	sf::Text				statsText;
 	sf::Time				statsUpdateTime;

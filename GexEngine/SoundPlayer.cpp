@@ -29,6 +29,7 @@ SoundPlayer::SoundPlayer()
 	soundBuffers.load(EffectID::AttackBlocked, "Media/Sound/attack_blocked.wav");
 	soundBuffers.load(EffectID::Portal, "Media/Sound/portal.wav");
 	soundBuffers.load(EffectID::QuestCompleted, "Media/Sound/quest_done.wav");
+	soundBuffers.load(EffectID::QuestAccepted, "Media/Sound/quest_accepted.wav");
 	soundBuffers.load(EffectID::EnemyHurt, "Media/Sound/hurt2.wav");
 	soundBuffers.load(EffectID::HeroHurt, "Media/Sound/hurt3.wav");
 	

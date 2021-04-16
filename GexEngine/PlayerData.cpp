@@ -1,11 +1,12 @@
 #include "PlayerData.h"
+#include "SoundNode.h"
 
 
-PlayerData::PlayerData()
+PlayerData::PlayerData(SoundPlayer* sounds)
 	: heroStats()
 {
 	dialogManager = new DialogManager();
-	questManager = new QuestManager();
+	questManager = new QuestManager(sounds);
 
 	currentQuestObject = ObjectWithQuest::Type::None;
 	currentTalkingNPC = Actor::Type::None;
@@ -48,6 +49,10 @@ void PlayerData::onCurrentDialogComplete(bool agree)
 			isInFightState_ = true;
 
 		dialogManager->onCurrentDialogComplete(currentTalkingNPC);
+
+		// after initial talk with archmage build
+		if (currentTalkingNPC == Actor::Type::Archmage && dialogManager->getDialog(Actor::Type::Archmage)->getChildren() == 0)
+			questManager->buildMeetingQuests();
 	}
 
 	currentDialog = nullptr;

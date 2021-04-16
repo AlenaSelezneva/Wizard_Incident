@@ -2,19 +2,27 @@
 #include <map>
 #include <list>
 
+#include "ResourceIdentifiers.h"
 #include "ObjectWithQuest.h"
 #include "DialogNode.h"
 #include "Quest.h"
 
+class SoundPlayer;
+
 class QuestManager
 {
 public:
-	QuestManager();
+	QuestManager(SoundPlayer* sounds);
 
 	DialogNode* getQuestDialog(ObjectWithQuest::Type);
 	void		onCurrentQuestDialogComplete(bool agree = true);
 
 	std::string	getAllQuestInstructions() const;
+
+	void		buildMeetingQuests();
+	void		buildWelcomeMessageQuest();
+
+	void		playQuestSounds(EffectID effect);
 
 private:
 	void		buildBookQuest();
@@ -33,6 +41,8 @@ private:
 	size_t				newId;
 
 	int					lastRetrievedQuestId;
+
+	SoundPlayer*		sounds;
 
 	//std::map<InteractableObject::Type, std::list<DialogNode*>> mainInterations;
 	//std::map<InteractableObject::Type, DialogNode> defaultInteractions;

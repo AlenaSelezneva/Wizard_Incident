@@ -59,6 +59,11 @@ bool StateStack::isEmpty() const
 	return stack.empty();
 }
 
+SoundPlayer* StateStack::getSounds()
+{
+	return context.sounds;
+}
+
 State::Ptr StateStack::createState(StateID stateID)
 {
 	auto found = factories.find(stateID);

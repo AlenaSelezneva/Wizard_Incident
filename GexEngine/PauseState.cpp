@@ -34,9 +34,11 @@ PauseState::PauseState(StateStack& stack, Context context)
 	pausedText.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
 	instructionText.setFont(font);
-	instructionText.setString("(Press Backspace to return to the main menu)");
+	/*instructionText.setString("(Press Backspace to return to the main menu)");*/
+	instructionText.setString(
+		"W or Up\t\t\tgo forward\nS or Down\t\tgo backward\nA or Left\t\t\tgo left\nD or Right\t\t\tgo Right\nJ\t\t\t\t\t\t\tQuests\nSpace\t\t\t\tAttack\nR.Shift\t\t\t\tShield");
 	centerOrigin(instructionText);
-	instructionText.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
+	instructionText.setPosition(0.8f * viewSize.x, 0.8f * viewSize.y);
 
 	float margin = 20.f;
 
@@ -48,7 +50,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 	heroAttributes->setVisible(true);
 	//heroAttributes = statsBackground;
 
-	std::unique_ptr<TextNode> stats(new TextNode(*context.fonts, "", 20));
+	std::unique_ptr<TextNode> stats(new TextNode(*context.fonts, "", 26));
 	stats->setString(context.playerData->getHeroAttributesString());
 	//stats->setTextColor(sf::Color(125, 120, 186));
 

@@ -45,6 +45,8 @@ public:
 
 	bool				isEmpty() const;
 
+	SoundPlayer*		getSounds();
+
 
 private:
 	State::Ptr			createState(StateID stateID);

@@ -19,6 +19,7 @@ enum class EffectID
 	AttackBlocked,
 	Portal,
 	QuestCompleted,
+	QuestAccepted,
 	HeroHurt,
 	EnemyHurt,
 

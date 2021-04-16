@@ -5,11 +5,13 @@
 #include "QuestManager.h"
 #include "Attribute.h"
 
+class SoundPlayer;
+
 #pragma once
 class PlayerData
 {
 public:
-	PlayerData();
+	PlayerData(SoundPlayer* sounds);
 
 	DialogNode*				getCurrentDialog() const;
 
