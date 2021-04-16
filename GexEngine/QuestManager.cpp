@@ -164,11 +164,11 @@ void QuestManager::buildMeetingQuests()
 {
 	auto meetElonyQuest = new Quest(++newId, "Meet Elony");
 	auto elonyNode = QuestNode(ObjectWithQuest::Type::Elony, new DialogMessage("I a\'m so glad we could meet!"), false);
-	meetElonyQuest->addQuestNodeBunch({ elonyNode }, "find and talk \n\t\tto Elony");
+	meetElonyQuest->addQuestNodeBunch({ elonyNode }, "find and talk \n\t\t\t\tto Elony");
 
 	auto meetGazanQuest = new Quest(++newId, "Meet Gazan");
 	auto gazanNode = QuestNode(ObjectWithQuest::Type::Gazan, new DialogMessage("A newcomer, eh?"), false);
-	meetGazanQuest->addQuestNodeBunch({ gazanNode }, "find and talk \n\t\tto Gazan");
+	meetGazanQuest->addQuestNodeBunch({ gazanNode }, "find and talk \n\t\t\t\tto Gazan");
 
 	currectQuests.push_back(meetElonyQuest);
 	currectQuests.push_back(meetGazanQuest);

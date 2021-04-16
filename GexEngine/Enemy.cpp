@@ -8,6 +8,8 @@ Enemy::Enemy(Actor::Type type, const TextureHolder_t& textures, const FontHolder
 {
 	hitPoints = 40;
 
+	state_ = Actor::State::SpellCastFront;
+
 	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
@@ -21,7 +23,8 @@ Enemy::Enemy(Actor* actor)
 {
 	this->setPosition(actor->getPosition());
 	this->setState(actor->getState());
-	this->setVelocity(actor->getVelocity());
+	//this->setVelocity(actor->getVelocity());
+	this->setVelocity(0.f, 0.f);
 
 	hitPoints = 40;
 
@@ -44,8 +47,6 @@ void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) c
 
 	sf::Vector2f offset(0.f, -20.f);
 	sf::Vector2f velocity(0.f, 0.f);
-
-	//float widthCenter = sprite_.getLocalBounds().width / 2;
 
 	float velocity_ = 20.f;
 

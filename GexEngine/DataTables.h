@@ -18,12 +18,13 @@
 struct ActorData
 {
 	int									hitpoints;
-	//int									damageDone;
-	//float								speed;
 	TextureID							textureID;
 	std::map<Actor::State, Animation>	animations;
 
 	std::string							npcName;
+
+	//Actor::Direction					startingDirection;
+	sf::Time							countDownStart;
 };
 
 struct TileData {

@@ -11,6 +11,7 @@ std::map<Actor::Type, ActorData> initializeActorData()
 
     data[Actor::Type::Archmage].textureID = TextureID::Archmage;
     data[Actor::Type::Archmage].npcName = "Archmage";
+    data[Actor::Type::Archmage].countDownStart = sf::seconds(1.5f);
 
     JsonFrameParser frames = JsonFrameParser("Media/Textures/Archmage_sheet.json");
 
@@ -148,6 +149,7 @@ std::map<Actor::Type, ActorData> initializeActorData()
     data[Actor::Type::MysteriousFigure].npcName = "IwAnNaFiGhT";
 
     frames = JsonFrameParser("Media/Textures/summoning_figure.json");
+    data[Actor::Type::MysteriousFigure].countDownStart = sf::seconds(2.f);
 
     data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveBack].addFrameSet(frames.getFramesFor("back_walk"));
     data[Actor::Type::MysteriousFigure].animations[Actor::State::MoveBack].setDuration(sf::seconds(1.5f));
@@ -217,6 +219,7 @@ std::map<Actor::Type, ActorData> initializeActorData()
 
     data[Actor::Type::Elony].npcName = "Elony";
     frames = JsonFrameParser("Media/Textures/elony.json");
+    data[Actor::Type::Elony].countDownStart = sf::seconds(4.5f);
 
     data[Actor::Type::Elony].animations[Actor::State::MoveBack].addFrameSet(frames.getFramesFor("back_walk"));
     data[Actor::Type::Elony].animations[Actor::State::MoveBack].setDuration(sf::seconds(1.5f));
@@ -310,11 +313,11 @@ std::map<Level, std::vector<ActorLevelData>> getLevelActorData()
 
     map[Level::First] = std::vector<ActorLevelData>();
     map[Level::First].push_back(ActorLevelData(Actor::Type::Archmage, ObjectWithQuest::Type::Archmage, -100.f, -400.f));
-    map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
+    map[Level::First].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -300.f));
 
-    map[Level::Second].push_back(ActorLevelData(Actor::Type::Elony, ObjectWithQuest::Type::Elony, -50.f, -300.f));
-    map[Level::Second].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -500.f));
-    map[Level::Second].push_back(ActorLevelData(Actor::Type::MysteriousFigure, ObjectWithQuest::Type::MysteriousFigure, -100.f, -900.f));
+    map[Level::Second].push_back(ActorLevelData(Actor::Type::Elony, ObjectWithQuest::Type::Elony, -50.f, -200.f));
+    //map[Level::Second].push_back(ActorLevelData(Actor::Type::Gazan, ObjectWithQuest::Type::Gazan, +500.f, -300.f));
+    map[Level::Second].push_back(ActorLevelData(Actor::Type::MysteriousFigure, ObjectWithQuest::Type::MysteriousFigure, -100.f, -800.f));
 
 
     

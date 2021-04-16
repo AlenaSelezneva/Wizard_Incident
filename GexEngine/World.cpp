@@ -239,7 +239,6 @@ void World::updateCasualUiElements()
 {
 	questLog->setString(playerData->getQuestInstrunstionDisplay());
 	questsView->setVisible(playerData->isShowingJournal());
-	//heroAttributesText->setString(playerData->getHeroAttributesString());
 }
 
 void World::draw() {
@@ -296,53 +295,6 @@ void World::loadTextures() {
 }
 
 void World::buildScene() {
-	/*sceneGraph.clearChildren();
-	npcs = std::vector< FriendlyNPC*>();
-
-	for (std::size_t i = 0; i < LayerCount; ++i) {
-		Category::Type category;
-		switch (i) {
-		case Floor:
-			category = Category::Type::Background;
-		case Walls:
-			category = Category::Type::Wall;
-			break;
-		case SpellsLayer:
-			category = Category::Type::SpellLayer;
-			break;
-		case PlayerLayer:
-		default:
-			category = Category::Type::None;
-			break;
-		}
-
-		SceneNode::Ptr layer(new SceneNode(category));
-		
-		sceneLayers[i] = layer.get();
-
-		sceneGraph.attachChild(std::move(layer));
-	}
-
-	std::unique_ptr<SoundNode> soundNode(new SoundNode(sounds));
-	sceneGraph.attachChild(std::move(soundNode));
-
-	buildLevel();
-	buildLevelObjects();
-
-	sf::IntRect textureRect(worldBounds);
-
-	
-	std::unique_ptr<Hero> hero_(new Hero(textures, fonts, playerData));
-	hero = hero_.get();
-	hero->setPosition(spawnPosition);
-	hero->setVelocity(0.f, 0.f);
-	sceneLayers[PlayerLayer]->attachChild(std::move(hero_));
-
-
-	std::unique_ptr<SpriteNode> portal_(new SpriteNode(textures.get(TextureID::Portal)));
-	portal_->setPosition(hero->getPosition().x - 600.f, hero->getPosition().y - 800.f);
-	portal = portal_.get();
-	sceneLayers[PlayerLayer]->attachChild(std::move(portal_));*/
 
 	moveToLevel(Level::First);
 

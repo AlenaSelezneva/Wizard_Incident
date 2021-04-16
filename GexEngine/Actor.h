@@ -42,7 +42,7 @@ public:
 
     enum class Direction
     {
-        Left, Right, Back, Front
+        Left, Right, Back, Front, Count
     };
 
 
