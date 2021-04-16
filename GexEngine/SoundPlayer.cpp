@@ -24,6 +24,7 @@ SoundPlayer::SoundPlayer()
 {
 	soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/attack3.wav");
 	soundBuffers.load(EffectID::EnemyAttack, "Media/Sound/attack4.wav");
+	soundBuffers.load(EffectID::PowerAttack, "Media/Sound/attack1.wav");
 
 	soundBuffers.load(EffectID::BoltDestroyed, "Media/Sound/magic_strikes.wav");
 	soundBuffers.load(EffectID::AttackBlocked, "Media/Sound/attack_blocked.wav");
@@ -32,6 +33,8 @@ SoundPlayer::SoundPlayer()
 	soundBuffers.load(EffectID::QuestAccepted, "Media/Sound/quest_accepted.wav");
 	soundBuffers.load(EffectID::EnemyHurt, "Media/Sound/hurt2.wav");
 	soundBuffers.load(EffectID::HeroHurt, "Media/Sound/hurt3.wav");
+
+	soundBuffers.load(EffectID::Dadadedada, "Media/Sound/dadadedada.wav");
 	
 
 	//soundBuffers.load(EffectID::AlliedAttack, "Media/Sound/AlliedGunfire.wav");

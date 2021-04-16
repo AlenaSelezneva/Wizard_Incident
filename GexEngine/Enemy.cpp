@@ -6,7 +6,7 @@ Enemy::Enemy(Actor::Type type, const TextureHolder_t& textures, const FontHolder
 	: Actor(type, textures, fonts)
 	, FightingCharacter(FightingCharacter::Type::Enemy)
 {
-	hitPoints = 40;
+	hitPoints = 150;
 
 	state_ = Actor::State::SpellCastFront;
 
@@ -26,7 +26,7 @@ Enemy::Enemy(Actor* actor)
 	//this->setVelocity(actor->getVelocity());
 	this->setVelocity(0.f, 0.f);
 
-	hitPoints = 40;
+	hitPoints = 150;
 
 	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this](SceneNode& node, sf::Time)
@@ -42,7 +42,7 @@ unsigned int Enemy::getCategory() const
 
 void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
 {
-	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::EnemyBolt, 10, textures));
+	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt(EnergyBolt::Type::EnemyBolt, 30, textures));
 
 
 	sf::Vector2f offset(0.f, -20.f);

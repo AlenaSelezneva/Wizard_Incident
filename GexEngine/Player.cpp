@@ -79,6 +79,10 @@ void Player::initializeKeyBindings() {
 
 	keyBindings[sf::Keyboard::J] = Action::ShowOrHideJournal;
 
+	keyBindings[sf::Keyboard::H] = Action::HealingSpell;
+
+	keyBindings[sf::Keyboard::P] = Action::PowerAttack;
+
 	keyBindings[sf::Keyboard::Space] = Action::Attack;
 
 	keyBindings[sf::Keyboard::RShift] = Action::CastShield;
@@ -123,6 +127,16 @@ void Player::initializeActions()
 	actionBindings[Action::Attack].action = derivedAction<Hero>(
 		[](Hero& a, sf::Time dt) {
 			a.attack();
+		});
+
+	actionBindings[Action::PowerAttack].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
+			a.castPowerAttackSpell();
+		});
+
+	actionBindings[Action::HealingSpell].action = derivedAction<Hero>(
+		[](Hero& a, sf::Time dt) {
+			a.castHealingSpell();
 		});
 
 	actionBindings[Action::CastShield].action = derivedAction<Hero>(

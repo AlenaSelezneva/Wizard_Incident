@@ -28,6 +28,8 @@ public:
 
 		Attack,
 		CastShield,
+		HealingSpell,
+		PowerAttack,
 
 		ShowOrHideJournal,
 

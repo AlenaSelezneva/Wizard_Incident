@@ -1,7 +1,7 @@
 #include "Hero.h"
 #include "UiNode.h"
 #include "Utility.h"
-#include "EnergyBolt.h"
+//#include "EnergyBolt.h"
 
 #include <math.h>
 
@@ -18,7 +18,13 @@ Hero::Hero(const TextureHolder_t& textures, const FontHolder_t& fonts, PlayerDat
 	fireCommand.category = Category::SpellLayer;
 	fireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
-		this->createEnergyBolt(node, textures);
+		this->createEnergyBolt(EnergyBolt::Type::AlliedBolt, node, textures);
+	};
+
+	powerAttackCommand.category = Category::SpellLayer;
+	powerAttackCommand.action = [this, &textures](SceneNode& node, sf::Time)
+	{
+		this->createEnergyBolt(EnergyBolt::Type::AlliedPowerAttack, node, textures);
 	};
 
 	std::unique_ptr<UiNode> shield_(new UiNode(textures.get(TextureID::ShieldSpell)));
@@ -85,10 +91,43 @@ void Hero::attack()
 	}
 }
 
-void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
+void Hero::castPowerAttackSpell()
 {
+	int cost = getSpellManaCost(HeroManaCost::PowerAttack);
+	if (manapoints >= cost) {
+		isCastingPowerAttack_ = true;
+		manapoints -= cost;
+	}
+}
+
+void Hero::castHealingSpell()
+{
+	int cost = getSpellManaCost(HeroManaCost::HealingSpell);
+	if (manapoints > cost) {
+		int healing = 50;
+		hitPoints = std::min(MAX_HITPOINTS, hitPoints + healing);
+		manapoints -= cost;
+	}
+}
+
+void Hero::createEnergyBolt(EnergyBolt::Type boltType, SceneNode& node, const TextureHolder_t& textures) const
+{
+	int damage = 10;
+
+	switch (boltType)
+	{
+	case EnergyBolt::Type::AlliedBolt:
+		damage = 10 + playerData->getHeroAttribute(Attribute::Arrogance);
+		break;
+	case EnergyBolt::Type::AlliedPowerAttack:
+		damage = 40 + 2 * playerData->getHeroAttribute(Attribute::Intelligence);
+		break;
+	default:
+		break;
+	}
+
 	std::unique_ptr<EnergyBolt> bolt(new EnergyBolt
-		(EnergyBolt::Type::AlliedBolt, 10 + playerData->getHeroAttribute(Attribute::Arrogance), textures));
+		(boltType, damage, textures));
 
 	/*sf::Vector2f offset(sprite_.getGlobalBounds().width / 2,
 		sprite_.getGlobalBounds().height);*/
@@ -123,6 +162,46 @@ void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) co
 	bolt->setVelocity(velocity);
 
 	node.attachChild(std::move(bolt));
+}
+
+void Hero::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) const
+{
+	//std::unique_ptr<EnergyBolt> bolt(new EnergyBolt
+	//(EnergyBolt::Type::AlliedBolt, 10, textures));
+
+	///*sf::Vector2f offset(sprite_.getGlobalBounds().width / 2,
+	//	sprite_.getGlobalBounds().height);*/
+
+	//sf::Vector2f offset(0.f, -20.f);
+	//sf::Vector2f velocity(0.f, 0.f);
+
+	////float widthCenter = sprite_.getLocalBounds().width / 2;
+
+	//float velocity_ = 20.f;
+
+	//switch (direction_) {
+	//case Direction::Back:
+	//	offset = sf::Vector2f(-15.f, -30.f);
+	//	velocity = sf::Vector2f(0.f, -velocity_);
+	//	break;
+	//case Direction::Front:
+	//	offset = sf::Vector2f(15.f, -10.f);
+	//	velocity = sf::Vector2f(0.f, velocity_);
+	//	break;
+	//case Direction::Left:
+	//	offset = sf::Vector2f(-35.f, -10.f);
+	//	velocity = sf::Vector2f(-velocity_, 0.f);
+	//	break;
+	//case Direction::Right:
+	//	offset = sf::Vector2f(35.f, -30.f);
+	//	velocity = sf::Vector2f(velocity_, 0.f);
+	//	break;
+	//}
+
+	//bolt->setPosition(getWorldPoition() + offset);
+	//bolt->setVelocity(velocity);
+
+	//node.attachChild(std::move(bolt));
 }
 
 void Hero::updateStates()
@@ -203,6 +282,12 @@ void Hero::updateCurrent(sf::Time dt, CommandQueue& commands)
 		attackingCastingCountDown = ATTACKING_CASTING_TIME;
 	}
 
+	if (isCastingPowerAttack_) {
+		commands.push(powerAttackCommand);
+		playLocalSound(commands, EffectID::PowerAttack);
+		isCastingPowerAttack_ = false;
+	}
+
 	//isCastingShield_ = false;
 	Entity::updateCurrent(dt, commands);
 
@@ -228,6 +313,12 @@ int Hero::getSpellManaCost(HeroManaCost spell) const
 	case HeroManaCost::ShieldPerSecond:
 		res = 30 - playerData->getHeroAttribute(Attribute::Intelligence);
 		if (res < 5) res = 5;
+		break;
+	case HeroManaCost::PowerAttack:
+		res = 50;
+		break;
+	case HeroManaCost::HealingSpell:
+		res = 75;
 		break;
 	case HeroManaCost::RegeneratePerSecond:
 		res = 5 + playerData->getHeroAttribute(Attribute::Wisdom);

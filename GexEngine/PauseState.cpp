@@ -36,9 +36,9 @@ PauseState::PauseState(StateStack& stack, Context context)
 	instructionText.setFont(font);
 	/*instructionText.setString("(Press Backspace to return to the main menu)");*/
 	instructionText.setString(
-		"W or Up\t\t\tgo forward\nS or Down\t\tgo backward\nA or Left\t\t\tgo left\nD or Right\t\t\tgo Right\nJ\t\t\t\t\t\t\tQuests\nSpace\t\t\t\tAttack\nR.Shift\t\t\t\tShield");
+		"W or Up\t\t\tgo forward\nS or Down\t\tgo backward\nA or Left\t\t\tgo left\nD or Right\t\t\tgo Right\nJ\t\t\t\t\t\t\tQuests\nSpace\t\t\t\tAttack\nH\t\t\t\t\t\t\tHeal\nP\t\t\t\t\t\t\tPower Attack\nR.Shift\t\t\t\tShield");
 	centerOrigin(instructionText);
-	instructionText.setPosition(0.8f * viewSize.x, 0.8f * viewSize.y);
+	instructionText.setPosition(0.8f * viewSize.x, 0.7f * viewSize.y);
 
 	float margin = 20.f;
 

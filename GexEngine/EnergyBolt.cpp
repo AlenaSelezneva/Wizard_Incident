@@ -18,6 +18,9 @@ EnergyBolt::EnergyBolt(Type type, int dmg, const TextureHolder_t& textures)
 	case Type::EnemyBolt:
 		sprite.setTexture(textures.get(TextureID::EnergyBallEnemy));
 		break;
+	case Type::AlliedPowerAttack:
+		sprite.setTexture(textures.get(TextureID::PowerAttack));
+		break;
 	}
 	/*std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::Smoke));
 	smoke->setPosition(0.f, getBoundingRect().height / 2.f);
@@ -36,7 +39,7 @@ void EnergyBolt::guideTowards(sf::Vector2f position)
 
 unsigned int EnergyBolt::getCategory() const
 {
-	if (type == Type::AlliedBolt)
+	if (type == Type::AlliedBolt || type == Type::AlliedPowerAttack)
 		return Category::BaseAttackAllied;
 	else
 		return Category::baseAttackEnemy;

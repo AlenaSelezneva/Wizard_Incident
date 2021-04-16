@@ -149,6 +149,7 @@ void World::startFight(Actor::Type type)
 
 void World::stopFight()
 {
+	hero->playLocalSound(commandQueue, EffectID::Dadadedada);
 	//playerData->setInFightState(false);
 	playerData->finishFight(enemy->getType());
 	fightingUiGraph = nullptr;
@@ -292,6 +293,8 @@ void World::loadTextures() {
 	textures.load(TextureID::ShieldSpell, "Media/Textures/shield_spell_no_glitter.png");
 	textures.load(TextureID::EnergyBallHero, "Media/Textures/energy_ball_hero.png");
 	textures.load(TextureID::EnergyBallEnemy, "Media/Textures/energy_ball_enemy.png");
+	textures.load(TextureID::PowerAttack, "Media/Textures/hero_attack_2.png");
+	
 }
 
 void World::buildScene() {

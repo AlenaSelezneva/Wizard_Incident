@@ -15,6 +15,7 @@ enum class EffectID
 
 	AlliedAttack,
 	EnemyAttack,
+	PowerAttack,
 	BoltDestroyed,
 	AttackBlocked,
 	Portal,
@@ -22,6 +23,8 @@ enum class EffectID
 	QuestAccepted,
 	HeroHurt,
 	EnemyHurt,
+
+	Dadadedada,
 
 
 	//Explosion1,
@@ -56,6 +59,7 @@ enum class TextureID
 
 	EnergyBallHero,
 	EnergyBallEnemy,
+	PowerAttack,
 	ShieldSpell,
 
 	Hero,

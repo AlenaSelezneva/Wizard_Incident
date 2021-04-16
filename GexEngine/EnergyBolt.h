@@ -10,7 +10,8 @@ class EnergyBolt : public Entity
 public:
 	enum class Type {
 		AlliedBolt,
-		EnemyBolt
+		EnemyBolt,
+		AlliedPowerAttack
 	};
 
 public:
