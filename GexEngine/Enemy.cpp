@@ -77,8 +77,12 @@ void Enemy::createEnergyBolt(SceneNode& node, const TextureHolder_t& textures) c
 
 void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	Actor::updateCurrent(dt, commands);
+	//Actor::updateCurrent(dt, commands);
+	//state_ = Actor::State::SpellCastFront;
 	
+	//updateDirections();
+	//updateStates();
+
 	attack();
 	if (isAttacking_) {
 		playLocalSound(commands, EffectID::EnemyAttack);
@@ -100,5 +104,14 @@ void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
 			break;
 		}
 	}
+	state_ = Actor::State::SpellCastFront;
+
+	Entity::updateCurrent(dt, commands);
+
+	auto rec = animations_.at(state_).update(dt);
+
+	sprite_.setTextureRect(rec);
+	centerOrigin(sprite_);
+
 	checkCastingAttackingSpell(dt, commands);
 }
